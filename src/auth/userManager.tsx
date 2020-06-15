@@ -16,11 +16,12 @@ function getSettings(config: OAuthConfig): UserManagerSettings {
         redirect_uri: config.redirectUri,
         silent_redirect_uri: config.silentRedirectUri,
         scope: config.scope || 'openid web_api',
+        response_type: 'code',
         automaticSilentRenew: !config.silentRedirectUri
     }
 }
 
-export function getUserManager(config: OAuthConfig): UserManager {
+export const createUserManager = (config: OAuthConfig): UserManager => {
     const settings = getSettings(config)
     return new UserManager(settings)
 }

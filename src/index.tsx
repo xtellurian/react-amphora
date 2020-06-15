@@ -1,9 +1,10 @@
 import * as React from 'react'
 import {
     AmphoraProvider,
-    useCountDispatch,
-    useCountState
-} from './context/AmphoraContext'
+    useAuthDispatch,
+    useAuthState
+} from './context/AmphoraAuthContext'
+import { CallbackPage, SignInButton, createUserManager } from './auth'
 import styles from './styles.module.css'
 
 interface Props {
@@ -14,4 +15,11 @@ export const ExampleComponent = ({ text }: Props) => {
     return <div className={styles.test}>Example Component: {text}</div>
 }
 
-export { AmphoraProvider, useCountDispatch, useCountState }
+export {
+    AmphoraProvider,
+    useAuthDispatch,
+    useAuthState,
+    CallbackPage,
+    SignInButton,
+    createUserManager
+}
