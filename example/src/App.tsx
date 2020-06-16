@@ -2,6 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 import {
     ExampleComponent,
+    UserInformationComponent,
     SignInButton,
     CallbackPage
 } from 'react-amphora'
@@ -10,14 +11,15 @@ import 'react-amphora/dist/index.css'
 
 interface AppProps {
     location: any
+    history: any
 }
 
 const App = (props: AppProps) => {
     if (props.location.hash.substring(0, 10) === '#/callback') {
-        console.log('Loading callback page')
         const rest = props.location.hash.substring(10)
         return (
             <CallbackPage
+                onSignIn={props.history.push('/')}
                 {...props}
                 userManager={userManager}
                 signInParams={`${rest}`}
@@ -28,6 +30,7 @@ const App = (props: AppProps) => {
         <React.Fragment>
             <SignInButton />
             <ExampleComponent text='Create React Library Example 😄' />
+            <UserInformationComponent />
         </React.Fragment>
     )
 }

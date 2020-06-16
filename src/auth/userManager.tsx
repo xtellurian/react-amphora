@@ -15,7 +15,7 @@ function getSettings(config: OAuthConfig): UserManagerSettings {
         client_id: config.clientId,
         redirect_uri: config.redirectUri,
         silent_redirect_uri: config.silentRedirectUri,
-        scope: config.scope || 'openid web_api',
+        scope: config.scope || 'openid profile web_api',
         response_type: 'code',
         automaticSilentRenew: !config.silentRedirectUri
     }

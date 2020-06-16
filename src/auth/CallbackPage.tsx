@@ -17,8 +17,8 @@ export const CallbackPage = (props: CallbackPageProps) => {
         console.log('success called back')
         if (props.onSignIn) {
             props.onSignIn(user)
-            context({ type: 'login', payload: user })
         }
+        context({ type: 'login', payload: user })
     }
 
     const errorCallback = (error: Error): void => {

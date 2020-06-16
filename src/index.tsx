@@ -4,7 +4,12 @@ import {
     useAuthDispatch,
     useAuthState
 } from './context/AmphoraAuthContext'
-import { CallbackPage, SignInButton, createUserManager } from './auth'
+import {
+    CallbackPage,
+    UserInformationComponent,
+    SignInButton,
+    createUserManager
+} from './auth'
 import styles from './styles.module.css'
 
 interface Props {
@@ -20,6 +25,7 @@ export {
     useAuthDispatch,
     useAuthState,
     CallbackPage,
+    UserInformationComponent,
     SignInButton,
     createUserManager
 }

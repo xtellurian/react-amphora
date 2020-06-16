@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { UserManager, User } from 'oidc-client'
 
@@ -47,7 +47,16 @@ function reducer(state: AuthState, action: Action): AuthState {
 
 function AmphoraProvider({ children, userManager }: AmphoraProviderProps) {
     const [state, dispatch] = React.useReducer(reducer, { userManager })
-
+    useEffect(() => {
+        if (!state.user) {
+            userManager
+                .getUser()
+                .then(
+                    (payload) => payload && dispatch({ type: 'login', payload })
+                )
+                .catch((e) => console.log(`Error loading user, ${e}`))
+        }
+    })
     return (
         <AmphoraAuthStateContext.Provider value={state}>
             <AmphoraAuthDispatchContext.Provider value={dispatch}>
