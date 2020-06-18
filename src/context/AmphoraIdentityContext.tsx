@@ -45,7 +45,10 @@ function reducer(state: AuthState, action: Action): AuthState {
     }
 }
 
-function AmphoraProvider({ children, userManager }: AmphoraProviderProps) {
+function IdentityContextProvider({
+    children,
+    userManager
+}: AmphoraProviderProps) {
     const [state, dispatch] = React.useReducer(reducer, { userManager })
     useEffect(() => {
         if (!state.user) {
@@ -66,7 +69,7 @@ function AmphoraProvider({ children, userManager }: AmphoraProviderProps) {
     )
 }
 
-function useAuthState(): AuthState {
+function useIdentityState(): AuthState {
     const context = React.useContext(AmphoraAuthStateContext)
 
     if (context === undefined) {
@@ -76,7 +79,7 @@ function useAuthState(): AuthState {
     return context
 }
 
-function useAuthDispatch(): Dispatch {
+function useIdentityDispatch(): Dispatch {
     const context = React.useContext(AmphoraAuthDispatchContext)
 
     if (context === undefined) {
@@ -86,4 +89,4 @@ function useAuthDispatch(): Dispatch {
     return context
 }
 
-export { AmphoraProvider, useAuthState, useAuthDispatch }
+export { IdentityContextProvider, useIdentityState, useIdentityDispatch }

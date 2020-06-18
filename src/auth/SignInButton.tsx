@@ -1,6 +1,6 @@
 import * as React from 'react'
 // eslint-disable-next-line no-unused-vars
-import { useAuthState } from '../context/AmphoraAuthContext'
+import { useIdentityState } from '../context/AmphoraIdentityContext'
 import styles from './auth.module.css'
 
 interface LoginButtonProps {
@@ -8,7 +8,7 @@ interface LoginButtonProps {
 }
 
 export const SignInButton = (props: LoginButtonProps): JSX.Element => {
-    const context = useAuthState()
+    const context = useIdentityState()
     if (context.user && !context.user.expired) {
         // user is already signed in
         return (

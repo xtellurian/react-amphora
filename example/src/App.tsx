@@ -1,13 +1,14 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
 import {
-    ExampleComponent,
     UserInformationComponent,
     SignInButton,
     CallbackPage
 } from 'react-amphora'
 import { userManager } from './userManager'
 import 'react-amphora/dist/index.css'
+
+import SimpleSearch from './examples/SimpleAmphoraSearchComponent'
 
 interface AppProps {
     location: any
@@ -29,7 +30,7 @@ const App = (props: AppProps) => {
     return (
         <React.Fragment>
             <SignInButton />
-            <ExampleComponent text='Create React Library Example 😄' />
+            <SimpleSearch />
             <UserInformationComponent />
         </React.Fragment>
     )

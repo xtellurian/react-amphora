@@ -2,7 +2,7 @@ import * as React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { User, UserManager } from 'oidc-client'
 import { useEffect } from 'react'
-import { useAuthDispatch } from '../context/AmphoraAuthContext'
+import { useIdentityDispatch } from '../context/AmphoraIdentityContext'
 
 interface CallbackPageProps {
     onSignIn?: (user: User) => void
@@ -12,9 +12,8 @@ interface CallbackPageProps {
 }
 
 export const CallbackPage = (props: CallbackPageProps) => {
-    const context = useAuthDispatch()
+    const context = useIdentityDispatch()
     const successCallback = (user: User): void => {
-        console.log('success called back')
         if (props.onSignIn) {
             props.onSignIn(user)
         }

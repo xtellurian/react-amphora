@@ -3,14 +3,21 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import { AmphoraProvider } from 'react-amphora'
+import { IdentityContextProvider, AmphoraApiProvider } from 'react-amphora'
 import { userManager } from './userManager'
+import { Configuration } from 'amphoradata'
+
+const initalConfiguration = new Configuration({
+    basePath: 'https://localhost:5001'
+})
 
 ReactDOM.render(
     <Router>
-        <AmphoraProvider userManager={userManager}>
-            <App />
-        </AmphoraProvider>
+        <IdentityContextProvider userManager={userManager}>
+            <AmphoraApiProvider configuration={initalConfiguration}>
+                <App />
+            </AmphoraApiProvider>
+        </IdentityContextProvider>
     </Router>,
     document.getElementById('root')
 )

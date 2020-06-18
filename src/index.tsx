@@ -1,15 +1,21 @@
 import * as React from 'react'
 import {
-    AmphoraProvider,
-    useAuthDispatch,
-    useAuthState
-} from './context/AmphoraAuthContext'
+    IdentityContextProvider,
+    useIdentityDispatch,
+    useIdentityState
+} from './context/AmphoraIdentityContext'
 import {
     CallbackPage,
     UserInformationComponent,
     SignInButton,
     createUserManager
 } from './auth'
+import {
+    AmphoraApiProvider,
+    useApiState,
+    withAmphora,
+    ApiState
+} from './context/AmphoraApiContext'
 import styles from './styles.module.css'
 
 interface Props {
@@ -21,11 +27,15 @@ export const ExampleComponent = ({ text }: Props) => {
 }
 
 export {
-    AmphoraProvider,
-    useAuthDispatch,
-    useAuthState,
+    IdentityContextProvider,
+    useIdentityDispatch,
+    useIdentityState,
     CallbackPage,
     UserInformationComponent,
     SignInButton,
-    createUserManager
+    createUserManager,
+    AmphoraApiProvider,
+    useApiState,
+    withAmphora,
+    ApiState
 }
