@@ -23,7 +23,11 @@ yarn add react-amphora
 ```tsx
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import { IdentityContextProvider, AmphoraApiProvider, createUserManager } from 'react-amphora'
+import {
+    IdentityContextProvider,
+    AmphoraApiProvider,
+    createUserManager
+} from 'react-amphora'
 import { Configuration } from 'amphoradata'
 
 // your application
@@ -31,20 +35,48 @@ import App from './App'
 
 const userManager = createUserManager({
     clientId: 'your-client-id',
-    redirectUri: 'http://localhost:3000/#/callback',
+    redirectUri: 'http://localhost:3000/#/callback'
 })
 
 const initalConfiguration = new Configuration()
 
 ReactDOM.render(
-      <IdentityContextProvider userManager={userManager}>
-          <AmphoraApiProvider configuration={initalConfiguration}>
-              <App />
-          </AmphoraApiProvider>
-      </IdentityContextProvider>,
+    <IdentityContextProvider userManager={userManager}>
+        <AmphoraApiProvider configuration={initalConfiguration}>
+            <App />
+        </AmphoraApiProvider>
+    </IdentityContextProvider>,
     document.getElementById('root')
 )
+```
 
+## OAuth Callback
+
+To login with Amphora, you need to be able to handle the OAuth callback to your application. `react-amphora` provides a component to handle this for you. When the callpath path is requested (e.g. `/#/callback/` ) you can render the <CallbackPage/> component.
+
+```tsx
+import * as React from 'react'
+import { CallbackPage } from 'react-amphora'
+import { userManager } from './userManager'
+
+const App = (props: AppProps) => {
+    if (props.location.hash.substring(0, 10) === '#/callback') {
+        const rest = props.location.hash.substring(10)
+        return (
+            <CallbackPage
+                onSignIn={props.history.push('/')}
+                {...props}
+                userManager={userManager}
+                signInParams={`${rest}`}
+            />
+        )
+    }
+    return (
+        <React.Fragment>
+            <YourApplicationComponents />
+        </React.Fragment>
+    )
+}
 ```
 
 ## How it works
