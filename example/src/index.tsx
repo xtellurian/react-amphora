@@ -7,9 +7,7 @@ import { IdentityContextProvider, AmphoraApiProvider } from 'react-amphora'
 import { userManager } from './userManager'
 import { Configuration } from 'amphoradata'
 
-const initalConfiguration = new Configuration({
-    basePath: 'https://localhost:5001'
-})
+const initalConfiguration = new Configuration()
 
 ReactDOM.render(
     <Router>
