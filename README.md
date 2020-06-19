@@ -6,24 +6,56 @@
 
 ## Install
 
+With NPM
+
 ```bash
 npm install --save react-amphora
+```
+
+or with Yarn
+
+```bash
+yarn add react-amphora
 ```
 
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import * as React from 'react'
+import ReactDOM from 'react-dom'
+import { IdentityContextProvider, AmphoraApiProvider, createUserManager } from 'react-amphora'
+import { Configuration } from 'amphoradata'
 
-import MyComponent from 'react-amphora'
-import 'react-amphora/dist/index.css'
+// your application
+import App from './App'
 
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
+const userManager = createUserManager({
+    clientId: 'your-client-id',
+    redirectUri: 'http://localhost:3000/#/callback',
+})
+
+const initalConfiguration = new Configuration()
+
+ReactDOM.render(
+      <IdentityContextProvider userManager={userManager}>
+          <AmphoraApiProvider configuration={initalConfiguration}>
+              <App />
+          </AmphoraApiProvider>
+      </IdentityContextProvider>,
+    document.getElementById('root')
+)
+
 ```
+
+## How it works
+
+### IdentityContextProvider
+
+Identity Context Provider uses the [React Context API](https://reactjs.org/docs/context.html) to wrap the OAUTH and OIDC functionality of Amphora Data. Basically, it allows your users to login to your app with their Amphora Data account.
+
+### AmphoraApiProvider
+
+Amphora API Provider also uses the [React Context API](https://reactjs.org/docs/context.html). This time the Amphora Data Javascript SDK is wrapped in a provider. The API provider must be the child of an Identity Context provider.
 
 ## License
 
