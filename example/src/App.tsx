@@ -1,5 +1,6 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import Information from './Information'
 import {
     UserInformationComponent,
     SignInButton,
@@ -7,6 +8,7 @@ import {
 } from 'react-amphora'
 import { userManager } from './userManager'
 import 'react-amphora/dist/index.css'
+import './index.css'
 
 import SimpleSearch from './examples/SimpleAmphoraSearchComponent'
 
@@ -29,9 +31,27 @@ const App = (props: AppProps) => {
     }
     return (
         <React.Fragment>
-            <SignInButton />
+            <Information />
+
+            <div>
+                <h3>Try the sign in button below to see how it works...</h3>
+                <br />
+            </div>
+            <div>
+                <div className='float-container'>
+                    <div className='float-child'>
+                        <h4>Sign In Button Component</h4>
+                        <SignInButton />
+                    </div>
+
+                    <div className='float-child'>
+                        <h4>User Information Component</h4>
+                        <UserInformationComponent />
+                    </div>
+                </div>
+            </div>
+
             <SimpleSearch />
-            <UserInformationComponent />
         </React.Fragment>
     )
 }
