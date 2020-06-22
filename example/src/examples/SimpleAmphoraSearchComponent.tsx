@@ -38,7 +38,6 @@ class SearchComponent extends React.PureComponent<
                     onChange={(e) => this.handleChange(e)}
                 />
                 <button onClick={() => this.doSearch()}>Search</button>
-                <hr />
                 <h4> Results </h4>
                 {!this.state.results.length && 'No Search Results...'}
                 {this.state.results.map((r) => {
