@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, FunctionComponent } from 'react'
+import React, { useEffect } from 'react'
 import * as a10a from 'amphoradata'
 import axios from 'axios'
 import { useIdentityState } from './AmphoraIdentityContext'
@@ -22,7 +21,9 @@ const AmphoraApiContext = React.createContext<ApiState | undefined>({
     search: search(new a10a.Configuration())
 })
 
-const AmphoraApiProvider: FunctionComponent<ApiProviderProps> = (props) => {
+const AmphoraApiProvider: React.FunctionComponent<ApiProviderProps> = (
+    props
+) => {
     const identityState = useIdentityState()
     const [state, dispatch] = React.useState({
         configuration: props.configuration,

@@ -3,11 +3,7 @@ import * as React from 'react'
 import { useIdentityState } from '../context/AmphoraIdentityContext'
 import styles from './auth.module.css'
 
-interface LoginButtonProps {
-    children?: JSX.Element
-}
-
-export const SignInButton = (props: LoginButtonProps): JSX.Element => {
+export const SignInButton: React.FunctionComponent = (props) => {
     const context = useIdentityState()
     if (context.user && !context.user.expired) {
         // user is already signed in

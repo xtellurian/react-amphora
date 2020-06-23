@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useEffect, FunctionComponent } from 'react'
+import React, { useEffect } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { UserManager, User } from 'oidc-client'
 
@@ -45,7 +44,7 @@ function reducer(state: AuthState, action: Action): AuthState {
     }
 }
 
-const IdentityContextProvider: FunctionComponent<AmphoraProviderProps> = (
+const IdentityContextProvider: React.FunctionComponent<AmphoraProviderProps> = (
     props
 ) => {
     const [state, dispatch] = React.useReducer(reducer, {
