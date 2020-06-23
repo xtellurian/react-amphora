@@ -1,41 +1,40 @@
-import * as React from 'react'
 import {
     IdentityContextProvider,
     useIdentityDispatch,
     useIdentityState
-} from './context/AmphoraIdentityContext'
+} from './context/IdentityContext'
 import {
     CallbackPage,
     UserInformationComponent,
     SignInButton,
+    SignOutButton,
     createUserManager
 } from './auth'
 import {
-    AmphoraApiProvider,
-    useApiState,
-    withAmphora,
-    ApiState
-} from './context/AmphoraApiContext'
-import styles from './styles.module.css'
-
-interface Props {
-    text: string
-}
-
-export const ExampleComponent = ({ text }: Props) => {
-    return <div className={styles.test}>Example Component: {text}</div>
-}
+    withSearch,
+    withSearchState,
+    withSearchDispatch,
+    SearchState,
+    SearchDispatch
+} from './context/api/SearchContext'
+import { AmphoraProvider } from './context/Provider'
+import { useApiState, withConfiguration } from './context/ConfigurationContext'
 
 export {
+    AmphoraProvider,
+    withConfiguration,
     IdentityContextProvider,
     useIdentityDispatch,
     useIdentityState,
     CallbackPage,
     UserInformationComponent,
     SignInButton,
+    SignOutButton,
     createUserManager,
-    AmphoraApiProvider,
     useApiState,
-    withAmphora,
-    ApiState
+    withSearch,
+    withSearchState,
+    withSearchDispatch,
+    SearchState,
+    SearchDispatch
 }

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useIdentityState } from '../context/AmphoraIdentityContext'
+import { useIdentityState } from '../context/IdentityContext'
 
 export const UserInformationComponent = () => {
     const context = useIdentityState()

@@ -2,7 +2,7 @@ import * as React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { User, UserManager } from 'oidc-client'
 import { useEffect } from 'react'
-import { useIdentityDispatch } from '../context/AmphoraIdentityContext'
+import { useIdentityDispatch } from '../context/IdentityContext'
 
 interface CallbackPageProps {
     onSignIn?: (user: User) => void

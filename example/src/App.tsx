@@ -4,13 +4,15 @@ import Information from './Information'
 import {
     UserInformationComponent,
     SignInButton,
-    CallbackPage
+    CallbackPage,
+    SignOutButton
 } from 'react-amphora'
 import { userManager } from './userManager'
 import 'react-amphora/dist/index.css'
 import './index.css'
 
-import SimpleSearch from './examples/SimpleAmphoraSearchComponent'
+import SearchBar from './examples/SearchBar'
+import SearchResults from './examples/SearchResults'
 
 interface AppProps {
     location: any
@@ -38,20 +40,22 @@ const App = (props: AppProps) => {
                 <br />
             </div>
             <div>
-                <div className='float-container'>
-                    <div className='float-child'>
-                        <h4>Sign In Button Component</h4>
+                <div className='row'>
+                    <div className='col'>
+                        <h4>Sign In/Out Button Components</h4>
                         <SignInButton />
+                        <SignOutButton />
                     </div>
 
-                    <div className='float-child'>
+                    <div className='col'>
                         <h4>User Information Component</h4>
                         <UserInformationComponent />
                     </div>
                 </div>
             </div>
-
-            <SimpleSearch />
+            <hr/>
+            <SearchBar />
+            <SearchResults />
         </React.Fragment>
     )
 }

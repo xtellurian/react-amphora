@@ -8,7 +8,7 @@ type AuthState = {
     userManager?: UserManager
     user?: User
 }
-type AmphoraProviderProps = {
+type IdentityContextProps = {
     userManager: UserManager
 }
 
@@ -44,13 +44,14 @@ function reducer(state: AuthState, action: Action): AuthState {
     }
 }
 
-const IdentityContextProvider: React.FunctionComponent<AmphoraProviderProps> = (
+const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
     props
 ) => {
     const [state, dispatch] = React.useReducer(reducer, {
         userManager: props.userManager
     })
     useEffect(() => {
+        console.log('using effect')
         if (!state.user) {
             props.userManager
                 .getUser()
@@ -58,6 +59,13 @@ const IdentityContextProvider: React.FunctionComponent<AmphoraProviderProps> = (
                     (payload) => payload && dispatch({ type: 'login', payload })
                 )
                 .catch((e) => console.log(`Error loading user, ${e}`))
+        }
+        if (state.user && state.user.expired) {
+            console.log('logging out')
+            props.userManager.removeUser()
+            dispatch({
+                type: 'logout'
+            })
         }
     })
     return (
@@ -89,4 +97,9 @@ function useIdentityDispatch(): Dispatch {
     return context
 }
 
-export { IdentityContextProvider, useIdentityState, useIdentityDispatch }
+export {
+    IdentityContextProps,
+    IdentityContextProvider,
+    useIdentityState,
+    useIdentityDispatch
+}
