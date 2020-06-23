@@ -42,7 +42,6 @@ const AmphoraApiProvider: React.FunctionComponent<ApiProviderProps> = (
             })
             axiosClient.defaults.headers.common.Authorization =
                 'Bearer ' + identityState.user.access_token
-            console.log(axios.defaults.headers.common)
         }
     })
     return (
