@@ -2,7 +2,7 @@
 
 > React Components for Amphora Data
 
-[![NPM](https://img.shields.io/npm/v/react-amphora.svg)](https://www.npmjs.com/package/react-amphora) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-amphora.svg)](https://www.npmjs.com/package/react-amphora) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) ![Node.js Package](https://github.com/xtellurian/react-amphora/workflows/Node.js%20Package/badge.svg)
 
 ## Install
 
@@ -78,6 +78,10 @@ const App = (props: AppProps) => {
     )
 }
 ```
+
+## Example Site
+
+There is an example application under /example. You can see the deployed app [here](https://react-amphora-example.xtellurian.vercel.app/)
 
 ## How it works
 
