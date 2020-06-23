@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, FunctionComponent } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { UserManager, User } from 'oidc-client'
 
@@ -10,7 +11,6 @@ type AuthState = {
 }
 type AmphoraProviderProps = {
     userManager: UserManager
-    children: React.ReactNode
 }
 
 const AmphoraAuthStateContext = React.createContext<AuthState | undefined>({
@@ -45,14 +45,15 @@ function reducer(state: AuthState, action: Action): AuthState {
     }
 }
 
-function IdentityContextProvider({
-    children,
-    userManager
-}: AmphoraProviderProps) {
-    const [state, dispatch] = React.useReducer(reducer, { userManager })
+const IdentityContextProvider: FunctionComponent<AmphoraProviderProps> = (
+    props
+) => {
+    const [state, dispatch] = React.useReducer(reducer, {
+        userManager: props.userManager
+    })
     useEffect(() => {
         if (!state.user) {
-            userManager
+            props.userManager
                 .getUser()
                 .then(
                     (payload) => payload && dispatch({ type: 'login', payload })
@@ -63,7 +64,7 @@ function IdentityContextProvider({
     return (
         <AmphoraAuthStateContext.Provider value={state}>
             <AmphoraAuthDispatchContext.Provider value={dispatch}>
-                {children}
+                {props.children}
             </AmphoraAuthDispatchContext.Provider>
         </AmphoraAuthStateContext.Provider>
     )

@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+// eslint-disable-next-line no-unused-vars
+import React, { useEffect, FunctionComponent } from 'react'
 import * as a10a from 'amphoradata'
 import axios from 'axios'
 import { useIdentityState } from './AmphoraIdentityContext'
@@ -21,12 +22,12 @@ const AmphoraApiContext = React.createContext<ApiState | undefined>({
     search: search(new a10a.Configuration())
 })
 
-function AmphoraApiProvider({ children, configuration }: ApiProviderProps) {
+const AmphoraApiProvider: FunctionComponent<ApiProviderProps> = (props) => {
     const identityState = useIdentityState()
     const [state, dispatch] = React.useState({
-        configuration,
+        configuration: props.configuration,
         token: '',
-        search: search(configuration)
+        search: search(props.configuration)
     })
     useEffect(() => {
         if (
@@ -45,7 +46,7 @@ function AmphoraApiProvider({ children, configuration }: ApiProviderProps) {
     })
     return (
         <AmphoraApiContext.Provider value={state}>
-            {children}
+            {props.children}
         </AmphoraApiContext.Provider>
     )
 }
