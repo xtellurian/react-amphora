@@ -23,11 +23,7 @@ yarn add react-amphora
 ```tsx
 import * as React from 'react'
 import ReactDOM from 'react-dom'
-import {
-    IdentityContextProvider,
-    AmphoraApiProvider,
-    createUserManager
-} from 'react-amphora'
+import { AmphoraProvider, createUserManager } from 'react-amphora'
 import { Configuration } from 'amphoradata'
 
 // your application
@@ -44,11 +40,12 @@ const userManager = createUserManager({
 const initalConfiguration = new Configuration()
 
 ReactDOM.render(
-    <IdentityContextProvider userManager={userManager}>
-        <AmphoraApiProvider configuration={initalConfiguration}>
-            <App />
-        </AmphoraApiProvider>
-    </IdentityContextProvider>,
+    <AmphoraProvider
+        userManager={userManager}
+        configuration={initalConfiguration}
+    >
+        <App />
+    </AmphoraProvider>,
     document.getElementById('root')
 )
 ```
