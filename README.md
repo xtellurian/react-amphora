@@ -33,6 +33,9 @@ import { Configuration } from 'amphoradata'
 // your application
 import App from './App'
 
+// make sure to import the css
+import 'react-amphora/dist/index.css'
+
 const userManager = createUserManager({
     clientId: 'your-client-id',
     redirectUri: 'http://localhost:3000/#/callback'
