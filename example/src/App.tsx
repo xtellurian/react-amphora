@@ -11,8 +11,12 @@ import { userManager } from './userManager'
 import 'react-amphora/dist/index.css'
 import './index.css'
 
-import SearchBar from './examples/SearchBar'
-import SearchResults from './examples/SearchResults'
+// examples
+import SearchBar from './examples/search/SearchBar'
+import SearchResults from './examples/search/SearchResults'
+
+import MyAmphoraButtons from './examples/my-amphora/FetchMyAmphoraButtons'
+import MyAmphoraResults from './examples/my-amphora/MyAmphoraResults'
 
 interface AppProps {
     location: any
@@ -56,6 +60,9 @@ const App = (props: AppProps) => {
             <hr/>
             <SearchBar />
             <SearchResults />
+            <hr/>
+            <MyAmphoraButtons/>
+            <MyAmphoraResults/>
         </React.Fragment>
     )
 }

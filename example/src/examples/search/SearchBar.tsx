@@ -1,16 +1,13 @@
 import * as React from 'react'
-import { BasicAmphora } from 'amphoradata'
-import { SearchDispatch } from 'react-amphora'
-import { withSearchDispatch } from 'react-amphora'
+import { SearchContext } from 'react-amphora'
 
 class SearchBar extends React.PureComponent<
-    SearchDispatch,
-    { results: BasicAmphora[]; term: string }
+    SearchContext.SearchDispatch,
+    { term: string }
 > {
-    constructor(props: SearchDispatch) {
+    constructor(props: SearchContext.SearchDispatch) {
         super(props)
         this.state = {
-            results: [],
             term: ''
         }
     }
@@ -40,4 +37,4 @@ class SearchBar extends React.PureComponent<
     }
 }
 
-export default withSearchDispatch(SearchBar)
+export default SearchContext.withSearchDispatch(SearchBar)

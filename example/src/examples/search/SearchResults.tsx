@@ -1,19 +1,7 @@
 import * as React from 'react'
-import { SearchState } from 'react-amphora'
-import { withSearchState } from 'react-amphora'
+import { SearchContext } from 'react-amphora'
 
-class SearchResults extends React.PureComponent<
-    SearchState
-> {
-    constructor(props: SearchState) {
-        super(props)
-        this.state = {
-            results: [],
-            term: ''
-        }
-        console.log(this.props)
-    }
-
+class SearchResults extends React.PureComponent<SearchContext.SearchState> {
     render() {
         return (
             <div>
@@ -32,4 +20,4 @@ class SearchResults extends React.PureComponent<
     }
 }
 
-export default withSearchState(SearchResults)
+export default SearchContext.withSearchState(SearchResults)
