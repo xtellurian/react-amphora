@@ -4,11 +4,13 @@ import {
     IdentityContextProps,
     IdentityContextProvider
 } from './IdentityContext'
+import { ApiClientProvider } from './ApiClientContext'
+import { MyAmphoraApiProvider } from './apis/MyAmphoraContext'
 import {
     ConfigurationProviderProps,
     ConfigurationProvider
 } from './ConfigurationContext'
-import { SearchApiProvider } from './api/SearchContext'
+import { SearchApiProvider } from './apis/SearchContext'
 
 type AmphoraProviderProps = IdentityContextProps & ConfigurationProviderProps
 
@@ -18,7 +20,11 @@ const AmphoraProvider: React.FunctionComponent<AmphoraProviderProps> = (
     return (
         <IdentityContextProvider userManager={props.userManager}>
             <ConfigurationProvider configuration={props.configuration}>
-                <SearchApiProvider>{props.children}</SearchApiProvider>
+                <ApiClientProvider>
+                    <MyAmphoraApiProvider>
+                        <SearchApiProvider>{props.children}</SearchApiProvider>
+                    </MyAmphoraApiProvider>
+                </ApiClientProvider>
             </ConfigurationProvider>
         </IdentityContextProvider>
     )

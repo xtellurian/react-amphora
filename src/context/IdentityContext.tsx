@@ -4,7 +4,7 @@ import { UserManager, User } from 'oidc-client'
 
 type Action = { type: 'login'; payload: User } | { type: 'logout' }
 type Dispatch = (action: Action) => void
-type AuthState = {
+type IdentityContextState = {
     userManager?: UserManager
     user?: User
 }
@@ -12,7 +12,9 @@ type IdentityContextProps = {
     userManager: UserManager
 }
 
-const AmphoraAuthStateContext = React.createContext<AuthState | undefined>({
+const AmphoraAuthStateContext = React.createContext<
+    IdentityContextState | undefined
+>({
     userManager: undefined,
     user: undefined
 })
@@ -20,7 +22,10 @@ const AmphoraAuthDispatchContext = React.createContext<Dispatch | undefined>(
     undefined
 )
 
-function reducer(state: AuthState, action: Action): AuthState {
+function reducer(
+    state: IdentityContextState,
+    action: Action
+): IdentityContextState {
     if (!state) {
         return {}
     }
@@ -51,7 +56,6 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
         userManager: props.userManager
     })
     useEffect(() => {
-        console.log('using effect')
         if (!state.user) {
             props.userManager
                 .getUser()
@@ -61,7 +65,6 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
                 .catch((e) => console.log(`Error loading user, ${e}`))
         }
         if (state.user && state.user.expired) {
-            console.log('logging out')
             props.userManager.removeUser()
             dispatch({
                 type: 'logout'
@@ -77,7 +80,7 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
     )
 }
 
-function useIdentityState(): AuthState {
+function useIdentityState(): IdentityContextState {
     const context = React.useContext(AmphoraAuthStateContext)
 
     if (context === undefined) {

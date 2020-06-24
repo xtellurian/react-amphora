@@ -1,22 +1,9 @@
 import * as React from 'react'
-import {
-    FetchMyAmphoraDispatch,
-    withFetchMyAmphoraDispatch
-} from 'react-amphora'
+import { MyAmphoraContext } from 'react-amphora'
 
-class MyAmphoraToggle extends React.PureComponent<FetchMyAmphoraDispatch> {
-    constructor(props: FetchMyAmphoraDispatch) {
-        super(props)
-        this.state = {
-            results: [],
-            term: ''
-        }
-    }
-
-    // private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    //     this.setState({ term: event.target.value })
-    // }
-
+class MyAmphoraToggle extends React.PureComponent<
+    MyAmphoraContext.FetchMyAmphoraDispatch
+> {
     private doFetch(
         accessType: 'created' | 'purchased',
         scope: 'self' | 'organisation'
@@ -53,4 +40,4 @@ class MyAmphoraToggle extends React.PureComponent<FetchMyAmphoraDispatch> {
     }
 }
 
-export default withFetchMyAmphoraDispatch(MyAmphoraToggle)
+export default MyAmphoraContext.withFetchMyAmphoraDispatch(MyAmphoraToggle)

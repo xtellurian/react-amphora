@@ -1,8 +1,4 @@
-import {
-    IdentityContextProvider,
-    useIdentityDispatch,
-    useIdentityState
-} from './context/IdentityContext'
+import * as IdentityContext from './context/IdentityContext'
 import {
     CallbackPage,
     UserInformationComponent,
@@ -10,31 +6,21 @@ import {
     SignOutButton,
     createUserManager
 } from './auth'
-import {
-    withSearch,
-    withSearchState,
-    withSearchDispatch,
-    SearchState,
-    SearchDispatch
-} from './context/api/SearchContext'
+import * as SearchContext from './context/apis/SearchContext'
+import * as MyAmphoraContext from './context/apis/MyAmphoraContext'
 import { AmphoraProvider } from './context/Provider'
 import { useApiState, withConfiguration } from './context/ConfigurationContext'
 
 export {
     AmphoraProvider,
     withConfiguration,
-    IdentityContextProvider,
-    useIdentityDispatch,
-    useIdentityState,
+    IdentityContext,
     CallbackPage,
     UserInformationComponent,
     SignInButton,
     SignOutButton,
     createUserManager,
     useApiState,
-    withSearch,
-    withSearchState,
-    withSearchDispatch,
-    SearchState,
-    SearchDispatch
+    SearchContext,
+    MyAmphoraContext
 }

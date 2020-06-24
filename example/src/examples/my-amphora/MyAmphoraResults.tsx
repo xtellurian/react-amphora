@@ -1,7 +1,9 @@
 import * as React from 'react'
-import { MyAmphoraState, withMyAmphoraState } from 'react-amphora'
+import { MyAmphoraContext } from 'react-amphora'
 
-class MyAmphoraResults extends React.PureComponent<MyAmphoraState> {
+class MyAmphoraResults extends React.PureComponent<
+    MyAmphoraContext.MyAmphoraState
+> {
     renderLoader() {
         return <div>Loading...</div>
     }
@@ -37,4 +39,4 @@ class MyAmphoraResults extends React.PureComponent<MyAmphoraState> {
     }
 }
 
-export default withMyAmphoraState(MyAmphoraResults)
+export default MyAmphoraContext.withMyAmphoraState(MyAmphoraResults)

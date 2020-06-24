@@ -37,7 +37,6 @@ const ConfigurationProvider: React.FunctionComponent<ConfigurationProviderProps>
             identityState.user &&
             state.token !== identityState.user.access_token
         ) {
-            console.log('reloading config')
             dispatch({
                 axiosClient,
                 token: identityState.user.access_token,

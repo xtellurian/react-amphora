@@ -1,7 +1,10 @@
 import * as React from 'react'
-import * as amphoradata from 'amphoradata'
+// eslint-disable-next-line no-unused-vars
+import { BasicAmphora } from 'amphoradata'
+// eslint-disable-next-line no-unused-vars
+import { ApiState } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
-import { useApiState } from '../ConfigurationContext'
+import { useAmphoraClients } from '../ApiClientContext'
 
 type Action = {
     type: 'search'
@@ -11,8 +14,8 @@ type Action = {
 }
 
 type SearchDispatch = { dispatch: (action: Action) => void }
-interface SearchState {
-    results: amphoradata.BasicAmphora[]
+interface SearchState extends ApiState {
+    results: BasicAmphora[]
 }
 const StateContext = React.createContext<SearchState | undefined>({
     results: []
@@ -22,12 +25,7 @@ const DispatchContext = React.createContext<SearchDispatch | undefined>(
 )
 
 const SearchApiProvider: React.FunctionComponent = (props) => {
-    const apiContext = useApiState()
-    const searchApi = new amphoradata.SearchApi(
-        apiContext.configuration,
-        apiContext.configuration.basePath,
-        apiContext.axiosClient
-    )
+    const apiContext = useAmphoraClients()
     const reducer = async (
         state: SearchState,
         action: Action
@@ -37,8 +35,10 @@ const SearchApiProvider: React.FunctionComponent = (props) => {
                 results: []
             }
         } else {
-            const r = await searchApi.searchSearchAmphorae(action.payload.term)
-            return { results: r.data }
+            const r = await apiContext.searchApi.searchSearchAmphorae(
+                action.payload.term
+            )
+            return { results: r.data, isLoading: false }
         }
     }
 
