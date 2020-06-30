@@ -1,6 +1,6 @@
 import * as React from 'react'
 // eslint-disable-next-line no-unused-vars
-import { CreateAmphora, DetailedAmphora } from 'amphoradata'
+import { CreateAmphora, DetailedAmphora, EditAmphora } from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
 import { ApiState } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
@@ -12,8 +12,27 @@ type CreateAction = {
         model: CreateAmphora
     }
 }
+type ReadAction = {
+    type: 'amphora-operation-read'
+    payload: {
+        id: string
+    }
+}
+type UpdateAction = {
+    type: 'amphora-operation-update'
+    payload: {
+        id: string
+        model: EditAmphora
+    }
+}
+type DeleteAction = {
+    type: 'amphora-operation-delete'
+    payload: {
+        id: string
+    }
+}
 
-type AllActions = CreateAction
+type AllActions = CreateAction | ReadAction | UpdateAction | DeleteAction
 
 type AmphoraOperationsDispatch = { dispatch: (action: CreateAction) => void }
 interface AmphoraOperationState extends ApiState {
@@ -35,11 +54,33 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
         if (!state) {
             return {}
         } else if (action.type === 'amphora-operation-create') {
-            const r = await apiContext.amphoraeApi.amphoraeCreate(
+            const createResponse = await apiContext.amphoraeApi.amphoraeCreate(
                 action.payload.model
             )
             return {
-                current: r.data,
+                current: createResponse.data,
+                isLoading: false
+            }
+        } else if (action.type === 'amphora-operation-read') {
+            const readResponse = await apiContext.amphoraeApi.amphoraeRead(
+                action.payload.id
+            )
+            return {
+                current: readResponse.data,
+                isLoading: false
+            }
+        } else if (action.type === 'amphora-operation-update') {
+            const updateResponse = await apiContext.amphoraeApi.amphoraeUpdate(
+                action.payload.id,
+                action.payload.model as EditAmphora
+            )
+            return {
+                current: updateResponse.data,
+                isLoading: false
+            }
+        } else if (action.type === 'amphora-operation-delete') {
+            await apiContext.amphoraeApi.amphoraeDelete(action.payload.id)
+            return {
                 isLoading: false
             }
         } else {
