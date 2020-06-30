@@ -1,0 +1,21 @@
+.componentHeader {
+    font-size: larger;
+}
+
+.componentSubHeader {
+    font-size: large;
+}
+
+.resultsList {
+    position: relative;
+}
+.result {
+    text-align: center;
+    cursor: pointer;
+    margin: 0.2rem;
+    border: 0.02rem solid grey;
+    border-radius: 5%;
+}
+.result:hover {
+    background-color: lightblue;
+}

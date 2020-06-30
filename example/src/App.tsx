@@ -1,11 +1,13 @@
 import React from 'react'
 import { withRouter } from 'react-router-dom'
+import * as a10a from 'amphoradata'
 import Information from './Information'
 import {
     UserInformationComponent,
     SignInButton,
     CallbackPage,
-    SignOutButton
+    SignOutButton,
+    GeoLookupComponent
 } from 'react-amphora'
 import { userManager } from './userManager'
 import 'react-amphora/dist/index.css'
@@ -57,12 +59,20 @@ const App = (props: AppProps) => {
                     </div>
                 </div>
             </div>
-            <hr/>
+            <hr />
             <SearchBar />
             <SearchResults />
-            <hr/>
-            <MyAmphoraButtons/>
-            <MyAmphoraResults/>
+            <hr />
+            <MyAmphoraButtons />
+            <MyAmphoraResults />
+            <h2>Built in Components</h2>
+            <GeoLookupComponent
+                onResultSelected={(r: a10a.Result) =>
+                    alert(
+                        `You selected ${r.address?.freeformAddress} with position ${r.position?.lat}, ${r.position?.lon}`
+                    )
+                }
+            />
         </React.Fragment>
     )
 }

@@ -4,11 +4,13 @@ import { useApiState } from './ConfigurationContext'
 
 interface ApiClientState {
     amphoraeApi: amphoradata.AmphoraeApi
+    geoApi: amphoradata.GeoApi
     searchApi: amphoradata.SearchApi
 }
 const ApiClientStateContext = React.createContext<ApiClientState | undefined>({
     amphoraeApi: new amphoradata.AmphoraeApi(),
-    searchApi: new amphoradata.SearchApi()
+    searchApi: new amphoradata.SearchApi(),
+    geoApi: new amphoradata.GeoApi()
 })
 
 const ApiClientProvider: React.FunctionComponent = (props) => {
@@ -21,6 +23,11 @@ const ApiClientProvider: React.FunctionComponent = (props) => {
             apiContext.axiosClient
         ),
         searchApi: new amphoradata.SearchApi(
+            apiContext.configuration,
+            apiContext.configuration.basePath,
+            apiContext.axiosClient
+        ),
+        geoApi: new amphoradata.GeoApi(
             apiContext.configuration,
             apiContext.configuration.basePath,
             apiContext.axiosClient

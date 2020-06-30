@@ -1,3 +1,4 @@
+// Contexts
 import * as IdentityContext from './context/IdentityContext'
 import {
     CallbackPage,
@@ -11,7 +12,11 @@ import * as MyAmphoraContext from './context/apis/MyAmphoraContext'
 import { AmphoraProvider } from './context/Provider'
 import { useApiState, withConfiguration } from './context/ConfigurationContext'
 
+// Components
+import GeoLookupComponent from './components/GeoLookup'
+
 export {
+    // Contexts
     AmphoraProvider,
     withConfiguration,
     IdentityContext,
@@ -22,5 +27,7 @@ export {
     createUserManager,
     useApiState,
     SearchContext,
-    MyAmphoraContext
+    MyAmphoraContext,
+    // Components
+    GeoLookupComponent
 }
