@@ -19,6 +19,7 @@ import SearchResults from './examples/search/SearchResults'
 
 import MyAmphoraButtons from './examples/my-amphora/FetchMyAmphoraButtons'
 import MyAmphoraResults from './examples/my-amphora/MyAmphoraResults'
+import CreateNewAmphora from './examples/create-amphora/CreateNewAmphora'
 
 interface AppProps {
     location: any
@@ -65,6 +66,8 @@ const App = (props: AppProps) => {
             <hr />
             <MyAmphoraButtons />
             <MyAmphoraResults />
+            <h3>Create an Amphora Component</h3>
+            <CreateNewAmphora />
             <h2>Built in Components</h2>
             <GeoLookupComponent
                 onResultSelected={(r: a10a.Result) =>
