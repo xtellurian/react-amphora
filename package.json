@@ -61,7 +61,7 @@
     "dist"
   ],
   "dependencies": {
-    "amphoradata": "^0.10.6-dev.2",
+    "amphoradata": "^0.10.8-dev.1",
     "oidc-client": "^1.10.1"
   }
 }
