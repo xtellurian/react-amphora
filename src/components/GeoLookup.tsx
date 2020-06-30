@@ -6,13 +6,14 @@ import styles from './components.module.css'
 
 type GeoLookupProps = GeoContext.GeoDispatch &
     GeoContext.GeoState & {
-        heading?: JSX.Element
+        buttonClassName?: string
         dontClearOnSelected?: boolean
-        resultElement?: (r: Result) => JSX.Element
+        heading?: JSX.Element
         loadingPlaceholder?: JSX.Element
+        placeholder?: string
+        resultElement?: (r: Result) => JSX.Element
         onResponse?: (response: FuzzySearchResponse) => void
         onResultSelected?: (selected: Result) => void
-        buttonClassName?: string
     }
 
 class GeoLookup extends React.PureComponent<GeoLookupProps, { query: string }> {
@@ -101,6 +102,9 @@ class GeoLookup extends React.PureComponent<GeoLookupProps, { query: string }> {
                 {this.header()}
                 <input
                     type='text'
+                    placeholder={
+                        this.props.placeholder || 'Search for a location'
+                    }
                     value={this.state.query}
                     onKeyDown={(e) => this.handleKeyDown(e)}
                     onChange={(e) => this.handleChange(e)}
