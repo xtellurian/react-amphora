@@ -84,19 +84,14 @@ async function loadMaxPermissionLevel(
     amphora: DetailedAmphora,
     permissionApi: PermissionApi
 ): Promise<number> {
-    if (amphora.termsOfUseId) {
-        const response = await permissionApi.permissionGetPermissions({
-            accessQueries: getAccessQueries(amphora.id || '')
-        })
-        if (response.data.accessResponses) {
-            return Math.max(
-                ...response.data.accessResponses
-                    .filter((_) => _.isAuthorized)
-                    .map((_) => _.accessLevel || 0)
-            )
-        } else {
-            return 0
-        }
+    const response = await permissionApi.permissionGetPermissions({
+        accessQueries: getAccessQueries(amphora.id || '')
+    })
+    if (response.data.accessResponses) {
+        const relevant = response.data.accessResponses
+            .filter((_) => _.isAuthorized)
+            .map((_) => _.accessLevel || 0)
+        return Math.max(...relevant)
     } else {
         return 0
     }
