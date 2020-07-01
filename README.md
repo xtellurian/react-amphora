@@ -93,6 +93,17 @@ Identity Context Provider uses the [React Context API](https://reactjs.org/docs/
 
 Amphora API Provider also uses the [React Context API](https://reactjs.org/docs/context.html). This time the Amphora Data Javascript SDK is wrapped in a provider. The API provider must be the child of an Identity Context provider.
 
+## Releasing
+
+When you want to release a new pre-release version, just run these commands:
+
+```sh
+yarn version --prerelease
+git push
+```
+
+and a new version with be published to NPM
+
 ## License
 
 MIT © [xtellurian](https://github.com/xtellurian)
