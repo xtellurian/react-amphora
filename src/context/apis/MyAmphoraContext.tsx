@@ -51,11 +51,13 @@ const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
                 action.payload.scope,
                 action.payload.accessType
             )
+
             return {
                 scope: action.payload.scope,
                 accessType: action.payload.accessType,
-                results: r.data,
-                isLoading: false
+                results: Array.isArray(r.data) ? r.data : [],
+                isLoading: false,
+                error: r.status > 299
             }
         }
     }
