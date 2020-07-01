@@ -9,7 +9,9 @@ import {
     // eslint-disable-next-line no-unused-vars
     TermsOfUse,
     // eslint-disable-next-line no-unused-vars
-    TermsOfUseApi
+    TermsOfUseApi,
+    // eslint-disable-next-line no-unused-vars
+    PermissionApi
 } from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
 import { ApiState } from './apiState'
@@ -47,11 +49,14 @@ type AllActions = CreateAction | ReadAction | UpdateAction | DeleteAction
 type AmphoraOperationsDispatch = { dispatch: (action: AllActions) => void }
 interface AmphoraOperationState extends ApiState {
     current?: DetailedAmphora
+    maxPermissionLevel: number
     terms?: TermsOfUse | null | undefined
 }
 const AmphoraOperationsStateContext = React.createContext<
     AmphoraOperationState | undefined
->({})
+>({
+    maxPermissionLevel: 0
+})
 const DispatchContext = React.createContext<
     AmphoraOperationsDispatch | undefined
 >(undefined)
@@ -67,6 +72,35 @@ async function loadTermsIfExist(
         return null
     }
 }
+const getAccessQueries = (amphoraId: string) => [
+    { accessLevel: 24, amphoraId }, // purchase
+    { accessLevel: 32, amphoraId }, // read contents
+    { accessLevel: 64, amphoraId }, // write contents
+    { accessLevel: 128, amphoraId }, // update
+    { accessLevel: 256, amphoraId } // administer
+]
+
+async function loadMaxPermissionLevel(
+    amphora: DetailedAmphora,
+    permissionApi: PermissionApi
+): Promise<number> {
+    if (amphora.termsOfUseId) {
+        const response = await permissionApi.permissionGetPermissions({
+            accessQueries: getAccessQueries(amphora.id || '')
+        })
+        if (response.data.accessResponses) {
+            return Math.max(
+                ...response.data.accessResponses
+                    .filter((_) => _.isAuthorized)
+                    .map((_) => _.accessLevel || 0)
+            )
+        } else {
+            return 0
+        }
+    } else {
+        return 0
+    }
+}
 const isLoading = false
 
 const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
@@ -76,7 +110,9 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
         action: AllActions
     ): Promise<AmphoraOperationState> => {
         if (!state) {
-            return {}
+            return {
+                maxPermissionLevel: 0
+            }
         } else if (action.type === 'amphora-operation-create') {
             const createResponse = await apiContext.amphoraeApi.amphoraeCreate(
                 action.payload.model
@@ -85,13 +121,22 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
                 createResponse.data,
                 apiContext.termsOfUseApi
             )
-            return { current: createResponse.data, terms, isLoading }
+            return {
+                current: createResponse.data,
+                maxPermissionLevel: 128,
+                terms,
+                isLoading
+            }
         } else if (action.type === 'amphora-operation-read') {
             const readResponse = await apiContext.amphoraeApi.amphoraeRead(
                 action.payload.id
             )
             return {
                 current: readResponse.data,
+                maxPermissionLevel: await loadMaxPermissionLevel(
+                    readResponse.data,
+                    apiContext.permissionApi
+                ),
                 terms: await loadTermsIfExist(
                     readResponse.data,
                     apiContext.termsOfUseApi
@@ -105,6 +150,10 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
             )
             return {
                 current: updateResponse.data,
+                maxPermissionLevel: await loadMaxPermissionLevel(
+                    action.payload.model,
+                    apiContext.permissionApi
+                ),
                 terms: await loadTermsIfExist(
                     updateResponse.data,
                     apiContext.termsOfUseApi
@@ -113,13 +162,15 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
             }
         } else if (action.type === 'amphora-operation-delete') {
             await apiContext.amphoraeApi.amphoraeDelete(action.payload.id)
-            return { isLoading }
+            return { isLoading, maxPermissionLevel: 0 }
         } else {
             return state
         }
     }
 
-    const [state, dispatch] = useAsyncReducer(asyncReducer, {})
+    const [state, dispatch] = useAsyncReducer(asyncReducer, {
+        maxPermissionLevel: 0
+    })
 
     return (
         <AmphoraOperationsStateContext.Provider value={state}>

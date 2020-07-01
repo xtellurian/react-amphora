@@ -7,12 +7,31 @@ export const DisplayCurrentAmphora: React.FunctionComponent = (props) => {
     } else if (state.current) {
         return (
             <div>
-                <div>Name: {state.current.name}</div>
-                <div>Description: {state.current.description}</div>
-                <div>Price: {state.current.price}</div>
-                <div>Terms Id: {state.current.termsOfUseId}</div>
-                <div>Terms Name: {state.terms && state.terms.name}</div>
-                <div>Terms Contents: {state.terms && state.terms.contents}</div>
+                <div>
+                    <strong>Name:</strong>
+                    {state.current.name}
+                </div>
+                <div>
+                    <strong>Description:</strong> {state.current.description}
+                </div>
+                <div>
+                    <strong>Price:</strong> {state.current.price}
+                </div>
+                <div>
+                    <strong>Terms Id:</strong> {state.current.termsOfUseId}
+                </div>
+                <div>
+                    <strong>Terms Name: </strong>
+                    {state.terms && state.terms.name}
+                </div>
+                <div>
+                    <strong>Terms Contents:</strong>{' '}
+                    {state.terms && state.terms.contents}
+                </div>
+                <div>
+                    <strong>Permission Level:</strong>{' '}
+                    {state.maxPermissionLevel}
+                </div>
                 {props.children}
             </div>
         )
