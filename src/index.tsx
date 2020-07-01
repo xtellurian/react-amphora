@@ -7,6 +7,7 @@ import {
     SignOutButton,
     createUserManager
 } from './auth'
+import { useAmphoraClients } from './context/ApiClientContext'
 import * as SearchContext from './context/apis/SearchContext'
 import * as MyAmphoraContext from './context/apis/MyAmphoraContext'
 import * as AmphoraOperationsContext from './context/apis/AmphoraOperationsContext'
@@ -18,6 +19,7 @@ import GeoLookupComponent from './components/GeoLookup'
 
 export {
     // Contexts
+    useAmphoraClients,
     AmphoraProvider,
     withConfiguration,
     IdentityContext,
