@@ -1,8 +1,10 @@
 import * as React from 'react'
 import * as amphoradata from 'amphoradata'
+import * as axios from 'axios'
 import { useApiState } from './ConfigurationContext'
 
 interface ApiClientState {
+    axios: axios.AxiosInstance
     activitiesApi: amphoradata.ActivitiesApi
     amphoraeApi: amphoradata.AmphoraeApi
     geoApi: amphoradata.GeoApi
@@ -14,6 +16,7 @@ interface ApiClientState {
     usersApi: amphoradata.UsersApi
 }
 const ApiClientStateContext = React.createContext<ApiClientState | undefined>({
+    axios: axios.default,
     amphoraeApi: new amphoradata.AmphoraeApi(),
     activitiesApi: new amphoradata.ActivitiesApi(),
     geoApi: new amphoradata.GeoApi(),
@@ -29,6 +32,7 @@ const ApiClientProvider: React.FunctionComponent = (props) => {
     const apiContext = useApiState()
 
     const [state] = React.useState<ApiClientState>({
+        axios: apiContext.axiosClient,
         amphoraeApi: new amphoradata.AmphoraeApi(
             apiContext.configuration,
             apiContext.configuration.basePath,
