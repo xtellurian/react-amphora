@@ -93,6 +93,15 @@ function useMyAmphoraDispatch(): FetchMyAmphoraDispatch {
     return context
 }
 
+function useMyAmphora(): MyAmphoraState & FetchMyAmphoraDispatch {
+    const state = useMyAmphoraState()
+    const dispatch = useMyAmphoraDispatch()
+    return {
+        ...state,
+        ...dispatch
+    }
+}
+
 const withMyAmphoraState = (Component: any) => {
     return (props: any) => {
         return (
@@ -119,6 +128,7 @@ export {
     MyAmphoraApiProvider,
     MyAmphoraState,
     FetchMyAmphoraDispatch,
+    useMyAmphora,
     useMyAmphoraState,
     useMyAmphoraDispatch,
     withMyAmphora,
