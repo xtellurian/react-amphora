@@ -32,6 +32,7 @@ function reducer(
 
     switch (action.type) {
         case 'login': {
+            console.log(`User ${action.payload.profile.name} has logged in`)
             return {
                 userManager: state.userManager,
                 user: action.payload
