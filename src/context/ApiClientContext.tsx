@@ -3,21 +3,53 @@ import * as amphoradata from 'amphoradata'
 import { useApiState } from './ConfigurationContext'
 
 interface ApiClientState {
+    activitiesApi: amphoradata.ActivitiesApi
     amphoraeApi: amphoradata.AmphoraeApi
     geoApi: amphoradata.GeoApi
+    organisationsApi: amphoradata.OrganisationsApi
+    permissionApi: amphoradata.PermissionApi
     searchApi: amphoradata.SearchApi
+    termsOfUseApi: amphoradata.TermsOfUseApi
+    timeSeriesApi: amphoradata.TimeSeriesApi
+    usersApi: amphoradata.UsersApi
 }
 const ApiClientStateContext = React.createContext<ApiClientState | undefined>({
     amphoraeApi: new amphoradata.AmphoraeApi(),
+    activitiesApi: new amphoradata.ActivitiesApi(),
+    geoApi: new amphoradata.GeoApi(),
+    organisationsApi: new amphoradata.OrganisationsApi(),
+    permissionApi: new amphoradata.PermissionApi(),
     searchApi: new amphoradata.SearchApi(),
-    geoApi: new amphoradata.GeoApi()
+    termsOfUseApi: new amphoradata.TermsOfUseApi(),
+    timeSeriesApi: new amphoradata.TimeSeriesApi(),
+    usersApi: new amphoradata.UsersApi()
 })
 
 const ApiClientProvider: React.FunctionComponent = (props) => {
     const apiContext = useApiState()
 
-    const [state] = React.useState({
+    const [state] = React.useState<ApiClientState>({
         amphoraeApi: new amphoradata.AmphoraeApi(
+            apiContext.configuration,
+            apiContext.configuration.basePath,
+            apiContext.axiosClient
+        ),
+        activitiesApi: new amphoradata.ActivitiesApi(
+            apiContext.configuration,
+            apiContext.configuration.basePath,
+            apiContext.axiosClient
+        ),
+        geoApi: new amphoradata.GeoApi(
+            apiContext.configuration,
+            apiContext.configuration.basePath,
+            apiContext.axiosClient
+        ),
+        organisationsApi: new amphoradata.OrganisationsApi(
+            apiContext.configuration,
+            apiContext.configuration.basePath,
+            apiContext.axiosClient
+        ),
+        permissionApi: new amphoradata.PermissionApi(
             apiContext.configuration,
             apiContext.configuration.basePath,
             apiContext.axiosClient
@@ -27,7 +59,17 @@ const ApiClientProvider: React.FunctionComponent = (props) => {
             apiContext.configuration.basePath,
             apiContext.axiosClient
         ),
-        geoApi: new amphoradata.GeoApi(
+        termsOfUseApi: new amphoradata.TermsOfUseApi(
+            apiContext.configuration,
+            apiContext.configuration.basePath,
+            apiContext.axiosClient
+        ),
+        timeSeriesApi: new amphoradata.TimeSeriesApi(
+            apiContext.configuration,
+            apiContext.configuration.basePath,
+            apiContext.axiosClient
+        ),
+        usersApi: new amphoradata.UsersApi(
             apiContext.configuration,
             apiContext.configuration.basePath,
             apiContext.axiosClient
