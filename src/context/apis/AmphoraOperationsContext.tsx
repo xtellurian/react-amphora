@@ -1,6 +1,16 @@
 import * as React from 'react'
-// eslint-disable-next-line no-unused-vars
-import { CreateAmphora, DetailedAmphora, EditAmphora } from 'amphoradata'
+import {
+    // eslint-disable-next-line no-unused-vars
+    CreateAmphora,
+    // eslint-disable-next-line no-unused-vars
+    DetailedAmphora,
+    // eslint-disable-next-line no-unused-vars
+    EditAmphora,
+    // eslint-disable-next-line no-unused-vars
+    TermsOfUse,
+    // eslint-disable-next-line no-unused-vars
+    TermsOfUseApi
+} from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
 import { ApiState } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
@@ -34,9 +44,10 @@ type DeleteAction = {
 
 type AllActions = CreateAction | ReadAction | UpdateAction | DeleteAction
 
-type AmphoraOperationsDispatch = { dispatch: (action: CreateAction) => void }
+type AmphoraOperationsDispatch = { dispatch: (action: AllActions) => void }
 interface AmphoraOperationState extends ApiState {
     current?: DetailedAmphora
+    terms?: TermsOfUse | null | undefined
 }
 const AmphoraOperationsStateContext = React.createContext<
     AmphoraOperationState | undefined
@@ -44,6 +55,19 @@ const AmphoraOperationsStateContext = React.createContext<
 const DispatchContext = React.createContext<
     AmphoraOperationsDispatch | undefined
 >(undefined)
+
+async function loadTermsIfExist(
+    amphora: DetailedAmphora,
+    termsApi: TermsOfUseApi
+): Promise<TermsOfUse | null> {
+    if (amphora.termsOfUseId) {
+        const response = await termsApi.termsOfUseRead(amphora.termsOfUseId)
+        return response.data
+    } else {
+        return null
+    }
+}
+const isLoading = false
 
 const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
     const apiContext = useAmphoraClients()
@@ -57,16 +81,21 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
             const createResponse = await apiContext.amphoraeApi.amphoraeCreate(
                 action.payload.model
             )
-            return {
-                current: createResponse.data,
-                isLoading: false
-            }
+            const terms = await loadTermsIfExist(
+                createResponse.data,
+                apiContext.termsOfUseApi
+            )
+            return { current: createResponse.data, terms, isLoading }
         } else if (action.type === 'amphora-operation-read') {
             const readResponse = await apiContext.amphoraeApi.amphoraeRead(
                 action.payload.id
             )
             return {
                 current: readResponse.data,
+                terms: await loadTermsIfExist(
+                    readResponse.data,
+                    apiContext.termsOfUseApi
+                ),
                 isLoading: false
             }
         } else if (action.type === 'amphora-operation-update') {
@@ -76,13 +105,15 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
             )
             return {
                 current: updateResponse.data,
+                terms: await loadTermsIfExist(
+                    updateResponse.data,
+                    apiContext.termsOfUseApi
+                ),
                 isLoading: false
             }
         } else if (action.type === 'amphora-operation-delete') {
             await apiContext.amphoraeApi.amphoraeDelete(action.payload.id)
-            return {
-                isLoading: false
-            }
+            return { isLoading }
         } else {
             return state
         }

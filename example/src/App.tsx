@@ -16,6 +16,8 @@ import './index.css'
 // examples
 import SearchBar from './examples/search/SearchBar'
 import SearchResults from './examples/search/SearchResults'
+import { AmphoraIdInput } from './examples/read-amphora/AmphoraIdInput'
+import { DisplayCurrentAmphora } from './examples/read-amphora/DisplayCurrentAmphora'
 
 import MyAmphoraButtons from './examples/my-amphora/FetchMyAmphoraButtons'
 import MyAmphoraResults from './examples/my-amphora/MyAmphoraResults'
@@ -68,6 +70,9 @@ const App = (props: AppProps) => {
             <MyAmphoraResults />
             <h3>Create an Amphora Component</h3>
             <CreateNewAmphora />
+            <h3>View the metadata of an Amphora</h3>
+            <AmphoraIdInput />
+            <DisplayCurrentAmphora />
             <h2>Built in Components</h2>
             <GeoLookupComponent
                 onResultSelected={(r: a10a.Result) =>
