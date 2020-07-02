@@ -2,10 +2,10 @@ import * as React from 'react'
 import { SearchContext } from 'react-amphora'
 
 class SearchBar extends React.PureComponent<
-    SearchContext.SearchDispatch,
+    SearchContext.SearchDispatch & SearchContext.SearchState,
     { term: string }
 > {
-    constructor(props: SearchContext.SearchDispatch) {
+    constructor(props: SearchContext.SearchDispatch & SearchContext.SearchState) {
         super(props)
         this.state = {
             term: ''
@@ -31,10 +31,10 @@ class SearchBar extends React.PureComponent<
                     value={this.state.term}
                     onChange={(e) => this.handleChange(e)}
                 />
-                <button onClick={() => this.doSearch()}>Search</button>
+                {this.props.isLoading ? <span>Loading...</span> : <button onClick={() => this.doSearch()}>Search</button>}
             </div>
         )
     }
 }
 
-export default SearchContext.withSearchDispatch(SearchBar)
+export default SearchContext.withSearch(SearchBar)
