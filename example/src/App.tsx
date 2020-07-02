@@ -22,6 +22,7 @@ import { DisplayCurrentAmphora } from './examples/read-amphora/DisplayCurrentAmp
 import MyAmphoraButtons from './examples/my-amphora/FetchMyAmphoraButtons'
 import MyAmphoraResults from './examples/my-amphora/MyAmphoraResults'
 import CreateNewAmphora from './examples/create-amphora/CreateNewAmphora'
+import { ListTerms } from './examples/terms/list-terms'
 
 interface AppProps {
     location: any
@@ -73,6 +74,10 @@ const App = (props: AppProps) => {
             <h3>View the metadata of an Amphora</h3>
             <AmphoraIdInput />
             <DisplayCurrentAmphora />
+            <hr/>
+            <h3>Terms of Use</h3>
+            <ListTerms/>
+            <hr/>
             <h2>Built in Components</h2>
             <GeoLookupComponent
                 onResultSelected={(r: a10a.Result) =>

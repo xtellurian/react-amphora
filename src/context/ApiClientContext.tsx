@@ -1,9 +1,10 @@
 import * as React from 'react'
 import * as amphoradata from 'amphoradata'
 import * as axios from 'axios'
-import { useApiState } from './ConfigurationContext'
+import { useConfigState } from './ConfigurationContext'
 
 interface ApiClientState {
+    isAuthenticated: boolean
     axios: axios.AxiosInstance
     activitiesApi: amphoradata.ActivitiesApi
     amphoraeApi: amphoradata.AmphoraeApi
@@ -16,6 +17,7 @@ interface ApiClientState {
     usersApi: amphoradata.UsersApi
 }
 const ApiClientStateContext = React.createContext<ApiClientState | undefined>({
+    isAuthenticated: false,
     axios: axios.default,
     amphoraeApi: new amphoradata.AmphoraeApi(),
     activitiesApi: new amphoradata.ActivitiesApi(),
@@ -29,56 +31,66 @@ const ApiClientStateContext = React.createContext<ApiClientState | undefined>({
 })
 
 const ApiClientProvider: React.FunctionComponent = (props) => {
-    const apiContext = useApiState()
+    const configContext = useConfigState()
 
-    const [state] = React.useState<ApiClientState>({
-        axios: apiContext.axiosClient,
+    const [state, setState] = React.useState<ApiClientState>({
+        isAuthenticated: configContext.isAuthenticated,
+        axios: configContext.axiosClient,
         amphoraeApi: new amphoradata.AmphoraeApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         ),
         activitiesApi: new amphoradata.ActivitiesApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         ),
         geoApi: new amphoradata.GeoApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         ),
         organisationsApi: new amphoradata.OrganisationsApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         ),
         permissionApi: new amphoradata.PermissionApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         ),
         searchApi: new amphoradata.SearchApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         ),
         termsOfUseApi: new amphoradata.TermsOfUseApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         ),
         timeSeriesApi: new amphoradata.TimeSeriesApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         ),
         usersApi: new amphoradata.UsersApi(
-            apiContext.configuration,
-            apiContext.configuration.basePath,
-            apiContext.axiosClient
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
         )
     })
+
+    React.useEffect(() => {
+        if (state.isAuthenticated !== configContext.isAuthenticated) {
+            setState({
+                ...state,
+                isAuthenticated: configContext.isAuthenticated
+            })
+        }
+    }, [configContext.isAuthenticated])
 
     return (
         <ApiClientStateContext.Provider value={state}>

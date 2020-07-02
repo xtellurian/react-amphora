@@ -14,7 +14,7 @@ import {
     PermissionApi
 } from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
-import { ApiState } from './apiState'
+import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
 
@@ -55,6 +55,7 @@ interface AmphoraOperationState extends ApiState {
 const AmphoraOperationsStateContext = React.createContext<
     AmphoraOperationState | undefined
 >({
+    isAuthenticated: false,
     maxPermissionLevel: 0
 })
 const DispatchContext = React.createContext<
@@ -99,73 +100,96 @@ async function loadMaxPermissionLevel(
 const isLoading = false
 
 const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
-    const apiContext = useAmphoraClients()
+    const clients = useAmphoraClients()
     const asyncReducer = async (
         state: AmphoraOperationState,
-        action: AllActions
+        action: AllActions | AuthenticateAction
     ): Promise<AmphoraOperationState> => {
         if (!state) {
             return {
+                isAuthenticated: clients.isAuthenticated,
                 maxPermissionLevel: 0
             }
+        } else if (action.type === 'isAuthenticated') {
+            return {
+                ...state,
+                isAuthenticated: action.payload.value
+            }
         } else if (action.type === 'amphora-operation-create') {
-            const createResponse = await apiContext.amphoraeApi.amphoraeCreate(
+            const createResponse = await clients.amphoraeApi.amphoraeCreate(
                 action.payload.model
             )
             const terms = await loadTermsIfExist(
                 createResponse.data,
-                apiContext.termsOfUseApi
+                clients.termsOfUseApi
             )
             return {
+                isAuthenticated: state.isAuthenticated,
                 current: createResponse.data,
                 maxPermissionLevel: 128,
                 terms,
                 isLoading
             }
         } else if (action.type === 'amphora-operation-read') {
-            const readResponse = await apiContext.amphoraeApi.amphoraeRead(
+            const readResponse = await clients.amphoraeApi.amphoraeRead(
                 action.payload.id
             )
             return {
+                isAuthenticated: state.isAuthenticated,
                 current: readResponse.data,
                 maxPermissionLevel: await loadMaxPermissionLevel(
                     readResponse.data,
-                    apiContext.permissionApi
+                    clients.permissionApi
                 ),
                 terms: await loadTermsIfExist(
                     readResponse.data,
-                    apiContext.termsOfUseApi
+                    clients.termsOfUseApi
                 ),
                 isLoading: false
             }
         } else if (action.type === 'amphora-operation-update') {
-            const updateResponse = await apiContext.amphoraeApi.amphoraeUpdate(
+            const updateResponse = await clients.amphoraeApi.amphoraeUpdate(
                 action.payload.id,
                 action.payload.model as EditAmphora
             )
             return {
+                isAuthenticated: state.isAuthenticated,
                 current: updateResponse.data,
                 maxPermissionLevel: await loadMaxPermissionLevel(
                     action.payload.model,
-                    apiContext.permissionApi
+                    clients.permissionApi
                 ),
                 terms: await loadTermsIfExist(
                     updateResponse.data,
-                    apiContext.termsOfUseApi
+                    clients.termsOfUseApi
                 ),
                 isLoading: false
             }
         } else if (action.type === 'amphora-operation-delete') {
-            await apiContext.amphoraeApi.amphoraeDelete(action.payload.id)
-            return { isLoading, maxPermissionLevel: 0 }
+            await clients.amphoraeApi.amphoraeDelete(action.payload.id)
+            return {
+                isAuthenticated: state.isAuthenticated,
+                isLoading,
+                maxPermissionLevel: 0
+            }
         } else {
             return state
         }
     }
 
     const [state, dispatch] = useAsyncReducer(asyncReducer, {
+        isAuthenticated: clients.isAuthenticated,
         maxPermissionLevel: 0
     })
+
+    React.useEffect(() => {
+        if (state.isAuthenticated !== clients.isAuthenticated) {
+            dispatch({
+                type: 'isAuthenticated',
+                payload: { value: clients.isAuthenticated }
+            })
+        }
+    }, [state.isAuthenticated, clients.isAuthenticated])
 
     return (
         <AmphoraOperationsStateContext.Provider value={state}>

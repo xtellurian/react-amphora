@@ -2,7 +2,7 @@ import * as React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { FuzzySearchResponse } from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
-import { ApiState } from './apiState'
+import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
 
@@ -17,40 +17,69 @@ type ClearAction = {
     type: 'geolookup-clear'
 }
 
-type GeoDispatch = { dispatch: (action: LookupAction | ClearAction) => void }
+type GeoDispatch = {
+    dispatch: (action: LookupAction | ClearAction) => void
+}
 interface GeoState extends ApiState {
     fuzzySearchResponse: FuzzySearchResponse
 }
 const GeoContext = React.createContext<GeoState | undefined>({
+    isAuthenticated: false,
     fuzzySearchResponse: {}
 })
 const DispatchContext = React.createContext<GeoDispatch | undefined>(undefined)
 
 const GeoApiProvider: React.FunctionComponent = (props) => {
-    const apiContext = useAmphoraClients()
+    const clients = useAmphoraClients()
     const reducer = async (
         state: GeoState,
-        action: LookupAction | ClearAction
+        action: LookupAction | ClearAction | AuthenticateAction
     ): Promise<GeoState> => {
         if (!state) {
             return {
+                isAuthenticated: clients.isAuthenticated,
                 fuzzySearchResponse: {}
             }
+        } else if (action.type === 'isAuthenticated') {
+            return {
+                ...state,
+                isAuthenticated: action.payload.value
+            }
         } else if (action.type === 'geolookup-clear') {
-            return { fuzzySearchResponse: {} }
+            return {
+                isAuthenticated: state.isAuthenticated,
+                fuzzySearchResponse: {}
+            }
         } else if (action.type === 'geolookup') {
-            const r = await apiContext.geoApi.geoLookupLocation(
+            const r = await clients.geoApi.geoLookupLocation(
                 action.payload.query
             )
-            return { fuzzySearchResponse: r.data, isLoading: false }
+            return {
+                isAuthenticated: state.isAuthenticated,
+                fuzzySearchResponse: r.data,
+                isLoading: false
+            }
         } else {
-            return { fuzzySearchResponse: {} }
+            return {
+                isAuthenticated: state.isAuthenticated,
+                fuzzySearchResponse: {}
+            }
         }
     }
 
     const [state, dispatch] = useAsyncReducer(reducer, {
+        isAuthenticated: clients.isAuthenticated,
         fuzzySearchResponse: {}
     })
+
+    React.useEffect(() => {
+        if (state.isAuthenticated !== clients.isAuthenticated) {
+            dispatch({
+                type: 'isAuthenticated',
+                payload: { value: clients.isAuthenticated }
+            })
+        }
+    }, [state.isAuthenticated, clients.isAuthenticated])
 
     return (
         <GeoContext.Provider value={state}>

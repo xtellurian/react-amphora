@@ -6,6 +6,7 @@ import {
 } from './IdentityContext'
 import { ApiClientProvider } from './ApiClientContext'
 import { MyAmphoraApiProvider } from './apis/MyAmphoraContext'
+import { TermsApiProvider } from './apis/TermsOfUseContext'
 import { GeoApiProvider } from './apis/GeoContext'
 import {
     ConfigurationProviderProps,
@@ -23,15 +24,17 @@ const AmphoraProvider: React.FunctionComponent<AmphoraProviderProps> = (
         <IdentityContextProvider userManager={props.userManager}>
             <ConfigurationProvider configuration={props.configuration}>
                 <ApiClientProvider>
-                    <MyAmphoraApiProvider>
-                        <AmphoraOperationsProvider>
-                            <SearchApiProvider>
-                                <GeoApiProvider>
-                                    {props.children}
-                                </GeoApiProvider>
-                            </SearchApiProvider>
-                        </AmphoraOperationsProvider>
-                    </MyAmphoraApiProvider>
+                    <TermsApiProvider>
+                        <MyAmphoraApiProvider>
+                            <AmphoraOperationsProvider>
+                                <SearchApiProvider>
+                                    <GeoApiProvider>
+                                        {props.children}
+                                    </GeoApiProvider>
+                                </SearchApiProvider>
+                            </AmphoraOperationsProvider>
+                        </MyAmphoraApiProvider>
+                    </TermsApiProvider>
                 </ApiClientProvider>
             </ConfigurationProvider>
         </IdentityContextProvider>

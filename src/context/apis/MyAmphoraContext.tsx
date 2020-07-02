@@ -2,7 +2,7 @@ import * as React from 'react'
 // eslint-disable-next-line no-unused-vars
 import { DetailedAmphora } from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
-import { ApiState } from './apiState'
+import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
 
@@ -30,6 +30,7 @@ interface MyAmphoraState extends ApiState {
     results: DetailedAmphora[]
 }
 const StateContext = React.createContext<MyAmphoraState | undefined>({
+    isAuthenticated: false,
     results: []
 })
 const DispatchContext = React.createContext<FetchMyAmphoraDispatch | undefined>(
@@ -37,22 +38,29 @@ const DispatchContext = React.createContext<FetchMyAmphoraDispatch | undefined>(
 )
 
 const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
-    const apiContext = useAmphoraClients()
+    const clients = useAmphoraClients()
     const asyncReducer = async (
         state: MyAmphoraState,
-        action: Action
+        action: Action | AuthenticateAction
     ): Promise<MyAmphoraState> => {
         if (!state) {
             return {
+                isAuthenticated: clients.isAuthenticated,
                 results: []
             }
+        } else if (action.type === 'isAuthenticated') {
+            return {
+                ...state,
+                isAuthenticated: action.payload.value
+            }
         } else {
-            const r = await apiContext.amphoraeApi.amphoraeList(
+            const r = await clients.amphoraeApi.amphoraeList(
                 action.payload.scope,
                 action.payload.accessType
             )
 
             return {
+                isAuthenticated: state.isAuthenticated,
                 scope: action.payload.scope,
                 accessType: action.payload.accessType,
                 results: Array.isArray(r.data) ? r.data : [],
@@ -63,8 +71,18 @@ const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
     }
 
     const [state, dispatch] = useAsyncReducer(asyncReducer, {
+        isAuthenticated: clients.isAuthenticated,
         results: []
     })
+
+    React.useEffect(() => {
+        if (state.isAuthenticated !== clients.isAuthenticated) {
+            dispatch({
+                type: 'isAuthenticated',
+                payload: { value: clients.isAuthenticated }
+            })
+        }
+    }, [state.isAuthenticated, clients.isAuthenticated])
 
     return (
         <StateContext.Provider value={state}>
