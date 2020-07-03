@@ -55,6 +55,7 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
     const [state, dispatch] = React.useReducer(reducer, {
         userManager: props.userManager
     })
+
     useEffect(() => {
         if (!state.user) {
             props.userManager
@@ -70,7 +71,8 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
                 type: 'logout'
             })
         }
-    })
+    }, [props.userManager, state.user, state])
+
     return (
         <AmphoraAuthStateContext.Provider value={state}>
             <AmphoraAuthDispatchContext.Provider value={dispatch}>
