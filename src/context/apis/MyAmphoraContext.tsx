@@ -42,7 +42,9 @@ interface MyAmphoraState extends ApiState {
     organisationCreatedResults: DetailedAmphora[]
     organisationPurchasedResults: DetailedAmphora[]
 }
-const StateContext = React.createContext<MyAmphoraState | undefined>(emptyState)
+const MyAmphoraStateContext = React.createContext<MyAmphoraState | undefined>(
+    emptyState
+)
 const DispatchContext = React.createContext<FetchMyAmphoraDispatch | undefined>(
     undefined
 )
@@ -117,19 +119,21 @@ const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
     }, [state.isAuthenticated, clients.isAuthenticated])
 
     return (
-        <StateContext.Provider value={state}>
+        <MyAmphoraStateContext.Provider value={state}>
             <DispatchContext.Provider value={{ dispatch }}>
                 {props.children}
             </DispatchContext.Provider>
-        </StateContext.Provider>
+        </MyAmphoraStateContext.Provider>
     )
 }
 
 function useMyAmphoraState(): MyAmphoraState {
-    const context = React.useContext(StateContext)
+    const context = React.useContext(MyAmphoraStateContext)
 
     if (context === undefined) {
-        throw new Error('useCountState must be used within a CountProvider')
+        throw new Error(
+            'useMyAmphoraState must be used within a MyAmphoraStateContextProvider'
+        )
     }
 
     return context
@@ -139,7 +143,9 @@ function useMyAmphoraDispatch(): FetchMyAmphoraDispatch {
     const context = React.useContext(DispatchContext)
 
     if (context === undefined) {
-        throw new Error('useCountDispatch must be used within a CountProvider')
+        throw new Error(
+            'useMyAmphoraDispatch must be used within a MyAmphoraStateContextProvider'
+        )
     }
 
     return context
@@ -157,9 +163,9 @@ function useMyAmphora(): MyAmphoraState & FetchMyAmphoraDispatch {
 const withMyAmphoraState = (Component: any) => {
     return (props: any) => {
         return (
-            <StateContext.Consumer>
+            <MyAmphoraStateContext.Consumer>
                 {(c) => <Component {...props} {...c} />}
-            </StateContext.Consumer>
+            </MyAmphoraStateContext.Consumer>
         )
     }
 }
