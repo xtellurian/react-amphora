@@ -7,6 +7,26 @@ class MyAmphoraResults extends React.PureComponent<
     renderLoader() {
         return <div>Loading...</div>
     }
+    renderCacheSizeInfo() {
+        return (
+            <div className='row'>
+                <div className='col'>
+                    My-Created: {this.props.selfCreatedResults.length}
+                </div>
+                <div className='col'>
+                    My-Purchased: {this.props.selfPurchasedResults.length}
+                </div>
+                <div className='col'>
+                    Organisation-Created:{' '}
+                    {this.props.organisationCreatedResults.length}
+                </div>
+                <div className='col'>
+                    Organisation-Purchased{' '}
+                    {this.props.organisationPurchasedResults.length}
+                </div>
+            </div>
+        )
+    }
     renderResults() {
         if (this.props.results.length === 0) {
             return <div>No Results</div>
@@ -28,6 +48,7 @@ class MyAmphoraResults extends React.PureComponent<
         return (
             <div>
                 <h3>My Amphora</h3>
+                {this.renderCacheSizeInfo()}
                 <h5>
                     {this.props.accessType} / {this.props.scope}
                 </h5>

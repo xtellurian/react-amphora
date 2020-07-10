@@ -24,15 +24,25 @@ type Action = {
 }
 
 type FetchMyAmphoraDispatch = { dispatch: (action: Action) => void }
+const emptyState: MyAmphoraState = {
+    isAuthenticated: false,
+    results: [],
+    selfCreatedResults: [],
+    selfPurchasedResults: [],
+    organisationCreatedResults: [],
+    organisationPurchasedResults: []
+}
 interface MyAmphoraState extends ApiState {
     scope?: Scope
     accessType?: AccessType
     results: DetailedAmphora[]
+    // and the specific scopes
+    selfCreatedResults: DetailedAmphora[]
+    selfPurchasedResults: DetailedAmphora[]
+    organisationCreatedResults: DetailedAmphora[]
+    organisationPurchasedResults: DetailedAmphora[]
 }
-const StateContext = React.createContext<MyAmphoraState | undefined>({
-    isAuthenticated: false,
-    results: []
-})
+const StateContext = React.createContext<MyAmphoraState | undefined>(emptyState)
 const DispatchContext = React.createContext<FetchMyAmphoraDispatch | undefined>(
     undefined
 )
@@ -45,8 +55,8 @@ const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
     ): Promise<MyAmphoraState> => {
         if (!state) {
             return {
-                isAuthenticated: clients.isAuthenticated,
-                results: []
+                ...emptyState,
+                isAuthenticated: clients.isAuthenticated
             }
         } else if (action.type === 'isAuthenticated') {
             return {
@@ -59,11 +69,33 @@ const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
                 action.payload.accessType
             )
 
+            const results = Array.isArray(r.data) ? r.data : []
+
             return {
                 isAuthenticated: state.isAuthenticated,
                 scope: action.payload.scope,
                 accessType: action.payload.accessType,
-                results: Array.isArray(r.data) ? r.data : [],
+                results,
+                selfCreatedResults:
+                    action.payload.scope === 'self' &&
+                    action.payload.accessType === 'created'
+                        ? results
+                        : state.selfCreatedResults,
+                selfPurchasedResults:
+                    action.payload.scope === 'self' &&
+                    action.payload.accessType === 'purchased'
+                        ? results
+                        : state.selfPurchasedResults,
+                organisationCreatedResults:
+                    action.payload.scope === 'organisation' &&
+                    action.payload.accessType === 'created'
+                        ? results
+                        : state.organisationCreatedResults,
+                organisationPurchasedResults:
+                    action.payload.scope === 'organisation' &&
+                    action.payload.accessType === 'purchased'
+                        ? results
+                        : state.organisationPurchasedResults,
                 isLoading: false,
                 error: r.status > 299
             }
@@ -71,8 +103,8 @@ const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
     }
 
     const [state, dispatch] = useAsyncReducer(asyncReducer, {
-        isAuthenticated: clients.isAuthenticated,
-        results: []
+        ...emptyState,
+        isAuthenticated: clients.isAuthenticated
     })
 
     React.useEffect(() => {

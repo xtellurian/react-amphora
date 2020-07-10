@@ -25,15 +25,15 @@ class MyAmphoraToggle extends React.PureComponent<
                     Fetch Mine
                 </button>
                 <button onClick={() => this.doFetch('created', 'organisation')}>
-                    Fetch My Organisation
+                    Fetch Organisation's
                 </button>
                 <button onClick={() => this.doFetch('purchased', 'self')}>
-                    Fetch My Purchased
+                    My Purchased Amphora
                 </button>
                 <button
                     onClick={() => this.doFetch('purchased', 'organisation')}
                 >
-                    Fetch Organisation Purchased
+                    Organisation's Purchased Amphora
                 </button>
             </div>
         )
