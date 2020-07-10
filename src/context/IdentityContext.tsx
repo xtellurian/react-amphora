@@ -86,7 +86,9 @@ function useIdentityState(): IdentityContextState {
     const context = React.useContext(AmphoraAuthStateContext)
 
     if (context === undefined) {
-        throw new Error('useCountState must be used within a CountProvider')
+        throw new Error(
+            'useIdentityState must be used within a AmphoraAuthStateContextProvider'
+        )
     }
 
     return context
@@ -96,7 +98,9 @@ function useIdentityDispatch(): Dispatch {
     const context = React.useContext(AmphoraAuthDispatchContext)
 
     if (context === undefined) {
-        throw new Error('useCountDispatch must be used within a CountProvider')
+        throw new Error(
+            'useIdentityDispatch must be used within a AmphoraAuthStateContextProvider'
+        )
     }
 
     return context

@@ -94,7 +94,7 @@ function useGeoState(): GeoState {
     const context = React.useContext(GeoContext)
 
     if (context === undefined) {
-        throw new Error('useCountState must be used within a CountProvider')
+        throw new Error('useGeoState must be used within a GeoContext Provider')
     }
 
     return context
@@ -104,7 +104,9 @@ function useGeoDispatch(): GeoDispatch {
     const context = React.useContext(DispatchContext)
 
     if (context === undefined) {
-        throw new Error('useCountDispatch must be used within a CountProvider')
+        throw new Error(
+            'useGeoDispatch must be used within a GeoContext Provider'
+        )
     }
 
     return context

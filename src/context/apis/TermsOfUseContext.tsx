@@ -25,7 +25,7 @@ type TermsDispatch = {
 interface TermsState extends ApiState {
     results: TermsOfUse[]
 }
-const StateContext = React.createContext<TermsState | undefined>({
+const TermsStateContext = React.createContext<TermsState | undefined>({
     isAuthenticated: false,
     results: []
 })
@@ -87,19 +87,21 @@ const TermsApiProvider: React.FunctionComponent = (props) => {
     }, [state.isAuthenticated, clients.isAuthenticated])
 
     return (
-        <StateContext.Provider value={state}>
+        <TermsStateContext.Provider value={state}>
             <DispatchContext.Provider value={{ dispatch }}>
                 {props.children}
             </DispatchContext.Provider>
-        </StateContext.Provider>
+        </TermsStateContext.Provider>
     )
 }
 
 function useTermsState(): TermsState {
-    const context = React.useContext(StateContext)
+    const context = React.useContext(TermsStateContext)
 
     if (context === undefined) {
-        throw new Error('useCountState must be used within a CountProvider')
+        throw new Error(
+            'useTermsState must be used within a TermsStateContext Provider'
+        )
     }
 
     return context
@@ -109,7 +111,9 @@ function useTermsDispatch(): TermsDispatch {
     const context = React.useContext(DispatchContext)
 
     if (context === undefined) {
-        throw new Error('useCountDispatch must be used within a CountProvider')
+        throw new Error(
+            'useTermsDispatch must be used within a TermsStateContext Provider'
+        )
     }
 
     return context
@@ -118,9 +122,9 @@ function useTermsDispatch(): TermsDispatch {
 const withTermsState = (Component: any) => {
     return (props: any) => {
         return (
-            <StateContext.Consumer>
+            <TermsStateContext.Consumer>
                 {(c) => <Component {...props} {...c} />}
-            </StateContext.Consumer>
+            </TermsStateContext.Consumer>
         )
     }
 }

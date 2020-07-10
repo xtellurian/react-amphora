@@ -19,7 +19,7 @@ type SearchDispatch = { dispatch: (action: AllActions) => void }
 interface SearchState extends ApiState {
     results: BasicAmphora[]
 }
-const StateContext = React.createContext<SearchState | undefined>({
+const SearchStateContext = React.createContext<SearchState | undefined>({
     isAuthenticated: false,
     results: []
 })
@@ -71,19 +71,21 @@ const SearchApiProvider: React.FunctionComponent = (props) => {
     }, [state.isAuthenticated, clients.isAuthenticated])
 
     return (
-        <StateContext.Provider value={state}>
+        <SearchStateContext.Provider value={state}>
             <DispatchContext.Provider value={{ dispatch }}>
                 {props.children}
             </DispatchContext.Provider>
-        </StateContext.Provider>
+        </SearchStateContext.Provider>
     )
 }
 
 function useSearchState(): SearchState {
-    const context = React.useContext(StateContext)
+    const context = React.useContext(SearchStateContext)
 
     if (context === undefined) {
-        throw new Error('useCountState must be used within a CountProvider')
+        throw new Error(
+            'useSearchState must be used within a SearchStateContext Provider'
+        )
     }
 
     return context
@@ -93,7 +95,9 @@ function useSearchDispatch(): SearchDispatch {
     const context = React.useContext(DispatchContext)
 
     if (context === undefined) {
-        throw new Error('useCountDispatch must be used within a CountProvider')
+        throw new Error(
+            'useSearchDispatch must be used within a SearchStateContext Provider'
+        )
     }
 
     return context
@@ -102,9 +106,9 @@ function useSearchDispatch(): SearchDispatch {
 const withSearchState = (Component: any) => {
     return (props: any) => {
         return (
-            <StateContext.Consumer>
+            <SearchStateContext.Consumer>
                 {(c) => <Component {...props} {...c} />}
-            </StateContext.Consumer>
+            </SearchStateContext.Consumer>
         )
     }
 }

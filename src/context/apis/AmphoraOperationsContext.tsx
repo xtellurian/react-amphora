@@ -204,7 +204,9 @@ function useAmphoraOperationsState(): AmphoraOperationState {
     const context = React.useContext(AmphoraOperationsStateContext)
 
     if (context === undefined) {
-        throw new Error('useCountState must be used within a CountProvider')
+        throw new Error(
+            'useAmphoraOperationsState must be used within a AmphoraOperationsStateContext Provider'
+        )
     }
 
     return context
@@ -214,7 +216,9 @@ function useAmphoraOperationsDispatch(): AmphoraOperationsDispatch {
     const context = React.useContext(DispatchContext)
 
     if (context === undefined) {
-        throw new Error('useCountDispatch must be used within a CountProvider')
+        throw new Error(
+            'useAmphoraOperationsDispatch must be used within a AmphoraOperationsStateContext Provider'
+        )
     }
 
     return context

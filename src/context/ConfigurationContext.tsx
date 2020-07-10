@@ -62,7 +62,9 @@ function useConfigState(): ConfigurationState {
     const context = React.useContext(ConfigurationContext)
 
     if (context === undefined) {
-        throw new Error('useCountState must be used within a CountProvider')
+        throw new Error(
+            'useConfigState must be used within a ConfigurationContextProvider'
+        )
     }
 
     return context
