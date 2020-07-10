@@ -20,6 +20,7 @@ import {
 
 // Components
 import GeoLookupComponent from './components/GeoLookup'
+import * as Components from './components'
 
 export {
     // Contexts
@@ -38,5 +39,6 @@ export {
     AmphoraOperationsContext,
     TermsOfUseContext,
     // Components
-    GeoLookupComponent
+    Components,
+    GeoLookupComponent // todo: remove from high level export
 }

@@ -1,93 +1,68 @@
-import React from 'react'
-import { withRouter } from 'react-router-dom'
-import * as a10a from 'amphoradata'
-import Information from './Information'
-import {
-    UserInformationComponent,
-    SignInButton,
-    CallbackPage,
-    SignOutButton,
-    GeoLookupComponent
-} from 'react-amphora'
-import { userManager } from './userManager'
-import 'react-amphora/dist/index.css'
-import './index.css'
+import * as React from 'react'
+import { Switch, Route, Link } from 'react-router-dom'
 
-// examples
-import SearchBar from './examples/search/SearchBar'
-import SearchResults from './examples/search/SearchResults'
-import { AmphoraIdInput } from './examples/read-amphora/AmphoraIdInput'
-import { DisplayCurrentAmphora } from './examples/read-amphora/DisplayCurrentAmphora'
+import BasicExamples from './BasicExamples'
 
-import MyAmphoraButtons from './examples/my-amphora/FetchMyAmphoraButtons'
-import MyAmphoraResults from './examples/my-amphora/MyAmphoraResults'
-import CreateNewAmphora from './examples/create-amphora/CreateNewAmphora'
-import { ListTerms } from './examples/terms/list-terms'
+import MelbourneWeather from './examples/signals/MelbourneWeather'
 
-interface AppProps {
-    location: any
-    history: any
-}
-
-const App = (props: AppProps) => {
-    if (props.location.hash.substring(0, 10) === '#/callback') {
-        const rest = props.location.hash.substring(10)
-        return (
-            <CallbackPage
-                onSignIn={props.history.push('/')}
-                {...props}
-                userManager={userManager}
-                signInParams={`${rest}`}
-            />
-        )
-    }
+const App = () => {
     return (
-        <React.Fragment>
-            <Information />
+        <div>
+            <ul>
+                <li>
+                    <Link to='/'>Home</Link>
+                </li>
+                <li>
+                    <Link to='/signals'>Signals</Link>
+                </li>
+            </ul>
 
-            <div>
-                <h3>Try the sign in button below to see how it works...</h3>
-                <br />
-            </div>
-            <div>
-                <div className='row'>
-                    <div className='col'>
-                        <h4>Sign In/Out Button Components</h4>
-                        <SignInButton />
-                        <SignOutButton />
-                    </div>
-
-                    <div className='col'>
-                        <h4>User Information Component</h4>
-                        <UserInformationComponent />
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <SearchBar />
-            <SearchResults />
-            <hr />
-            <MyAmphoraButtons />
-            <MyAmphoraResults />
-            <h3>Create an Amphora Component</h3>
-            <CreateNewAmphora />
-            <h3>View the metadata of an Amphora</h3>
-            <AmphoraIdInput />
-            <DisplayCurrentAmphora />
-            <hr/>
-            <h3>Terms of Use</h3>
-            <ListTerms/>
-            <hr/>
-            <h2>Built in Components</h2>
-            <GeoLookupComponent
-                onResultSelected={(r: a10a.Result) =>
-                    alert(
-                        `You selected ${r.address?.freeformAddress} with position ${r.position?.lat}, ${r.position?.lon}`
-                    )
-                }
-            />
-        </React.Fragment>
+            <Switch>
+                <Route exact path='/'>
+                    <BasicExamples/>
+                </Route>
+                <Route path='/signals'>
+                    <MelbourneWeather />
+                </Route>
+            </Switch>
+        </div>
     )
 }
 
-export default withRouter(App)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+// function Topics() {
+//     let match = useRouteMatch()
+
+//     return (
+//         <div>
+//             <h2>Topics</h2>
+
+//             <ul>
+//                 <li>
+//                     <Link to={`${match.url}/components`}>Components</Link>
+//                 </li>
+//                 <li>
+//                     <Link to={`${match.url}/props-v-state`}>
+//                         Props v. State
+//                     </Link>
+//                 </li>
+//             </ul>
+
+//             {/* The Topics page has its own <Switch> with more routes
+//           that build on the /topics URL path. You can think of the
+//           2nd <Route> here as an "index" page for all topics, or
+//           the page that is shown when no topic is selected */}
+//             <Switch>
+//                 <Route path={`${match.path}/:topicId`}>
+//                     <Topic />
+//                 </Route>
+//                 <Route path={match.path}>
+//                     <h3>Please select a topic.</h3>
+//                 </Route>
+//             </Switch>
+//         </div>
+//     )
+// }
+
+
+export default App
