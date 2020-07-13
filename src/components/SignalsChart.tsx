@@ -66,26 +66,30 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
     const clients = useAmphoraClients()
     const needsSignals = !props.signals || !props.signals.length
 
-    if (context.isAuthenticated && needsSignals && !state.signalsLoaded) {
-        console.log('Fetching Signals...')
-        clients.amphoraeApi
-            .amphoraeSignalsGetSignals(props.amphoraId)
-            .then((r) => {
-                setState({
-                    ...state,
-                    signals: r.data.filter((s) => s.valueType === 'Numeric'),
-                    signalsLoaded: true
+    React.useEffect(() => {
+        if (context.isAuthenticated && needsSignals && !state.signalsLoaded) {
+            console.log('Fetching Signals...')
+            clients.amphoraeApi
+                .amphoraeSignalsGetSignals(props.amphoraId)
+                .then((r) => {
+                    setState({
+                        ...state,
+                        signals: r.data.filter(
+                            (s) => s.valueType === 'Numeric'
+                        ),
+                        signalsLoaded: true
+                    })
+                    console.log('Signals Loaded!')
                 })
-                console.log('Signals Loaded!')
+                .catch((e) => console.log(`Error fetching signals ${e}`))
+        } else if (props.signals) {
+            setState({
+                ...state,
+                signals: props.signals,
+                signalsLoaded: true
             })
-            .catch((e) => console.log(`Error fetching signals ${e}`))
-    } else if (props.signals) {
-        setState({
-            ...state,
-            signals: props.signals,
-            signalsLoaded: true
-        })
-    }
+        }
+    }, [context.isAuthenticated])
 
     const handleFetchDataError = (e: any) => {
         console.log(e)
@@ -142,7 +146,13 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
 
     // fetch the data effect
     React.useEffect(() => {
-        if (context.isAuthenticated && !state.dataLoaded && !state.loading) {
+        if (
+            context.isAuthenticated &&
+            !state.dataLoaded &&
+            state.signalsLoaded &&
+            !state.loading &&
+            state.signals.length > 0
+        ) {
             setState({ ...state, loading: true })
             const cancel = fetchData(
                 `${host}/api`,
@@ -150,10 +160,15 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
                 state.signals
             )
             return () => cancel()
-        } else {
-            return () => console.log('nothing to cancel')
         }
-    }, [context.isAuthenticated, state.signals, context.configuration.basePath])
+        // catch all return
+        return () => console.log('no data fetch to cancel')
+    }, [
+        context.isAuthenticated,
+        state.signals,
+        state.signals,
+        context.configuration.basePath
+    ])
 
     if (!context.isAuthenticated) {
         return <React.Fragment>Authentication Required</React.Fragment>
