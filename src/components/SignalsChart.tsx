@@ -37,6 +37,7 @@ export interface SignalsChartProps extends ChartOptions {
     signals?: Signal[] | undefined
     chartStyle?: React.CSSProperties | undefined
     loadingComponent?: React.ReactNode
+    emptyComponent?: React.ReactNode
 }
 
 function loadOptions(incoming?: ChartOptions) {
@@ -154,6 +155,9 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
     return (
         <React.Fragment>
             {state.loading && loading}
+            {(!state.loading &&
+                state.signals.length === 0 &&
+                props.emptyComponent) || <div>No Signals Found</div>}
             {state.data === null ? (
                 <div>Oops! The data can't be rendered</div>
             ) : null}
