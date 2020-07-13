@@ -130,7 +130,15 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
             return () => console.log('Effect will not be cancelled')
         }
     }
-    const host = context.configuration.basePath || 'app.amphoradata.com'
+
+    let host = context.configuration.basePath || 'app.amphoradata.com'
+    if (host.startsWith('https://')) {
+        host = host.substring('https://'.length)
+    }
+
+    if (host.startsWith('http://')) {
+        host = host.substring('http://'.length)
+    }
 
     // fetch the data effect
     React.useEffect(() => {
@@ -152,12 +160,19 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
     }
 
     const loading = props.loadingComponent || <span>Loading...</span>
+    const renderIfEmpty = (): React.ReactNode | undefined => {
+        if (state.loading) {
+            return null
+        } else if (state.signals.length === 0) {
+            return props.emptyComponent || <div>No Signals Found</div>
+        } else {
+            return null
+        }
+    }
     return (
         <React.Fragment>
             {state.loading && loading}
-            {(!state.loading &&
-                state.signals.length === 0 &&
-                props.emptyComponent) || <div>No Signals Found</div>}
+            {renderIfEmpty()}
             {state.data === null ? (
                 <div>Oops! The data can't be rendered</div>
             ) : null}
