@@ -10,6 +10,13 @@ interface FetchAction {
     type: 'fetch-terms'
 }
 
+interface FetchSingleAction {
+    type: 'fetch-single-terms'
+    payload: {
+        id: string
+    }
+}
+
 interface CreateAction {
     type: 'create-terms'
     payload: {
@@ -17,7 +24,7 @@ interface CreateAction {
     }
 }
 
-type AllActions = FetchAction | CreateAction
+type AllActions = FetchAction | FetchSingleAction | CreateAction
 
 type TermsDispatch = {
     dispatch: (action: AllActions) => void
@@ -66,6 +73,19 @@ const TermsApiProvider: React.FunctionComponent = (props) => {
                 isLoading: false,
                 results: listResult.data,
                 error: listResult.status > 299 && listResult.statusText
+            }
+        } else if (action.type === 'fetch-single-terms') {
+            const current = state.results || []
+            // remove from state if it's already there
+            const filtered = current.filter((r) => r.id !== action.payload.id)
+            const fetchResult = await clients.termsOfUseApi.termsOfUseRead(
+                action.payload.id
+            )
+            return {
+                isAuthenticated: clients.isAuthenticated,
+                isLoading: false,
+                results: [...filtered, fetchResult.data],
+                error: fetchResult.status > 299 && fetchResult.statusText
             }
         } else {
             return state
