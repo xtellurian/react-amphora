@@ -25,16 +25,63 @@ const ConfigurationContext = React.createContext<
     axiosClient
 })
 
+type Action =
+    | {
+          type: 'set_token'
+          payload: {
+              token: string
+          }
+      }
+    | { type: 'reset_token' }
+
+function reducer(
+    state: ConfigurationState,
+    action: Action
+): ConfigurationState {
+    if (!state) {
+        return {
+            isAuthenticated: false,
+            configuration,
+            axiosClient,
+            token: ''
+        }
+    }
+
+    switch (action.type) {
+        case 'set_token': {
+            return {
+                isAuthenticated: true,
+                configuration: state.configuration,
+                token: action.payload.token,
+                axiosClient: state.axiosClient
+            }
+        }
+        case 'reset_token': {
+            return {
+                isAuthenticated: false,
+                configuration: state.configuration,
+                token: '',
+                axiosClient: state.axiosClient
+            }
+        }
+        default: {
+            return state
+        }
+    }
+}
+
 const ConfigurationProvider: React.FunctionComponent<ConfigurationProviderProps> = (
     props
 ) => {
     const identityState = useIdentityState()
-    const [state, dispatch] = React.useState<ConfigurationState>({
+
+    const [state, dispatch] = React.useReducer(reducer, {
         isAuthenticated: false,
         configuration: props.configuration || configuration,
         axiosClient,
         token: ''
     })
+
     useEffect(() => {
         if (
             identityState.user &&
@@ -42,10 +89,10 @@ const ConfigurationProvider: React.FunctionComponent<ConfigurationProviderProps>
             state.token !== identityState.user.access_token
         ) {
             dispatch({
-                isAuthenticated: true,
-                axiosClient,
-                token: identityState.user.access_token,
-                configuration: state.configuration
+                type: 'set_token',
+                payload: {
+                    token: identityState.user.access_token
+                }
             })
             axiosClient.defaults.headers.common.Authorization =
                 'Bearer ' + identityState.user.access_token

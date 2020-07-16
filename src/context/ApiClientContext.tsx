@@ -3,6 +3,7 @@ import * as amphoradata from 'amphoradata'
 import * as axios from 'axios'
 import { useConfigState } from './ConfigurationContext'
 
+type Action = { type: 'set_authenticated' } | { type: 'set_unauthenticated' }
 interface ApiClientState {
     isAuthenticated: boolean
     axios: axios.AxiosInstance
@@ -33,7 +34,7 @@ const ApiClientStateContext = React.createContext<ApiClientState | undefined>({
 const ApiClientProvider: React.FunctionComponent = (props) => {
     const configContext = useConfigState()
 
-    const [state, setState] = React.useState<ApiClientState>({
+    const initialState = {
         isAuthenticated: configContext.isAuthenticated,
         axios: configContext.axiosClient,
         amphoraeApi: new amphoradata.AmphoraeApi(
@@ -81,16 +82,47 @@ const ApiClientProvider: React.FunctionComponent = (props) => {
             configContext.configuration.basePath,
             configContext.axiosClient
         )
-    })
+    }
+
+    const reducer: (state: ApiClientState, action: Action) => ApiClientState = (
+        state,
+        action
+    ) => {
+        if (!state) {
+            return initialState
+        }
+
+        switch (action.type) {
+            case 'set_authenticated': {
+                return {
+                    ...state,
+                    isAuthenticated: true
+                }
+            }
+            case 'set_unauthenticated': {
+                return {
+                    ...state,
+                    isAuthenticated: false
+                }
+            }
+            default:
+                return state
+        }
+    }
+
+    const [state, dispatch] = React.useReducer(reducer, initialState)
 
     React.useEffect(() => {
-        if (state.isAuthenticated !== configContext.isAuthenticated) {
-            setState({
-                ...state,
-                isAuthenticated: configContext.isAuthenticated
+        if (state.isAuthenticated && !configContext.isAuthenticated) {
+            dispatch({
+                type: 'set_unauthenticated'
+            })
+        } else if (!state.isAuthenticated && configContext.isAuthenticated) {
+            dispatch({
+                type: 'set_authenticated'
             })
         }
-    }, [configContext.isAuthenticated])
+    }, [configContext.isAuthenticated, state.isAuthenticated])
 
     return (
         <ApiClientStateContext.Provider value={state}>
