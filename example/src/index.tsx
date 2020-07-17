@@ -6,7 +6,7 @@ import App from './App'
 import { AmphoraProvider } from 'react-amphora'
 import { userManager } from './userManager'
 import { Configuration } from 'amphoradata'
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 const initalConfiguration = new Configuration()
 
 ReactDOM.render(

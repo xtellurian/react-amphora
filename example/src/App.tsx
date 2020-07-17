@@ -1,68 +1,51 @@
 import * as React from 'react'
-import { Switch, Route, Link } from 'react-router-dom'
+import {
+    Switch,
+    Route,
+    withRouter,
+    RouteComponentProps
+} from 'react-router-dom'
+import {
+    CallbackPage,
+    UserInformationComponent
+} from 'react-amphora'
+import { userManager } from './userManager'
 
-import BasicExamples from './BasicExamples'
+import { Menu } from './Menu'
+import { Components } from './Components'
+import { Examples } from './Examples'
+import Information from './Information'
 
-import MelbourneWeather from './examples/signals/MelbourneWeather'
-
-const App = () => {
+const App: React.FunctionComponent<RouteComponentProps> = (props) => {
+    if (props.location.hash.substring(0, 10) === '#/callback') {
+        const rest = props.location.hash.substring(10)
+        return (
+            <CallbackPage
+                onSignIn={() => props.history.push('/')}
+                {...props}
+                userManager={userManager}
+                signInParams={`${rest}`}
+            />
+        )
+    }
     return (
         <div>
-            <ul>
-                <li>
-                    <Link to='/'>Home</Link>
-                </li>
-                <li>
-                    <Link to='/signals'>Signals</Link>
-                </li>
-            </ul>
+            <Menu />
 
             <Switch>
                 <Route exact path='/'>
-                    <BasicExamples/>
+                    <Information />
+                    <UserInformationComponent />
                 </Route>
-                <Route path='/signals'>
-                    <MelbourneWeather />
+                <Route path='/examples'>
+                    <Examples />
+                </Route>
+                <Route path='/components'>
+                    <Components />
                 </Route>
             </Switch>
         </div>
     )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-// function Topics() {
-//     let match = useRouteMatch()
-
-//     return (
-//         <div>
-//             <h2>Topics</h2>
-
-//             <ul>
-//                 <li>
-//                     <Link to={`${match.url}/components`}>Components</Link>
-//                 </li>
-//                 <li>
-//                     <Link to={`${match.url}/props-v-state`}>
-//                         Props v. State
-//                     </Link>
-//                 </li>
-//             </ul>
-
-//             {/* The Topics page has its own <Switch> with more routes
-//           that build on the /topics URL path. You can think of the
-//           2nd <Route> here as an "index" page for all topics, or
-//           the page that is shown when no topic is selected */}
-//             <Switch>
-//                 <Route path={`${match.path}/:topicId`}>
-//                     <Topic />
-//                 </Route>
-//                 <Route path={match.path}>
-//                     <h3>Please select a topic.</h3>
-//                 </Route>
-//             </Switch>
-//         </div>
-//     )
-// }
-
-
-export default App
+export default withRouter(App)
