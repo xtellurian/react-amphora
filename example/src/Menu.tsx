@@ -6,14 +6,15 @@ import {
     NavbarToggler,
     NavbarBrand,
     Nav,
-    NavItem,
     NavLink,
+    NavItem,
     UncontrolledDropdown,
     DropdownToggle,
     DropdownMenu,
     DropdownItem,
     NavbarText
 } from 'reactstrap'
+import { NavLink as RRNavLink } from 'react-router-dom'
 
 const components = [
     { name: 'Sign In Button', path: 'signin-button' },
@@ -44,8 +45,8 @@ export const Menu: React.FunctionComponent = () => {
                             </DropdownToggle>
                             <DropdownMenu right>
                                 {components.map((c) => (
-                                    <DropdownItem>
-                                        <NavLink href={`/components/${c.path}`}>
+                                    <DropdownItem key={c.path}>
+                                        <NavLink to={`/components/${c.path}`} tag={RRNavLink}>
                                             {c.name}
                                         </NavLink>
                                     </DropdownItem>
@@ -58,8 +59,8 @@ export const Menu: React.FunctionComponent = () => {
                             </DropdownToggle>
                             <DropdownMenu right>
                                 {examples.map((c) => (
-                                    <DropdownItem>
-                                        <NavLink href={`/examples/${c.path}`}>
+                                    <DropdownItem key={c.path}>
+                                        <NavLink to={`/examples/${c.path}`} tag={RRNavLink}>
                                             {c.name}
                                         </NavLink>
                                     </DropdownItem>
