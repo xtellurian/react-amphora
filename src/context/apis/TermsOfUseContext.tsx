@@ -5,26 +5,15 @@ import { TermsOfUse } from 'amphoradata'
 import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
+// eslint-disable-next-line no-unused-vars
+import * as Actions from '../actions'
+// eslint-disable-next-line no-unused-vars
+import { ContextProps, publish, publishResult } from '../props'
 
-interface FetchAction {
-    type: 'fetch-terms'
-}
-
-interface FetchSingleAction {
-    type: 'fetch-single-terms'
-    payload: {
-        id: string
-    }
-}
-
-interface CreateAction {
-    type: 'create-terms'
-    payload: {
-        model: TermsOfUse
-    }
-}
-
-type AllActions = FetchAction | FetchSingleAction | CreateAction
+type AllActions =
+    | Actions.FetchTerms
+    | Actions.FetchSingleTerms
+    | Actions.CreateTerms
 
 type TermsDispatch = {
     dispatch: (action: AllActions) => void
@@ -40,7 +29,7 @@ const DispatchContext = React.createContext<TermsDispatch | undefined>(
     undefined
 )
 
-const TermsApiProvider: React.FunctionComponent = (props) => {
+const TermsApiProvider: React.FunctionComponent<ContextProps> = (props) => {
     const clients = useAmphoraClients()
     const reducer = async (
         state: TermsState,
@@ -56,31 +45,58 @@ const TermsApiProvider: React.FunctionComponent = (props) => {
                 isAuthenticated: action.payload.value,
                 results: state.results
             }
-        } else if (action.type === 'create-terms') {
+        } else if (action.type === 'terms:create') {
+            publish(props, action)
             const createResult = await clients.termsOfUseApi.termsOfUseCreate(
                 action.payload.model
             )
+            publishResult(props, {
+                type: `${action.type}:${
+                    createResult.status > 299 ? 'failed' : 'succeeded'
+                }`,
+                action: action,
+                payload: createResult.data,
+                response: createResult
+            })
             return {
                 isAuthenticated: clients.isAuthenticated,
                 results: [...state.results, createResult.data],
                 isLoading: false,
                 error: createResult.status > 299 && createResult.statusText
             }
-        } else if (action.type === 'fetch-terms') {
+        } else if (action.type === 'terms:fetch-list') {
+            publish(props, action)
             const listResult = await clients.termsOfUseApi.termsOfUseList()
+            publishResult(props, {
+                type: `${action.type}:${
+                    listResult.status > 299 ? 'failed' : 'succeeded'
+                }`,
+                action: action,
+                payload: listResult.data,
+                response: listResult
+            })
             return {
                 isAuthenticated: clients.isAuthenticated,
                 isLoading: false,
                 results: listResult.data,
                 error: listResult.status > 299 && listResult.statusText
             }
-        } else if (action.type === 'fetch-single-terms') {
+        } else if (action.type === 'terms:fetch-single') {
+            publish(props, action)
             const current = state.results || []
             // remove from state if it's already there
             const filtered = current.filter((r) => r.id !== action.payload.id)
             const fetchResult = await clients.termsOfUseApi.termsOfUseRead(
                 action.payload.id
             )
+            publishResult(props, {
+                type: `${action.type}:${
+                    fetchResult.status > 299 ? 'failed' : 'succeeded'
+                }`,
+                action: action,
+                payload: fetchResult.data,
+                response: fetchResult
+            })
             return {
                 isAuthenticated: clients.isAuthenticated,
                 isLoading: false,

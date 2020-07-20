@@ -3,6 +3,10 @@ import * as a10a from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
 import axios, { AxiosInstance } from 'axios'
 import { useIdentityState } from './IdentityContext'
+// eslint-disable-next-line no-unused-vars
+import * as Actions from './actions'
+// eslint-disable-next-line no-unused-vars
+import { publish, ContextProps } from './props'
 
 type ConfigurationState = {
     isAuthenticated: boolean
@@ -10,7 +14,7 @@ type ConfigurationState = {
     axiosClient: AxiosInstance
     token?: string
 }
-type ConfigurationProviderProps = {
+interface ConfigurationProviderProps extends ContextProps {
     configuration?: a10a.Configuration
 }
 
@@ -25,54 +29,48 @@ const ConfigurationContext = React.createContext<
     axiosClient
 })
 
-type Action =
-    | {
-          type: 'set_token'
-          payload: {
-              token: string
-          }
-      }
-    | { type: 'reset_token' }
-
-function reducer(
-    state: ConfigurationState,
-    action: Action
-): ConfigurationState {
-    if (!state) {
-        return {
-            isAuthenticated: false,
-            configuration,
-            axiosClient,
-            token: ''
-        }
-    }
-
-    switch (action.type) {
-        case 'set_token': {
-            return {
-                isAuthenticated: true,
-                configuration: state.configuration,
-                token: action.payload.token,
-                axiosClient: state.axiosClient
-            }
-        }
-        case 'reset_token': {
-            return {
-                isAuthenticated: false,
-                configuration: state.configuration,
-                token: '',
-                axiosClient: state.axiosClient
-            }
-        }
-        default: {
-            return state
-        }
-    }
-}
+type Action = Actions.SetAuthToken | Actions.ResetAuthToken
 
 const ConfigurationProvider: React.FunctionComponent<ConfigurationProviderProps> = (
     props
 ) => {
+    const reducer = (
+        state: ConfigurationState,
+        action: Action
+    ): ConfigurationState => {
+        publish(props, action)
+        if (!state) {
+            return {
+                isAuthenticated: false,
+                configuration,
+                axiosClient,
+                token: ''
+            }
+        }
+
+        switch (action.type) {
+            case 'authentication:set_token': {
+                return {
+                    isAuthenticated: true,
+                    configuration: state.configuration,
+                    token: action.payload.token,
+                    axiosClient: state.axiosClient
+                }
+            }
+            case 'authentication:reset_token': {
+                return {
+                    isAuthenticated: false,
+                    configuration: state.configuration,
+                    token: '',
+                    axiosClient: state.axiosClient
+                }
+            }
+            default: {
+                return state
+            }
+        }
+    }
+
     const identityState = useIdentityState()
 
     const [state, dispatch] = React.useReducer(reducer, {
@@ -89,7 +87,7 @@ const ConfigurationProvider: React.FunctionComponent<ConfigurationProviderProps>
             state.token !== identityState.user.access_token
         ) {
             dispatch({
-                type: 'set_token',
+                type: 'authentication:set_token',
                 payload: {
                     token: identityState.user.access_token
                 }

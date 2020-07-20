@@ -5,15 +5,12 @@ import { BasicAmphora } from 'amphoradata'
 import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
+// eslint-disable-next-line no-unused-vars
+import * as Actions from '../actions'
+// eslint-disable-next-line no-unused-vars
+import { ContextProps, publish, publishResult, fromStatus } from '../props'
 
-type Action = {
-    type: 'search'
-    payload: {
-        term?: string
-    }
-}
-
-type AllActions = Action
+type AllActions = Actions.Search
 
 type SearchDispatch = { dispatch: (action: AllActions) => void }
 interface SearchState extends ApiState {
@@ -27,7 +24,7 @@ const DispatchContext = React.createContext<SearchDispatch | undefined>(
     undefined
 )
 
-const SearchApiProvider: React.FunctionComponent = (props) => {
+const SearchApiProvider: React.FunctionComponent<ContextProps> = (props) => {
     const clients = useAmphoraClients()
     const reducer = async (
         state: SearchState,
@@ -45,9 +42,16 @@ const SearchApiProvider: React.FunctionComponent = (props) => {
                 isLoading: state.isLoading
             }
         } else {
+            publish(props, action)
             const r = await clients.searchApi.searchSearchAmphorae(
                 action.payload.term
             )
+            publishResult(props, {
+                type: fromStatus(action, r),
+                action,
+                response: r,
+                payload: r.data
+            })
             return {
                 isAuthenticated: state.isAuthenticated,
                 results: r.data,

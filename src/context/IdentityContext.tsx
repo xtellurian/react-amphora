@@ -1,14 +1,18 @@
 import React, { useEffect } from 'react'
 // eslint-disable-next-line no-unused-vars
 import { UserManager, User } from 'oidc-client'
+// eslint-disable-next-line no-unused-vars
+import { ContextProps, publish } from './props'
+// eslint-disable-next-line no-unused-vars
+import * as Actions from './actions'
 
-type Action = { type: 'login'; payload: User } | { type: 'logout' }
-type Dispatch = (action: Action) => void
+type IdentityAction = Actions.Login | Actions.Logout
+type Dispatch = (action: IdentityAction) => void
 type IdentityContextState = {
     userManager?: UserManager
     user?: User
 }
-type IdentityContextProps = {
+interface IdentityContextProps extends ContextProps {
     userManager: UserManager
 }
 
@@ -22,36 +26,36 @@ const AmphoraAuthDispatchContext = React.createContext<Dispatch | undefined>(
     undefined
 )
 
-function reducer(
-    state: IdentityContextState,
-    action: Action
-): IdentityContextState {
-    if (!state) {
-        return {}
-    }
-
-    switch (action.type) {
-        case 'login': {
-            return {
-                userManager: state.userManager,
-                user: action.payload
-            }
-        }
-        case 'logout': {
-            return {
-                user: undefined,
-                userManager: state.userManager
-            }
-        }
-        default: {
-            throw new Error(`Unhandled action: ${action}`)
-        }
-    }
-}
-
 const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
     props
 ) => {
+    const reducer = (
+        state: IdentityContextState,
+        action: IdentityAction
+    ): IdentityContextState => {
+        publish(props, action)
+        if (!state) {
+            return {}
+        }
+
+        switch (action.type) {
+            case 'authentication:login': {
+                return {
+                    userManager: state.userManager,
+                    user: action.payload
+                }
+            }
+            case 'authentication:logout': {
+                return {
+                    user: undefined,
+                    userManager: state.userManager
+                }
+            }
+            default: {
+                throw new Error(`Unhandled action: ${action}`)
+            }
+        }
+    }
     const [state, dispatch] = React.useReducer(reducer, {
         userManager: props.userManager
     })
@@ -61,14 +65,16 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
             props.userManager
                 .getUser()
                 .then(
-                    (payload) => payload && dispatch({ type: 'login', payload })
+                    (payload) =>
+                        payload &&
+                        dispatch({ type: 'authentication:login', payload })
                 )
                 .catch((e) => console.log(`Error loading user, ${e}`))
         }
         if (state.user && state.user.expired) {
             props.userManager.removeUser()
             dispatch({
-                type: 'logout'
+                type: 'authentication:logout'
             })
         }
     }, [props.userManager, state.user, state])

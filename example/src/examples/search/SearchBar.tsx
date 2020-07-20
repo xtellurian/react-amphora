@@ -17,7 +17,7 @@ class SearchBar extends React.PureComponent<
 
     private doSearch() {
         this.props.dispatch({
-            type: 'search',
+            type: 'search:execute',
             payload: { term: this.state.term }
         })
     }

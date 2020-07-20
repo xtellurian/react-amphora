@@ -3,7 +3,7 @@ import { AmphoraOperationsContext } from 'react-amphora'
 export const AmphoraIdInput: React.FunctionComponent = (props) => {
     const actions = AmphoraOperationsContext.useAmphoraOperationsDispatch()
     const load = (id: string) => {
-        actions.dispatch({ type: 'amphora-operation-read', payload: { id } })
+        actions.dispatch({ type: 'amphora-operation:read', payload: { id } })
     }
 
     const [state, setState] = React.useState({ value: '' })

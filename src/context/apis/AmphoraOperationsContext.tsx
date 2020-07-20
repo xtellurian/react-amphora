@@ -1,8 +1,6 @@
 import * as React from 'react'
 import {
     // eslint-disable-next-line no-unused-vars
-    CreateAmphora,
-    // eslint-disable-next-line no-unused-vars
     DetailedAmphora,
     // eslint-disable-next-line no-unused-vars
     EditAmphora,
@@ -17,34 +15,16 @@ import {
 import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
+// eslint-disable-next-line no-unused-vars
+import * as Actions from '../actions'
+// eslint-disable-next-line no-unused-vars
+import { ContextProps, fromStatus, publish, publishResult } from '../props'
 
-type CreateAction = {
-    type: 'amphora-operation-create'
-    payload: {
-        model: CreateAmphora
-    }
-}
-type ReadAction = {
-    type: 'amphora-operation-read'
-    payload: {
-        id: string
-    }
-}
-type UpdateAction = {
-    type: 'amphora-operation-update'
-    payload: {
-        id: string
-        model: EditAmphora
-    }
-}
-type DeleteAction = {
-    type: 'amphora-operation-delete'
-    payload: {
-        id: string
-    }
-}
-
-type AllActions = CreateAction | ReadAction | UpdateAction | DeleteAction
+type AllActions =
+    | Actions.CreateAmphora
+    | Actions.ReadAmphora
+    | Actions.UpdateAmphora
+    | Actions.DeleteAmphora
 
 type AmphoraOperationsDispatch = { dispatch: (action: AllActions) => void }
 interface AmphoraOperationState extends ApiState {
@@ -99,7 +79,9 @@ async function loadMaxPermissionLevel(
 }
 const isLoading = false
 
-const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
+const AmphoraOperationsProvider: React.FunctionComponent<ContextProps> = (
+    props
+) => {
     const clients = useAmphoraClients()
     const asyncReducer = async (
         state: AmphoraOperationState,
@@ -115,10 +97,17 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
                 ...state,
                 isAuthenticated: action.payload.value
             }
-        } else if (action.type === 'amphora-operation-create') {
+        } else if (action.type === 'amphora-operation:create') {
+            publish(props, action)
             const createResponse = await clients.amphoraeApi.amphoraeCreate(
                 action.payload.model
             )
+            publishResult(props, {
+                type: fromStatus(action, createResponse),
+                action,
+                response: createResponse,
+                payload: createResponse.data
+            })
             const terms = await loadTermsIfExist(
                 createResponse.data,
                 clients.termsOfUseApi
@@ -130,10 +119,17 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
                 terms,
                 isLoading
             }
-        } else if (action.type === 'amphora-operation-read') {
+        } else if (action.type === 'amphora-operation:read') {
+            publish(props, action)
             const readResponse = await clients.amphoraeApi.amphoraeRead(
                 action.payload.id
             )
+            publishResult(props, {
+                type: fromStatus(action, readResponse),
+                action,
+                response: readResponse,
+                payload: readResponse.data
+            })
             return {
                 isAuthenticated: state.isAuthenticated,
                 current: readResponse.data,
@@ -147,11 +143,18 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
                 ),
                 isLoading: false
             }
-        } else if (action.type === 'amphora-operation-update') {
+        } else if (action.type === 'amphora-operation:update') {
+            publish(props, action)
             const updateResponse = await clients.amphoraeApi.amphoraeUpdate(
                 action.payload.id,
                 action.payload.model as EditAmphora
             )
+            publishResult(props, {
+                type: fromStatus(action, updateResponse),
+                action,
+                response: updateResponse,
+                payload: updateResponse.data
+            })
             return {
                 isAuthenticated: state.isAuthenticated,
                 current: updateResponse.data,
@@ -165,8 +168,16 @@ const AmphoraOperationsProvider: React.FunctionComponent = (props) => {
                 ),
                 isLoading: false
             }
-        } else if (action.type === 'amphora-operation-delete') {
-            await clients.amphoraeApi.amphoraeDelete(action.payload.id)
+        } else if (action.type === 'amphora-operation:delete') {
+            publish(props, action)
+            const deleteResponse = await clients.amphoraeApi.amphoraeDelete(
+                action.payload.id
+            )
+            publishResult(props, {
+                type: fromStatus(action, deleteResponse),
+                action,
+                response: deleteResponse
+            })
             return {
                 isAuthenticated: state.isAuthenticated,
                 isLoading,

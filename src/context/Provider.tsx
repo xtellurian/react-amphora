@@ -21,14 +21,14 @@ const AmphoraProvider: React.FunctionComponent<AmphoraProviderProps> = (
     props
 ) => {
     return (
-        <IdentityContextProvider userManager={props.userManager}>
-            <ConfigurationProvider configuration={props.configuration}>
+        <IdentityContextProvider {...props}>
+            <ConfigurationProvider {...props}>
                 <ApiClientProvider>
-                    <TermsApiProvider>
-                        <MyAmphoraApiProvider>
-                            <AmphoraOperationsProvider>
-                                <SearchApiProvider>
-                                    <GeoApiProvider>
+                    <TermsApiProvider {...props}>
+                        <MyAmphoraApiProvider {...props}>
+                            <AmphoraOperationsProvider {...props}>
+                                <SearchApiProvider {...props}>
+                                    <GeoApiProvider {...props}>
                                         {props.children}
                                     </GeoApiProvider>
                                 </SearchApiProvider>

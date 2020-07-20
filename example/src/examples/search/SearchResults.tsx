@@ -10,8 +10,8 @@ class SearchResults extends React.PureComponent<SearchContext.SearchState> {
                 {!this.props.results.length && 'No Search Results...'}
                 {this.props.results.map((r) => {
                     return (
-                        <div key={r.id || ''}>
-                            {r.name} | {r.price}
+                        <div className="card" key={r.id || ''}>
+                            {r.name} | {r.price} | {r.id}
                         </div>
                     )
                 })}

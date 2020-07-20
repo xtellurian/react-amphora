@@ -5,20 +5,17 @@ import { FuzzySearchResponse } from 'amphoradata'
 import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
-
-type LookupAction = {
-    type: 'geolookup'
-    payload: {
-        query?: string
-    }
-}
+// eslint-disable-next-line no-unused-vars
+import { ContextProps, fromStatus, publish, publishResult } from '../props'
+// eslint-disable-next-line no-unused-vars
+import { GeoLookup } from '../actions'
 
 type ClearAction = {
     type: 'geolookup-clear'
 }
 
 type GeoDispatch = {
-    dispatch: (action: LookupAction | ClearAction) => void
+    dispatch: (action: GeoLookup | ClearAction) => void
 }
 interface GeoState extends ApiState {
     fuzzySearchResponse: FuzzySearchResponse
@@ -29,11 +26,11 @@ const GeoContext = React.createContext<GeoState | undefined>({
 })
 const DispatchContext = React.createContext<GeoDispatch | undefined>(undefined)
 
-const GeoApiProvider: React.FunctionComponent = (props) => {
+const GeoApiProvider: React.FunctionComponent<ContextProps> = (props) => {
     const clients = useAmphoraClients()
     const reducer = async (
         state: GeoState,
-        action: LookupAction | ClearAction | AuthenticateAction
+        action: GeoLookup | ClearAction | AuthenticateAction
     ): Promise<GeoState> => {
         if (!state) {
             return {
@@ -50,10 +47,17 @@ const GeoApiProvider: React.FunctionComponent = (props) => {
                 isAuthenticated: state.isAuthenticated,
                 fuzzySearchResponse: {}
             }
-        } else if (action.type === 'geolookup') {
+        } else if (action.type === 'geo:lookup') {
+            publish(props, action)
             const r = await clients.geoApi.geoLookupLocation(
                 action.payload.query
             )
+            publishResult(props, {
+                type: fromStatus(action, r),
+                action,
+                response: r,
+                payload: r.data
+            })
             return {
                 isAuthenticated: state.isAuthenticated,
                 fuzzySearchResponse: r.data,

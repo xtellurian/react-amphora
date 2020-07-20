@@ -24,7 +24,7 @@ class CreateNewAmphora extends React.PureComponent<
     }
     private doCreate() {
         this.props.dispatch({
-            type: 'amphora-operation-create',
+            type: 'amphora-operation:create',
             payload: {
                 model: this.state.model
             }

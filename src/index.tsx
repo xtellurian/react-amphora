@@ -18,11 +18,15 @@ import {
     withConfiguration
 } from './context/ConfigurationContext'
 
+// actions
+import * as Actions from './context/actions'
 // Components
 import GeoLookupComponent from './components/GeoLookup'
 import * as Components from './components'
 
 export {
+    // actions
+    Actions,
     // Contexts
     useAmphoraClients,
     AmphoraProvider,

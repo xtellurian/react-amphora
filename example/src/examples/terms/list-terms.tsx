@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { TermsOfUseContext } from 'react-amphora'
 
-export const ListTerms: React.FunctionComponent = (props) => {
+export const ListTermsExample: React.FunctionComponent = (props) => {
     const context = TermsOfUseContext.useTermsState()
     const actions = TermsOfUseContext.useTermsDispatch()
 
@@ -9,7 +9,7 @@ export const ListTerms: React.FunctionComponent = (props) => {
     React.useEffect(() => {
         if (context.isAuthenticated && retries < 1) {
             setRetries(retries + 1)
-            actions.dispatch({ type: 'fetch-terms' })
+            actions.dispatch({ type: 'terms:fetch-list' })
         }
     }, [retries, actions, context])
 

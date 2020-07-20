@@ -1,5 +1,6 @@
 import React from 'react'
 import * as a10a from 'amphoradata'
+import { Route } from 'react-router-dom'
 import { GeoLookupComponent } from 'react-amphora'
 import { SearchExample } from './examples/search/SearchExample'
 import { MyAmphoraExample } from './examples/my-amphora/MyAmphoraExample'
@@ -15,8 +16,8 @@ import { DisplayCurrentAmphora } from './examples/read-amphora/DisplayCurrentAmp
 import MyAmphoraButtons from './examples/my-amphora/FetchMyAmphoraButtons'
 import MyAmphoraResults from './examples/my-amphora/MyAmphoraResults'
 import CreateNewAmphora from './examples/create-amphora/CreateNewAmphora'
-import { ListTerms } from './examples/terms/list-terms'
-import { Route } from 'react-router-dom'
+import { ListTermsExample } from './examples/terms/list-terms'
+import { SpecificAmphoraMetadataExample } from './examples/read-amphora/SpecificAmphoraMetadataExample'
 
 export const Examples = () => {
     return (
@@ -30,6 +31,12 @@ export const Examples = () => {
             <Route path='/examples/create-amphora'>
                 <CreateAmphoraExample />
             </Route>
+            <Route path='/examples/list-terms'>
+                <ListTermsExample />
+            </Route>
+            <Route path='/examples/display-metadata'>
+                <SpecificAmphoraMetadataExample />
+            </Route>
             <Route path='/examples/other'>
                 <MyAmphoraButtons />
                 <MyAmphoraResults />
@@ -40,7 +47,6 @@ export const Examples = () => {
                 <DisplayCurrentAmphora />
                 <hr />
                 <h3>Terms of Use</h3>
-                <ListTerms />
                 <hr />
                 <h2>Built in Components</h2>
                 <GeoLookupComponent

@@ -9,7 +9,7 @@ class MyAmphoraToggle extends React.PureComponent<
         scope: 'self' | 'organisation'
     ) {
         this.props.dispatch({
-            type: 'fetch',
+            type: 'my-amphora:fetch-list',
             payload: {
                 accessType,
                 scope

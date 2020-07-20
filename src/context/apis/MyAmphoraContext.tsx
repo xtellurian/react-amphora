@@ -5,7 +5,10 @@ import { DetailedAmphora } from 'amphoradata'
 import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from './useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
-
+// eslint-disable-next-line no-unused-vars
+import { FetchMyAmphora } from '../actions'
+// eslint-disable-next-line no-unused-vars
+import { ContextProps, publish, publishResult, fromStatus } from '../props'
 const SELF_SCOPE = 'self'
 const ORG_SCOPE = 'organisation'
 const ACCESS_TYPE_CREATED = 'created'
@@ -15,15 +18,7 @@ export type AccessType =
     | typeof ACCESS_TYPE_CREATED
     | typeof ACCESS_TYPE_PURCHASED
 
-type Action = {
-    type: 'fetch'
-    payload: {
-        scope?: Scope
-        accessType?: AccessType
-    }
-}
-
-type FetchMyAmphoraDispatch = { dispatch: (action: Action) => void }
+type FetchMyAmphoraDispatch = { dispatch: (action: FetchMyAmphora) => void }
 const emptyState: MyAmphoraState = {
     isAuthenticated: false,
     results: [],
@@ -49,11 +44,11 @@ const DispatchContext = React.createContext<FetchMyAmphoraDispatch | undefined>(
     undefined
 )
 
-const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
+const MyAmphoraApiProvider: React.FunctionComponent<ContextProps> = (props) => {
     const clients = useAmphoraClients()
     const asyncReducer = async (
         state: MyAmphoraState,
-        action: Action | AuthenticateAction
+        action: FetchMyAmphora | AuthenticateAction
     ): Promise<MyAmphoraState> => {
         if (!state) {
             return {
@@ -65,14 +60,19 @@ const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
                 ...state,
                 isAuthenticated: action.payload.value
             }
-        } else {
+        } else if (action.type === 'my-amphora:fetch-list') {
+            publish(props, action)
             const r = await clients.amphoraeApi.amphoraeList(
                 action.payload.scope,
                 action.payload.accessType
             )
-
             const results = Array.isArray(r.data) ? r.data : []
-
+            publishResult(props, {
+                type: fromStatus(action, r),
+                action,
+                response: r,
+                payload: results
+            })
             return {
                 isAuthenticated: state.isAuthenticated,
                 scope: action.payload.scope,
@@ -101,6 +101,8 @@ const MyAmphoraApiProvider: React.FunctionComponent = (props) => {
                 isLoading: false,
                 error: r.status > 299
             }
+        } else {
+            return state
         }
     }
 

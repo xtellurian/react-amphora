@@ -24,7 +24,9 @@ const components = [
 const examples = [
     { name: 'Search Bar', path: 'search' },
     { name: 'My Amphora', path: 'my-amphora' },
-    { name: 'Create an Amphora', path: 'create-amphora' }
+    { name: 'Create an Amphora', path: 'create-amphora' },
+    { name: 'List Terms of Use', path: 'list-terms' },
+    { name: 'Display Metadata', path: 'display-metadata' },
 ]
 
 export const Menu: React.FunctionComponent = () => {
