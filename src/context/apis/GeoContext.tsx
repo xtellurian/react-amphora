@@ -49,26 +49,33 @@ const GeoApiProvider: React.FunctionComponent<ContextProps> = (props) => {
             }
         } else if (action.type === 'geo:lookup') {
             publish(props, action)
-            const r = await clients.geoApi.geoLookupLocation(
-                action.payload.query
-            )
-            publishResult(props, {
-                type: fromStatus(action, r),
-                action,
-                response: r,
-                payload: r.data
-            })
-            return {
-                isAuthenticated: state.isAuthenticated,
-                fuzzySearchResponse: r.data,
-                isLoading: false
-            }
-        } else {
-            return {
-                isAuthenticated: state.isAuthenticated,
-                fuzzySearchResponse: {}
+            try {
+                const r = await clients.geoApi.geoLookupLocation(
+                    action.payload.query
+                )
+                publishResult(props, {
+                    type: fromStatus(action, r),
+                    error: null,
+                    action,
+                    response: r,
+                    payload: r.data
+                })
+                return {
+                    isAuthenticated: state.isAuthenticated,
+                    fuzzySearchResponse: r.data,
+                    isLoading: false
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
         }
+
+        return state
     }
 
     const [state, dispatch] = useAsyncReducer(reducer, {

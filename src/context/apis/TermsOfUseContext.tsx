@@ -47,65 +47,95 @@ const TermsApiProvider: React.FunctionComponent<ContextProps> = (props) => {
             }
         } else if (action.type === 'terms:create') {
             publish(props, action)
-            const createResult = await clients.termsOfUseApi.termsOfUseCreate(
-                action.payload.model
-            )
-            publishResult(props, {
-                type: `${action.type}:${
-                    createResult.status > 299 ? 'failed' : 'succeeded'
-                }`,
-                action: action,
-                payload: createResult.data,
-                response: createResult
-            })
-            return {
-                isAuthenticated: clients.isAuthenticated,
-                results: [...state.results, createResult.data],
-                isLoading: false,
-                error: createResult.status > 299 && createResult.statusText
+            try {
+                const createResult = await clients.termsOfUseApi.termsOfUseCreate(
+                    action.payload.model
+                )
+                publishResult(props, {
+                    type: `${action.type}:${
+                        createResult.status > 299 ? 'failed' : 'succeeded'
+                    }`,
+                    error: null,
+                    action: action,
+                    payload: createResult.data,
+                    response: createResult
+                })
+                return {
+                    isAuthenticated: clients.isAuthenticated,
+                    results: [...state.results, createResult.data],
+                    isLoading: false,
+                    error: createResult.status > 299 && createResult.statusText
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
         } else if (action.type === 'terms:fetch-list') {
             publish(props, action)
-            const listResult = await clients.termsOfUseApi.termsOfUseList()
-            publishResult(props, {
-                type: `${action.type}:${
-                    listResult.status > 299 ? 'failed' : 'succeeded'
-                }`,
-                action: action,
-                payload: listResult.data,
-                response: listResult
-            })
-            return {
-                isAuthenticated: clients.isAuthenticated,
-                isLoading: false,
-                results: listResult.data,
-                error: listResult.status > 299 && listResult.statusText
+            try {
+                const listResult = await clients.termsOfUseApi.termsOfUseList()
+                publishResult(props, {
+                    type: `${action.type}:${
+                        listResult.status > 299 ? 'failed' : 'succeeded'
+                    }`,
+                    error: null,
+                    action: action,
+                    payload: listResult.data,
+                    response: listResult
+                })
+                return {
+                    isAuthenticated: clients.isAuthenticated,
+                    isLoading: false,
+                    results: listResult.data,
+                    error: listResult.status > 299 && listResult.statusText
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
         } else if (action.type === 'terms:fetch-single') {
             publish(props, action)
             const current = state.results || []
             // remove from state if it's already there
             const filtered = current.filter((r) => r.id !== action.payload.id)
-            const fetchResult = await clients.termsOfUseApi.termsOfUseRead(
-                action.payload.id
-            )
-            publishResult(props, {
-                type: `${action.type}:${
-                    fetchResult.status > 299 ? 'failed' : 'succeeded'
-                }`,
-                action: action,
-                payload: fetchResult.data,
-                response: fetchResult
-            })
-            return {
-                isAuthenticated: clients.isAuthenticated,
-                isLoading: false,
-                results: [...filtered, fetchResult.data],
-                error: fetchResult.status > 299 && fetchResult.statusText
+            try {
+                const fetchResult = await clients.termsOfUseApi.termsOfUseRead(
+                    action.payload.id
+                )
+                publishResult(props, {
+                    type: `${action.type}:${
+                        fetchResult.status > 299 ? 'failed' : 'succeeded'
+                    }`,
+                    error: null,
+                    action: action,
+                    payload: fetchResult.data,
+                    response: fetchResult
+                })
+                return {
+                    isAuthenticated: clients.isAuthenticated,
+                    isLoading: false,
+                    results: [...filtered, fetchResult.data],
+                    error: fetchResult.status > 299 && fetchResult.statusText
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
-        } else {
-            return state
         }
+        // fall through
+        return state
     }
 
     const [state, dispatch] = useAsyncReducer(reducer, {

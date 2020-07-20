@@ -62,48 +62,57 @@ const MyAmphoraApiProvider: React.FunctionComponent<ContextProps> = (props) => {
             }
         } else if (action.type === 'my-amphora:fetch-list') {
             publish(props, action)
-            const r = await clients.amphoraeApi.amphoraeList(
-                action.payload.scope,
-                action.payload.accessType
-            )
-            const results = Array.isArray(r.data) ? r.data : []
-            publishResult(props, {
-                type: fromStatus(action, r),
-                action,
-                response: r,
-                payload: results
-            })
-            return {
-                isAuthenticated: state.isAuthenticated,
-                scope: action.payload.scope,
-                accessType: action.payload.accessType,
-                results,
-                selfCreatedResults:
-                    action.payload.scope === 'self' &&
-                    action.payload.accessType === 'created'
-                        ? results
-                        : state.selfCreatedResults,
-                selfPurchasedResults:
-                    action.payload.scope === 'self' &&
-                    action.payload.accessType === 'purchased'
-                        ? results
-                        : state.selfPurchasedResults,
-                organisationCreatedResults:
-                    action.payload.scope === 'organisation' &&
-                    action.payload.accessType === 'created'
-                        ? results
-                        : state.organisationCreatedResults,
-                organisationPurchasedResults:
-                    action.payload.scope === 'organisation' &&
-                    action.payload.accessType === 'purchased'
-                        ? results
-                        : state.organisationPurchasedResults,
-                isLoading: false,
-                error: r.status > 299
+            try {
+                const r = await clients.amphoraeApi.amphoraeList(
+                    action.payload.scope,
+                    action.payload.accessType
+                )
+                const results = Array.isArray(r.data) ? r.data : []
+                publishResult(props, {
+                    type: fromStatus(action, r),
+                    error: null,
+                    action,
+                    response: r,
+                    payload: results
+                })
+                return {
+                    isAuthenticated: state.isAuthenticated,
+                    scope: action.payload.scope,
+                    accessType: action.payload.accessType,
+                    results,
+                    selfCreatedResults:
+                        action.payload.scope === 'self' &&
+                        action.payload.accessType === 'created'
+                            ? results
+                            : state.selfCreatedResults,
+                    selfPurchasedResults:
+                        action.payload.scope === 'self' &&
+                        action.payload.accessType === 'purchased'
+                            ? results
+                            : state.selfPurchasedResults,
+                    organisationCreatedResults:
+                        action.payload.scope === 'organisation' &&
+                        action.payload.accessType === 'created'
+                            ? results
+                            : state.organisationCreatedResults,
+                    organisationPurchasedResults:
+                        action.payload.scope === 'organisation' &&
+                        action.payload.accessType === 'purchased'
+                            ? results
+                            : state.organisationPurchasedResults,
+                    isLoading: false,
+                    error: r.status > 299
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
-        } else {
-            return state
         }
+        return state
     }
 
     const [state, dispatch] = useAsyncReducer(asyncReducer, {

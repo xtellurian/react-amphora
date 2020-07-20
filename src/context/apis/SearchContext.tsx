@@ -43,21 +43,33 @@ const SearchApiProvider: React.FunctionComponent<ContextProps> = (props) => {
             }
         } else {
             publish(props, action)
-            const r = await clients.searchApi.searchSearchAmphorae(
-                action.payload.term
-            )
-            publishResult(props, {
-                type: fromStatus(action, r),
-                action,
-                response: r,
-                payload: r.data
-            })
-            return {
-                isAuthenticated: state.isAuthenticated,
-                results: r.data,
-                isLoading: false
+            try {
+                const r = await clients.searchApi.searchSearchAmphorae(
+                    action.payload.term
+                )
+                publishResult(props, {
+                    type: fromStatus(action, r),
+                    error: null,
+                    action,
+                    response: r,
+                    payload: r.data
+                })
+                return {
+                    isAuthenticated: state.isAuthenticated,
+                    results: r.data,
+                    isLoading: false
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
         }
+
+        return state
     }
 
     const [state, dispatch] = useAsyncReducer(reducer, {

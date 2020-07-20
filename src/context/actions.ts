@@ -16,6 +16,7 @@ export interface Action {
 
 export interface ActionResult extends Action {
     action: Action
+    error: any | null
     response: AxiosResponse<AmphoraServerResponseTypes>
 }
 

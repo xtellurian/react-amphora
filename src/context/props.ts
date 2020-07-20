@@ -7,7 +7,7 @@ export interface ContextProps {
     onActionResult?: ((action: ActionResult, payload?: any) => void) | undefined
 }
 
-export const publish = (props: ContextProps, action: Action | ActionResult) => {
+export const publish = (props: ContextProps, action: Action) => {
     if (props.onAction) {
         props.onAction(action)
     }

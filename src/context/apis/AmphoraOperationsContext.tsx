@@ -99,93 +99,132 @@ const AmphoraOperationsProvider: React.FunctionComponent<ContextProps> = (
             }
         } else if (action.type === 'amphora-operation:create') {
             publish(props, action)
-            const createResponse = await clients.amphoraeApi.amphoraeCreate(
-                action.payload.model
-            )
-            publishResult(props, {
-                type: fromStatus(action, createResponse),
-                action,
-                response: createResponse,
-                payload: createResponse.data
-            })
-            const terms = await loadTermsIfExist(
-                createResponse.data,
-                clients.termsOfUseApi
-            )
-            return {
-                isAuthenticated: state.isAuthenticated,
-                current: createResponse.data,
-                maxPermissionLevel: 128,
-                terms,
-                isLoading
+            try {
+                const createResponse = await clients.amphoraeApi.amphoraeCreate(
+                    action.payload.model
+                )
+                publishResult(props, {
+                    type: fromStatus(action, createResponse),
+                    error: null,
+                    action,
+                    response: createResponse,
+                    payload: createResponse.data
+                })
+                const terms = await loadTermsIfExist(
+                    createResponse.data,
+                    clients.termsOfUseApi
+                )
+                return {
+                    isAuthenticated: state.isAuthenticated,
+                    current: createResponse.data,
+                    maxPermissionLevel: 128,
+                    terms,
+                    isLoading
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
         } else if (action.type === 'amphora-operation:read') {
             publish(props, action)
-            const readResponse = await clients.amphoraeApi.amphoraeRead(
-                action.payload.id
-            )
-            publishResult(props, {
-                type: fromStatus(action, readResponse),
-                action,
-                response: readResponse,
-                payload: readResponse.data
-            })
-            return {
-                isAuthenticated: state.isAuthenticated,
-                current: readResponse.data,
-                maxPermissionLevel: await loadMaxPermissionLevel(
-                    readResponse.data,
-                    clients.permissionApi
-                ),
-                terms: await loadTermsIfExist(
-                    readResponse.data,
-                    clients.termsOfUseApi
-                ),
-                isLoading: false
+            try {
+                const readResponse = await clients.amphoraeApi.amphoraeRead(
+                    action.payload.id
+                )
+                publishResult(props, {
+                    type: fromStatus(action, readResponse),
+                    error: null,
+                    action,
+                    response: readResponse,
+                    payload: readResponse.data
+                })
+                return {
+                    isAuthenticated: state.isAuthenticated,
+                    current: readResponse.data,
+                    maxPermissionLevel: await loadMaxPermissionLevel(
+                        readResponse.data,
+                        clients.permissionApi
+                    ),
+                    terms: await loadTermsIfExist(
+                        readResponse.data,
+                        clients.termsOfUseApi
+                    ),
+                    isLoading: false
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
         } else if (action.type === 'amphora-operation:update') {
             publish(props, action)
-            const updateResponse = await clients.amphoraeApi.amphoraeUpdate(
-                action.payload.id,
-                action.payload.model as EditAmphora
-            )
-            publishResult(props, {
-                type: fromStatus(action, updateResponse),
-                action,
-                response: updateResponse,
-                payload: updateResponse.data
-            })
-            return {
-                isAuthenticated: state.isAuthenticated,
-                current: updateResponse.data,
-                maxPermissionLevel: await loadMaxPermissionLevel(
-                    action.payload.model,
-                    clients.permissionApi
-                ),
-                terms: await loadTermsIfExist(
-                    updateResponse.data,
-                    clients.termsOfUseApi
-                ),
-                isLoading: false
+            try {
+                const updateResponse = await clients.amphoraeApi.amphoraeUpdate(
+                    action.payload.id,
+                    action.payload.model as EditAmphora
+                )
+                publishResult(props, {
+                    type: fromStatus(action, updateResponse),
+                    error: null,
+                    action,
+                    response: updateResponse,
+                    payload: updateResponse.data
+                })
+                return {
+                    isAuthenticated: state.isAuthenticated,
+                    current: updateResponse.data,
+                    maxPermissionLevel: await loadMaxPermissionLevel(
+                        action.payload.model,
+                        clients.permissionApi
+                    ),
+                    terms: await loadTermsIfExist(
+                        updateResponse.data,
+                        clients.termsOfUseApi
+                    ),
+                    isLoading: false
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
         } else if (action.type === 'amphora-operation:delete') {
             publish(props, action)
-            const deleteResponse = await clients.amphoraeApi.amphoraeDelete(
-                action.payload.id
-            )
-            publishResult(props, {
-                type: fromStatus(action, deleteResponse),
-                action,
-                response: deleteResponse
-            })
-            return {
-                isAuthenticated: state.isAuthenticated,
-                isLoading,
-                maxPermissionLevel: 0
+            try {
+                const deleteResponse = await clients.amphoraeApi.amphoraeDelete(
+                    action.payload.id
+                )
+                publishResult(props, {
+                    type: fromStatus(action, deleteResponse),
+                    error: null,
+                    action,
+                    response: deleteResponse
+                })
+                return {
+                    isAuthenticated: state.isAuthenticated,
+                    isLoading,
+                    maxPermissionLevel: 0
+                }
+            } catch (error) {
+                publishResult(props, {
+                    type: `${action.type}:failed`,
+                    error: error,
+                    action: action,
+                    response: error
+                })
             }
-        } else {
-            return state
         }
+        return state
     }
 
     const [state, dispatch] = useAsyncReducer(asyncReducer, {
