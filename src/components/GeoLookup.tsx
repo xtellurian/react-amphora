@@ -52,7 +52,7 @@ class GeoLookup extends React.PureComponent<GeoLookupProps, { query: string }> {
 
     private doLookup() {
         this.props.dispatch({
-            type: 'geolookup',
+            type: 'geo:lookup',
             payload: { query: this.state.query }
         })
     }
