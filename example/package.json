@@ -25,11 +25,13 @@
     "react-dom": "link:../node_modules/react-dom",
     "react-router-dom": "^5.2.0",
     "react-scripts": "link:../node_modules/react-scripts",
+    "react-select": "^3.1.0",
     "reactstrap": "^8.5.1",
     "typescript": "link:../node_modules/typescript"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3",
+    "@types/react-select": "^3.0.14",
     "@types/reactstrap": "^8.5.0"
   },
   "eslintConfig": {

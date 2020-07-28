@@ -25,6 +25,7 @@ const defaultOptions: ChartOptions = {
 }
 
 interface SignalsChartState {
+    amphoraId: string
     loading: boolean
     signals: Signal[]
     signalsLoaded: boolean
@@ -52,15 +53,33 @@ function loadOptions(incoming?: ChartOptions) {
     }
 }
 
+const initialState = (
+    amphoraId: string,
+    signals?: Signal[]
+): SignalsChartState => {
+    return {
+        amphoraId,
+        loading: false,
+        signals: signals || [],
+        signalsLoaded: false,
+        dataLoaded: false
+    }
+}
+
 export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
     props
 ) => {
-    const [state, setState] = React.useState<SignalsChartState>({
-        loading: false,
-        signals: props.signals || [],
-        signalsLoaded: false,
-        dataLoaded: false
-    })
+    const [state, setState] = React.useState<SignalsChartState>(
+        initialState(props.amphoraId, props.signals)
+    )
+
+    // react to change in Amphora Id
+    React.useEffect(() => {
+        if (!state.loading && props.amphoraId !== state.amphoraId) {
+            setState(initialState(props.amphoraId, props.signals))
+            console.log(props.signals)
+        }
+    }, [props.amphoraId, state.loading])
 
     const context = useConfigState()
     const clients = useAmphoraClients()
@@ -89,7 +108,7 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
                 signalsLoaded: true
             })
         }
-    }, [context.isAuthenticated])
+    }, [context.isAuthenticated, state.amphoraId])
 
     const handleFetchDataError = (e: any) => {
         console.log(e)
