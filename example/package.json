@@ -23,6 +23,7 @@
     "react-amphora": "link:..",
     "react-code-blocks": "^0.0.8",
     "react-dom": "link:../node_modules/react-dom",
+    "react-modern-calendar-datepicker": "^3.1.6",
     "react-router-dom": "^5.2.0",
     "react-scripts": "link:../node_modules/react-scripts",
     "react-select": "^3.1.0",
