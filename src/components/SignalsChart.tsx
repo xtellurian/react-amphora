@@ -8,6 +8,8 @@ import { TsiChartComponent, ChartOptions } from './tsi/TsiChartComponent'
 import { Signal } from 'amphoradata'
 
 import 'tsiclient/tsiclient.css'
+// eslint-disable-next-line no-unused-vars
+import { ChartRange, defaultRange } from './tsi/ChartRange'
 
 const timezone = 'Local'
 const defaultOptions: ChartOptions = {
@@ -26,6 +28,7 @@ const defaultOptions: ChartOptions = {
 
 interface SignalsChartState {
     amphoraId: string
+    range: ChartRange
     loading: boolean
     signals: Signal[]
     signalsLoaded: boolean
@@ -35,6 +38,7 @@ interface SignalsChartState {
 
 export interface SignalsChartProps extends ChartOptions {
     amphoraId: string
+    range?: ChartRange | undefined
     signals?: Signal[] | undefined
     chartStyle?: React.CSSProperties | undefined
     loadingComponent?: React.ReactNode
@@ -55,13 +59,15 @@ function loadOptions(incoming?: ChartOptions) {
 
 const initialState = (
     amphoraId: string,
+    range?: ChartRange,
     signals?: Signal[]
 ): SignalsChartState => {
     return {
         amphoraId,
+        range: range || defaultRange(),
         loading: false,
         signals: signals || [],
-        signalsLoaded: false,
+        signalsLoaded: (signals && signals.length > 0) || false,
         dataLoaded: false
     }
 }
@@ -70,16 +76,23 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
     props
 ) => {
     const [state, setState] = React.useState<SignalsChartState>(
-        initialState(props.amphoraId, props.signals)
+        initialState(props.amphoraId, props.range, props.signals)
     )
 
     // react to change in Amphora Id
     React.useEffect(() => {
         if (!state.loading && props.amphoraId !== state.amphoraId) {
-            setState(initialState(props.amphoraId, props.signals))
-            console.log(props.signals)
+            setState(initialState(props.amphoraId, props.range, state.signals))
         }
     }, [props.amphoraId, state.loading])
+
+    // react to change in ChartRange
+    React.useEffect(() => {
+        if (!state.loading && props.range !== state.range) {
+            setState(initialState(props.amphoraId, props.range, state.signals))
+            console.log(props)
+        }
+    }, [props.range, state.loading])
 
     const context = useConfigState()
     const clients = useAmphoraClients()
@@ -141,7 +154,8 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
                 props.amphoraId,
                 state.signals,
                 null,
-                ''
+                state.range,
+                '30m'
             )
             promise
                 .then((d: any) => dataCallback(d))
@@ -183,6 +197,7 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
         // catch all return
         return () => console.log('no data fetch to cancel')
     }, [
+        state.range,
         context.isAuthenticated,
         state.signals,
         state.signals,

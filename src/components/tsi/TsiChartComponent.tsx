@@ -37,11 +37,10 @@ export const TsiChartComponent: React.FunctionComponent<TsiChartComponentProps> 
         if (!state.lineChart) {
             const chartRef = document.getElementById('tsichart')
             const lineChart = new tsiClient.ux.LineChart(chartRef)
-            const thingo = {
+            setState({
                 ...state,
                 lineChart
-            }
-            setState(thingo)
+            })
 
             lineChart.render(props.data, props.chartOptions)
         }

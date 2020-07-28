@@ -1,14 +1,11 @@
 import TsiClient from 'tsiclient'
 // eslint-disable-next-line no-unused-vars
+import { ChartRange } from './ChartRange'
+// eslint-disable-next-line no-unused-vars
 import { Signal } from 'amphoradata'
 // this should only be new'd once here
 const tsiClient = new TsiClient()
-
-const start = new Date()
-start.setDate(start.getDate() - 5)
-const end = new Date()
-end.setDate(end.getDate() + 2)
-
+const MAX_RANGE_MILLISECONDS = 1000 * 60 * 60 * 24 * 30 // 30 days
 function getLineChartExpressions(
     id: string,
     signals: Signal[],
@@ -78,16 +75,42 @@ function getData(
     id: string,
     signals: Signal[],
     filters: any,
-    bucketSize: string
+    range: ChartRange,
+    bucketSize: '30m'
 ): [Promise<any>, Function] {
-    bucketSize = '30m'
+    if (!range.from) {
+        range.from = new Date()
+        range.from.setDate(range.from.getDate() - 5)
+        console.log('setting from date')
+        console.log(range)
+    }
+
+    if (!range.to) {
+        range.to = new Date()
+        range.to.setDate(range.from.getDate() + 2)
+        console.log('setting to date')
+        console.log(range)
+    }
+
+    // coerce the types with a +
+    const diffTime = +range.to - +range.from
+
+    if (diffTime > MAX_RANGE_MILLISECONDS) {
+        throw new Error('Timespan greater than maximum')
+    }
+    if (diffTime <= 0) {
+        console.log(range)
+        throw new Error('Timespan is negative')
+    }
+
     filters = null
+
     const linechartTsqExpressions = getLineChartExpressions(
         id,
         signals,
         filters,
-        start,
-        end,
+        range.from,
+        range.to,
         bucketSize
     )
 
