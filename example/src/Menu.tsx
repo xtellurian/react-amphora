@@ -17,7 +17,7 @@ import {
 import { NavLink as RRNavLink } from 'react-router-dom'
 
 const components = [
-    { name: 'Sign In Button', path: 'signin-button' },
+    { name: 'Buttons', path: 'buttons' },
     { name: 'Signals Chart', path: 'signals-chart' }
 ]
 

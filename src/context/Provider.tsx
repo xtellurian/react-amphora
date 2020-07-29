@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import * as React from 'react'
+import { ThemeProvider } from 'styled-components'
+import { defaultTheme, AmphoraTheme } from '../theme/index'
 import {
     IdentityContextProps,
     IdentityContextProvider
@@ -15,29 +17,37 @@ import {
 import { SearchApiProvider } from './apis/SearchContext'
 import { AmphoraOperationsProvider } from './apis/AmphoraOperationsContext'
 
-type AmphoraProviderProps = IdentityContextProps & ConfigurationProviderProps
+interface ThemeProps {
+    theme?: AmphoraTheme
+}
+
+type AmphoraProviderProps = IdentityContextProps &
+    ConfigurationProviderProps &
+    ThemeProps
 
 const AmphoraProvider: React.FunctionComponent<AmphoraProviderProps> = (
     props
 ) => {
     return (
-        <IdentityContextProvider {...props}>
-            <ConfigurationProvider {...props}>
-                <ApiClientProvider>
-                    <TermsApiProvider {...props}>
-                        <MyAmphoraApiProvider {...props}>
-                            <AmphoraOperationsProvider {...props}>
-                                <SearchApiProvider {...props}>
-                                    <GeoApiProvider {...props}>
-                                        {props.children}
-                                    </GeoApiProvider>
-                                </SearchApiProvider>
-                            </AmphoraOperationsProvider>
-                        </MyAmphoraApiProvider>
-                    </TermsApiProvider>
-                </ApiClientProvider>
-            </ConfigurationProvider>
-        </IdentityContextProvider>
+        <ThemeProvider theme={props.theme || defaultTheme}>
+            <IdentityContextProvider {...props}>
+                <ConfigurationProvider {...props}>
+                    <ApiClientProvider>
+                        <TermsApiProvider {...props}>
+                            <MyAmphoraApiProvider {...props}>
+                                <AmphoraOperationsProvider {...props}>
+                                    <SearchApiProvider {...props}>
+                                        <GeoApiProvider {...props}>
+                                            {props.children}
+                                        </GeoApiProvider>
+                                    </SearchApiProvider>
+                                </AmphoraOperationsProvider>
+                            </MyAmphoraApiProvider>
+                        </TermsApiProvider>
+                    </ApiClientProvider>
+                </ConfigurationProvider>
+            </IdentityContextProvider>
+        </ThemeProvider>
     )
 }
 

@@ -6,7 +6,7 @@ import App from './App'
 import { AmphoraProvider, Actions } from 'react-amphora'
 import { userManager } from './userManager'
 import { Configuration } from 'amphoradata'
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 const initalConfiguration = new Configuration()
 
 const logAction = (action: Actions.Action) => {
@@ -15,6 +15,7 @@ const logAction = (action: Actions.Action) => {
 const logActionResult = (actionResult: Actions.ActionResult) => {
     console.log(actionResult.type)
 }
+
 ReactDOM.render(
     <Router>
         <AmphoraProvider

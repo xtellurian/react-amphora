@@ -16,6 +16,9 @@ import {
     withConfiguration
 } from './context/ConfigurationContext'
 
+// theme
+import { AmphoraTheme } from './theme'
+
 // actions
 import * as Actions from './context/actions'
 // Components
@@ -43,6 +46,8 @@ export {
     MyAmphoraContext,
     AmphoraOperationsContext,
     TermsOfUseContext,
+    // theme
+    AmphoraTheme as Theme,
     // Components
     GeoLookupComponent,
     SignInButton,
