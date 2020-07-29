@@ -82,13 +82,15 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
     // react to change in Amphora Id
     React.useEffect(() => {
         if (!state.loading && props.amphoraId !== state.amphoraId) {
+            console.log('amphoraId changed. Reloading chart...')
             setState(initialState(props.amphoraId, props.range, state.signals))
         }
     }, [props.amphoraId, state.loading])
 
     // react to change in ChartRange
     React.useEffect(() => {
-        if (!state.loading && props.range !== state.range) {
+        if (!state.loading && props.range && props.range !== state.range) {
+            console.log('range changed. Reloading chart...')
             setState(initialState(props.amphoraId, props.range, state.signals))
             console.log(props)
         }
