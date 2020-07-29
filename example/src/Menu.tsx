@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SignOutButton, SignInButton } from 'react-amphora'
+import { SignInButton, SignOutButton } from 'react-amphora'
 import {
     Collapse,
     Navbar,
@@ -26,7 +26,7 @@ const examples = [
     { name: 'My Amphora', path: 'my-amphora' },
     { name: 'Create an Amphora', path: 'create-amphora' },
     { name: 'List Terms of Use', path: 'list-terms' },
-    { name: 'Display Metadata', path: 'display-metadata' },
+    { name: 'Display Metadata', path: 'display-metadata' }
 ]
 
 export const Menu: React.FunctionComponent = () => {
@@ -48,7 +48,10 @@ export const Menu: React.FunctionComponent = () => {
                             <DropdownMenu right>
                                 {components.map((c) => (
                                     <DropdownItem key={c.path}>
-                                        <NavLink to={`/components/${c.path}`} tag={RRNavLink}>
+                                        <NavLink
+                                            to={`/components/${c.path}`}
+                                            tag={RRNavLink}
+                                        >
                                             {c.name}
                                         </NavLink>
                                     </DropdownItem>
@@ -62,7 +65,10 @@ export const Menu: React.FunctionComponent = () => {
                             <DropdownMenu right>
                                 {examples.map((c) => (
                                     <DropdownItem key={c.path}>
-                                        <NavLink to={`/examples/${c.path}`} tag={RRNavLink}>
+                                        <NavLink
+                                            to={`/examples/${c.path}`}
+                                            tag={RRNavLink}
+                                        >
                                             {c.name}
                                         </NavLink>
                                     </DropdownItem>

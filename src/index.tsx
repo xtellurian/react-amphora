@@ -3,8 +3,6 @@ import * as IdentityContext from './context/IdentityContext'
 import {
     CallbackPage,
     UserInformationComponent,
-    SignInButton,
-    SignOutButton,
     createUserManager
 } from './auth'
 import { useAmphoraClients } from './context/ApiClientContext'
@@ -21,8 +19,13 @@ import {
 // actions
 import * as Actions from './context/actions'
 // Components
-import GeoLookupComponent from './components/GeoLookup'
-import * as Components from './components'
+import {
+    GeoLookupComponent,
+    SignInButton,
+    SignOutButton,
+    SignalsChart,
+    SignalsChartErrorBoundary
+} from './components'
 
 export {
     // actions
@@ -34,8 +37,6 @@ export {
     IdentityContext,
     CallbackPage,
     UserInformationComponent,
-    SignInButton,
-    SignOutButton,
     createUserManager,
     useConfigState,
     SearchContext,
@@ -43,6 +44,9 @@ export {
     AmphoraOperationsContext,
     TermsOfUseContext,
     // Components
-    Components,
-    GeoLookupComponent // todo: remove from high level export
+    GeoLookupComponent,
+    SignInButton,
+    SignOutButton,
+    SignalsChart,
+    SignalsChartErrorBoundary
 }

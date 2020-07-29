@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Components } from 'react-amphora'
+import { SignalsChart } from 'react-amphora'
 
 const MelbourneWeather: React.FunctionComponent = (props) => {
     // const amphoraId = '4c3ebb15-fac8-4445-abd5-06b3848bfbd4'
@@ -7,7 +7,7 @@ const MelbourneWeather: React.FunctionComponent = (props) => {
     return (
         <React.Fragment>
             <h4>Melbourne Weather</h4>
-            <Components.SignalsChart
+            <SignalsChart
                 amphoraId='4c3ebb15-fac8-4445-abd5-06b3848bfbd4'
                 legend='shown'
                 noAnimate={true}

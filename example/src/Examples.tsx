@@ -1,7 +1,5 @@
 import React from 'react'
-import * as a10a from 'amphoradata'
 import { Route } from 'react-router-dom'
-import { GeoLookupComponent } from 'react-amphora'
 import { SearchExample } from './examples/search/SearchExample'
 import { MyAmphoraExample } from './examples/my-amphora/MyAmphoraExample'
 import { CreateAmphoraExample } from './examples/create-amphora/CreateAmphoraExample'
@@ -49,13 +47,13 @@ export const Examples = () => {
                 <h3>Terms of Use</h3>
                 <hr />
                 <h2>Built in Components</h2>
-                <GeoLookupComponent
+                {/* <GeoLookupComponent
                     onResultSelected={(r: a10a.Result) =>
                         alert(
                             `You selected ${r.address?.freeformAddress} with position ${r.position?.lat}, ${r.position?.lon}`
                         )
                     }
-                />
+                /> */}
             </Route>
         </React.Fragment>
     )

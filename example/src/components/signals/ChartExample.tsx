@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Components } from 'react-amphora'
+import { SignalsChart, SignalsChartErrorBoundary } from 'react-amphora'
 import { CopyBlock, dracula } from 'react-code-blocks'
 import Select, { ValueType, OptionTypeBase } from 'react-select'
 import DatePicker, { DayRange } from 'react-modern-calendar-datepicker'
@@ -93,14 +93,14 @@ const MelbourneWeather: React.FunctionComponent = (props) => {
             <CopyBlock text={text} language='typescript' theme={dracula} />
             <hr />
             <h5>Melbourne Weather ({option.label})</h5>
-            <Components.SignalsChartErrorBoundary>
-                <Components.SignalsChart
+            <SignalsChartErrorBoundary>
+                <SignalsChart
                     amphoraId={option.value}
                     legend='shown'
                     noAnimate={true}
                     range={toChartRange(dayRange)}
                 />
-            </Components.SignalsChartErrorBoundary>
+            </SignalsChartErrorBoundary>
             {props.children}
         </React.Fragment>
     )
