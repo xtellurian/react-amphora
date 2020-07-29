@@ -4,6 +4,13 @@
 
 [![NPM](https://img.shields.io/npm/v/react-amphora.svg)](https://www.npmjs.com/package/react-amphora) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) ![Node.js Package](https://github.com/xtellurian/react-amphora/workflows/Node.js%20Package/badge.svg)
 
+## Examples
+
+You can see the example application [here](https://react-amphora-example.xtellurian.vercel.app/)
+
+The application deployed there is under /example in this repo.
+
+
 ## Install
 
 With NPM
@@ -79,9 +86,45 @@ const App = (props: AppProps) => {
 }
 ```
 
-## Example Site
+## Themes
 
-There is an example application under /example. You can see the deployed app [here](https://react-amphora-example.xtellurian.vercel.app/)
+`react-amphora` uses Styled Components to apply CSS to components. You can apply your own global themes by introducing your own `ThemeProvider`, or by passing a theme object into the AmphoraProvider
+
+```tsx
+import { AmphoraProvider, Theme } from 'react-amphora'
+const myTheme: Theme = {
+    colors: {
+        highlight: 'red',
+        main: 'blue',
+        secondary: 'green'
+    }
+}
+
+return (
+    <AmphoraProvider theme={myTheme}>
+        <App />
+    </AmphoraProvider>
+)
+```
+
+## Events
+
+Callbacks are provided for you to response to API events. Pass a callback function into the provider to listen to actions (from the app) and action results (from the server)
+
+```tsx
+import { AmphoraProvider, Actions } from 'react-amphora'
+const logAction = (action: Actions.Action) => {
+    console.log(action.type)
+}
+const logActionResult = (actionResult: Actions.ActionResult) => {
+    console.log(actionResult.type)
+}
+return (
+    <AmphoraProvider onAction={logAction} onActionResult={logActionResult}>
+        <App />
+    </AmphoraProvider>
+)
+```
 
 ## How it works
 
