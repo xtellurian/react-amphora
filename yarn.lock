@@ -2197,10 +2197,10 @@ alphanum-sort@^1.0.0:
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
-amphoradata@^0.10.8-dev.1:
-  version "0.10.8-dev.1"
-  resolved "https://registry.yarnpkg.com/amphoradata/-/amphoradata-0.10.8-dev.1.tgz#036ae82b7cca979b1ba9301e0e6b9cefab1c7be8"
-  integrity sha512-qnYJFdpWDBFTpxUiTXC4aSpwUZUJA/rvD987l0KC/pKj35n2DvJYafLie4u4zzwWh9EFiUeHR/LedxNXAEjoRw==
+amphoradata@^0.10.14:
+  version "0.10.14"
+  resolved "https://registry.yarnpkg.com/amphoradata/-/amphoradata-0.10.14.tgz#12eb56e3c5b8c7471c80a2367cf85eec833c9fd6"
+  integrity sha512-SL/Cg/oUfn+LFpUyFRnHrF+kJ64GdIIHVV4apKc4ouVlCeVYrckj5TPJ6PZe7NbxVlNuOgnwCyZ7RrqJKYc2vQ==
   dependencies:
     axios "^0.19.2"
     request "^2.88.2"
@@ -10978,7 +10978,7 @@ style-loader@0.23.1:
     loader-utils "^1.1.0"
     schema-utils "^1.0.0"
 
-styled-components@^5.1.1:
+styled-components@^5, styled-components@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-5.1.1.tgz#96dfb02a8025794960863b9e8e365e3b6be5518d"
   integrity sha512-1ps8ZAYu2Husx+Vz8D+MvXwEwvMwFv+hqqUwhNlDN5ybg6A+3xyW1ECrAgywhvXapNfXiz79jJyU0x22z0FFTg==
