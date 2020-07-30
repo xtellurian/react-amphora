@@ -1,21 +1,12 @@
 import * as React from 'react'
-// eslint-disable-next-line no-unused-vars
-import { BasicAmphora } from 'amphoradata'
-// eslint-disable-next-line no-unused-vars
-import { ApiState, AuthenticateAction } from './apiState'
-import useAsyncReducer from './useAsyncReducer'
-import { useAmphoraClients } from '../ApiClientContext'
-// eslint-disable-next-line no-unused-vars
-import * as Actions from '../actions'
-// eslint-disable-next-line no-unused-vars
-import { ContextProps, publish, publishResult, fromStatus } from '../props'
+import { SearchState, SearchDispatch } from './searchModel'
+import { getReducer } from './searchReducer'
+import useAsyncReducer from '../useAsyncReducer'
+import { useAmphoraClients } from '../../ApiClientContext'
 
-type AllActions = Actions.Search
+// eslint-disable-next-line no-unused-vars
+import { ContextProps, publish, publishResult } from '../../props'
 
-type SearchDispatch = { dispatch: (action: AllActions) => void }
-interface SearchState extends ApiState {
-    results: BasicAmphora[]
-}
 const SearchStateContext = React.createContext<SearchState | undefined>({
     isAuthenticated: false,
     results: []
@@ -26,53 +17,12 @@ const DispatchContext = React.createContext<SearchDispatch | undefined>(
 
 const SearchApiProvider: React.FunctionComponent<ContextProps> = (props) => {
     const clients = useAmphoraClients()
-    const reducer = async (
-        state: SearchState,
-        action: AllActions | AuthenticateAction
-    ): Promise<SearchState> => {
-        if (!state) {
-            return {
-                isAuthenticated: clients.isAuthenticated,
-                results: []
-            }
-        } else if (action.type === 'isAuthenticated') {
-            return {
-                isAuthenticated: action.payload.value,
-                results: state.results,
-                isLoading: state.isLoading
-            }
-        } else {
-            publish(props, action)
-            try {
-                const r = await clients.searchApi.searchSearchAmphorae(
-                    action.payload.term
-                )
-                publishResult(props, {
-                    type: fromStatus(action, r),
-                    error: null,
-                    action,
-                    response: r,
-                    payload: r.data
-                })
-                return {
-                    isAuthenticated: state.isAuthenticated,
-                    results: r.data,
-                    isLoading: false
-                }
-            } catch (error) {
-                publishResult(props, {
-                    type: `${action.type}:failed`,
-                    error: error,
-                    action: action,
-                    response: error
-                })
-            }
-        }
-
-        return state
-    }
-
-    const [state, dispatch] = useAsyncReducer(reducer, {
+    const searchReducer = getReducer(
+        clients,
+        (a) => publish(props, a),
+        (ar) => publishResult(props, ar)
+    )
+    const [state, dispatch] = useAsyncReducer(searchReducer, {
         isAuthenticated: clients.isAuthenticated,
         results: []
     })

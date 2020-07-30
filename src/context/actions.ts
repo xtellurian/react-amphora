@@ -69,7 +69,14 @@ export interface CreateTerms extends Action {
 export interface Search extends Action {
     type: 'search:execute'
     payload: {
-        term?: string
+        term?: string | undefined
+        labels?: string | undefined
+        orgId?: string | undefined
+        lat?: number | undefined
+        lon?: number | undefined
+        dist?: number | undefined
+        take?: number | undefined
+        skip?: number | undefined
     }
 }
 

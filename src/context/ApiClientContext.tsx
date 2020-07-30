@@ -4,7 +4,7 @@ import * as axios from 'axios'
 import { useConfigState } from './ConfigurationContext'
 
 type Action = { type: 'set_authenticated' } | { type: 'set_unauthenticated' }
-interface ApiClientState {
+export interface ApiClientState {
     isAuthenticated: boolean
     axios: axios.AxiosInstance
     activitiesApi: amphoradata.ActivitiesApi

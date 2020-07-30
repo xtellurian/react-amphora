@@ -14,7 +14,7 @@ import {
     ConfigurationProviderProps,
     ConfigurationProvider
 } from './ConfigurationContext'
-import { SearchApiProvider } from './apis/SearchContext'
+import { SearchApiProvider } from './apis/search/SearchContext'
 import { AmphoraOperationsProvider } from './apis/AmphoraOperationsContext'
 
 interface ThemeProps {
