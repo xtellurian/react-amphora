@@ -11,6 +11,7 @@ const text = `<Components.SignalsChart
     amphoraId='4c3ebb15-fac8-4445-abd5-06b3848bfbd4'
     legend='shown'
     noAnimate={true}
+    range={chartRange} // use the date range picker
 />`
 interface SelectSignalOption extends OptionTypeBase {
     label: string

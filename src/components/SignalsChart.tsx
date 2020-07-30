@@ -79,28 +79,35 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
         initialState(props.amphoraId, props.range, props.signals)
     )
 
+    // the order of useEffect matters...
+    // react to change in ChartRange
+    React.useEffect(() => {
+        if (!state.loading && props.range) {
+            if (props.range !== state.range) {
+                console.log('range changed. Reloading chart...')
+                setState(
+                    initialState(props.amphoraId, props.range, state.signals)
+                )
+                console.log(props)
+            }
+        }
+    }, [props.range, state.loading])
+
     // react to change in Amphora Id
     React.useEffect(() => {
         if (!state.loading && props.amphoraId !== state.amphoraId) {
             console.log('amphoraId changed. Reloading chart...')
-            setState(initialState(props.amphoraId, props.range, state.signals))
+            setState(initialState(props.amphoraId, props.range, props.signals))
         }
     }, [props.amphoraId, state.loading])
 
-    // react to change in ChartRange
-    React.useEffect(() => {
-        if (!state.loading && props.range && props.range !== state.range) {
-            console.log('range changed. Reloading chart...')
-            setState(initialState(props.amphoraId, props.range, state.signals))
-            console.log(props)
-        }
-    }, [props.range, state.loading])
-
     const context = useConfigState()
     const clients = useAmphoraClients()
-    const needsSignals = !props.signals || !props.signals.length
 
     React.useEffect(() => {
+        const needsSignals = !state.signals || !state.signals.length
+        console.log('signals effect triggered')
+        console.log(state)
         if (context.isAuthenticated && needsSignals && !state.signalsLoaded) {
             console.log('Fetching Signals...')
             clients.amphoraeApi
