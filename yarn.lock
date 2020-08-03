@@ -2197,10 +2197,10 @@ alphanum-sort@^1.0.0:
   resolved "https://registry.yarnpkg.com/alphanum-sort/-/alphanum-sort-1.0.2.tgz#97a1119649b211ad33691d9f9f486a8ec9fbe0a3"
   integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
 
-amphoradata@^0.10.14:
-  version "0.10.14"
-  resolved "https://registry.yarnpkg.com/amphoradata/-/amphoradata-0.10.14.tgz#12eb56e3c5b8c7471c80a2367cf85eec833c9fd6"
-  integrity sha512-SL/Cg/oUfn+LFpUyFRnHrF+kJ64GdIIHVV4apKc4ouVlCeVYrckj5TPJ6PZe7NbxVlNuOgnwCyZ7RrqJKYc2vQ==
+amphoradata@^0.10.15:
+  version "0.10.15"
+  resolved "https://registry.yarnpkg.com/amphoradata/-/amphoradata-0.10.15.tgz#cfa7b7759e0f1289c36d77c5f1a14ee5dcd99442"
+  integrity sha512-7wfNMhauSupOb2l6A/Whv5USbMnLXe5ZcaHtPen0DwtHVlkpzNdWKJFkrS8ASDWwtFECewSSMqc0EGDIelXWIQ==
   dependencies:
     axios "^0.19.2"
     request "^2.88.2"
