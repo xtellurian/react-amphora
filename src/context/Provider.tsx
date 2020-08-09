@@ -7,7 +7,7 @@ import {
     IdentityContextProvider
 } from './IdentityContext'
 import { ApiClientProvider } from './ApiClientContext'
-import { MyAmphoraApiProvider } from './apis/MyAmphoraContext'
+import { MyAmphoraApiProvider } from './apis/myAmphora/MyAmphoraContext'
 import { TermsApiProvider } from './apis/TermsOfUseContext'
 import { GeoApiProvider } from './apis/GeoContext'
 import {
