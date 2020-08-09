@@ -5,11 +5,8 @@ import { AuthenticateAction } from '../apiState'
 // eslint-disable-next-line no-unused-vars
 import { ApiClientState } from '../../ApiClientContext'
 // eslint-disable-next-line no-unused-vars
-import { ActionResult, Action } from '../../actions'
+import { ActionPublisher, ActionResultPublisher } from '../../actions'
 import { fromStatus } from '../../props'
-
-type ActionPublisher = (action: Action) => void
-type ActionResultPublisher = (actionResult: ActionResult) => void
 
 export const getReducer = (
     clients: ApiClientState,

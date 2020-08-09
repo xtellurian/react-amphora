@@ -7,7 +7,10 @@ import {
 } from 'amphoradata'
 import { AxiosResponse } from 'axios'
 import { AmphoraServerResponseTypes } from '../amphoraTypes'
-import { Scope, AccessType } from './apis/MyAmphoraContext'
+import { Scope, AccessType } from './apis/myAmphora/myAmphoraModel'
+
+export type ActionPublisher = (action: Action) => void
+export type ActionResultPublisher = (actionResult: ActionResult) => void
 
 export interface Action {
     type: string
