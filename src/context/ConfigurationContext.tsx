@@ -98,7 +98,8 @@ const ConfigurationProvider: React.FunctionComponent<ConfigurationProviderProps>
             axiosClient.defaults.headers.common.Authorization =
                 'Bearer ' + identityState.user.access_token
         }
-    })
+    }, [identityState.user])
+
     return (
         <ConfigurationContext.Provider value={state}>
             {props.children}
