@@ -22,9 +22,13 @@ export const emptyState: MyAmphoraState = {
     isAuthenticated: false,
     results: [],
     selfCreatedResults: [],
+    isSelfCreatedLoading: false,
     selfPurchasedResults: [],
+    isSelfPurchasedLoading: false,
     organisationCreatedResults: [],
-    organisationPurchasedResults: []
+    isOrganisationCreatedLoading: false,
+    organisationPurchasedResults: [],
+    isOrganisationPurchasedLoading: false
 }
 export interface MyAmphoraState extends ApiState {
     scope?: Scope
@@ -32,7 +36,11 @@ export interface MyAmphoraState extends ApiState {
     results: DetailedAmphora[]
     // and the specific scopes
     selfCreatedResults: DetailedAmphora[]
+    isSelfCreatedLoading: boolean
     selfPurchasedResults: DetailedAmphora[]
+    isSelfPurchasedLoading: boolean
     organisationCreatedResults: DetailedAmphora[]
+    isOrganisationCreatedLoading: boolean
     organisationPurchasedResults: DetailedAmphora[]
+    isOrganisationPurchasedLoading: boolean
 }

@@ -9,11 +9,17 @@ type asyncReducer<S extends { error?: any }, A> = (
 
 const useAsyncReducer = <S extends ApiState, A>(
     reducer: asyncReducer<S, A>,
-    initialState: S
+    initialState: S,
+    preReducer?: (state: S, Action: A) => S
 ): [S, (action: any) => Promise<void>] => {
     const [state, setState] = React.useState(initialState)
     const dispatch = async (action: any) => {
-        setState({ ...state, isLoading: true })
+        if (preReducer) {
+            setState(preReducer(state, action))
+        } else {
+            setState({ ...state, isLoading: true })
+        }
+
         const result = reducer(state, action)
         if (typeof result.then === 'function') {
             try {

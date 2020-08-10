@@ -4,7 +4,7 @@ import {
     MyAmphoraState,
     FetchMyAmphoraDispatch
 } from './myAmphoraModel'
-import { getReducer } from './myAmphoraReducer'
+import { getReducer, isLoadingReducer } from './myAmphoraReducer'
 import useAsyncReducer from '../useAsyncReducer'
 import { useAmphoraClients } from '../../ApiClientContext'
 
@@ -25,10 +25,14 @@ const MyAmphoraApiProvider: React.FunctionComponent<ContextProps> = (props) => {
         (a) => publish(props, a),
         (ar) => publishResult(props, ar)
     )
-    const [state, dispatch] = useAsyncReducer(asyncReducer, {
-        ...emptyState,
-        isAuthenticated: clients.isAuthenticated
-    })
+    const [state, dispatch] = useAsyncReducer(
+        asyncReducer,
+        {
+            ...emptyState,
+            isAuthenticated: clients.isAuthenticated
+        },
+        isLoadingReducer
+    )
 
     React.useEffect(() => {
         if (state.isAuthenticated !== clients.isAuthenticated) {

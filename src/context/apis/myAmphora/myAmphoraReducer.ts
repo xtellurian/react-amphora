@@ -14,6 +14,52 @@ import { AuthenticateAction } from '../apiState'
 import { ApiClientState } from '../../ApiClientContext'
 import { fromStatus } from '../../props'
 
+const getLoadings = (
+    state: MyAmphoraState,
+    action: FetchMyAmphora,
+    isFetching: boolean
+) => {
+    return {
+        isSelfCreatedLoading:
+            action.payload.accessType === 'created' &&
+            action.payload.scope === 'self'
+                ? isFetching
+                : state.isSelfCreatedLoading,
+        isSelfPurchasedLoading:
+            action.payload.accessType === 'purchased' &&
+            action.payload.scope === 'self'
+                ? isFetching
+                : state.isSelfPurchasedLoading,
+        isOrganisationCreatedLoading:
+            action.payload.accessType === 'created' &&
+            action.payload.scope === 'organisation'
+                ? isFetching
+                : state.isOrganisationCreatedLoading,
+        isOrganisationPurchasedLoading:
+            action.payload.accessType === 'purchased' &&
+            action.payload.scope === 'organisation'
+                ? isFetching
+                : state.isOrganisationPurchasedLoading
+    }
+}
+
+export const isLoadingReducer = (
+    state: MyAmphoraState,
+    action: FetchMyAmphora
+): MyAmphoraState => {
+    const loadings = getLoadings(state, action, true)
+    console.log(loadings)
+    return {
+        ...state,
+        ...loadings,
+        isLoading:
+            loadings.isOrganisationCreatedLoading ||
+            loadings.isOrganisationPurchasedLoading ||
+            loadings.isSelfCreatedLoading ||
+            loadings.isSelfPurchasedLoading // is loading if any are loading
+    }
+}
+
 export const getReducer = (
     clients: ApiClientState,
     publish: ActionPublisher,
@@ -49,6 +95,7 @@ export const getReducer = (
                     payload: results
                 })
                 return {
+                    ...getLoadings(state, action, false),
                     isAuthenticated: state.isAuthenticated,
                     scope: action.payload.scope,
                     accessType: action.payload.accessType,
@@ -73,7 +120,6 @@ export const getReducer = (
                         action.payload.accessType === 'purchased'
                             ? results
                             : state.organisationPurchasedResults,
-                    isLoading: false,
                     error: r.status > 299
                 }
             } catch (error) {
