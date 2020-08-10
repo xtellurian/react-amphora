@@ -50,6 +50,8 @@ const ConfigurationProvider: React.FunctionComponent<ConfigurationProviderProps>
 
         switch (action.type) {
             case 'authentication:set_token': {
+                console.log('Setting Amphora Authentication Token')
+                console.log(`JWT is ${action.payload.token.length} chars long`)
                 return {
                     isAuthenticated: true,
                     configuration: state.configuration,
@@ -58,6 +60,7 @@ const ConfigurationProvider: React.FunctionComponent<ConfigurationProviderProps>
                 }
             }
             case 'authentication:reset_token': {
+                console.log('Resetting Amphora Authentication')
                 return {
                     isAuthenticated: false,
                     configuration: state.configuration,
