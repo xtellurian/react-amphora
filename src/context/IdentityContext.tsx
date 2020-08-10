@@ -60,6 +60,18 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
         userManager: props.userManager
     })
 
+    props.userManager.events.addUserLoaded((user) => {
+        console.log('addUserLoaded was triggered.')
+        if (state.user !== user) {
+            dispatch({ type: 'authentication:login', payload: user })
+        }
+    })
+
+    props.userManager.events.addUserSignedOut(() => {
+        console.log('addUserSignedOut was triggered.')
+        dispatch({ type: 'authentication:logout' })
+    })
+
     useEffect(() => {
         if (!state.user) {
             props.userManager
@@ -77,7 +89,7 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
                 type: 'authentication:logout'
             })
         }
-    }, [props.userManager, state.user, state])
+    }, [props.userManager])
 
     return (
         <AmphoraAuthStateContext.Provider value={state}>
