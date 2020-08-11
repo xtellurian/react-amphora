@@ -11278,10 +11278,10 @@ tsconfig-paths@^3.9.0:
     minimist "^1.2.0"
     strip-bom "^3.0.0"
 
-tsiclient@^1.3.23:
-  version "1.3.23"
-  resolved "https://registry.yarnpkg.com/tsiclient/-/tsiclient-1.3.23.tgz#f9babac73c3207700c7073434fd2e249c54286b6"
-  integrity sha512-BdV4x48WKAqk52oKWPo34h8ANlRJ2hvAiX3Q2CRRL4wWfT3wIpIaLjA7QQ24SuLIxho4hOtM7j1IXZTK0iR/Rg==
+tsiclient@^1.3.0:
+  version "1.3.28"
+  resolved "https://registry.yarnpkg.com/tsiclient/-/tsiclient-1.3.28.tgz#bd3db716c1c4ac3117e2dfdb81c3c346b3bfc225"
+  integrity sha512-yq+EZfuZW+iF8NDlxdeK9yOq6sBnwDesbGAceAKI08v0tP5PimtW6hQFoM8Di0lNpoVtnj0wtf8Yf0rTawNC+w==
 
 tslib@1.10.0:
   version "1.10.0"
