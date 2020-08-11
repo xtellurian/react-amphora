@@ -239,7 +239,7 @@ export const SignalsChart: React.FunctionComponent<SignalsChartProps> = (
                     chartOptions={loadOptions(props)}
                     data={state.data}
                     chartStyle={props.chartStyle}
-                    divId='tsichart'
+                    divId={`tsichart-${props.amphoraId}`}
                 />
             )}
         </React.Fragment>

@@ -25,7 +25,7 @@ export interface ChartOptions {
 interface TsiChartComponentProps {
     data: any
     chartOptions: ChartOptions
-    divId?: string | undefined
+    divId: string
     chartStyle?: React.CSSProperties | undefined
 }
 export const TsiChartComponent: React.FunctionComponent<TsiChartComponentProps> = (
@@ -35,7 +35,7 @@ export const TsiChartComponent: React.FunctionComponent<TsiChartComponentProps> 
 
     React.useEffect(() => {
         if (!state.lineChart) {
-            const chartRef = document.getElementById('tsichart')
+            const chartRef = document.getElementById(props.divId)
             const lineChart = new tsiClient.ux.LineChart(chartRef)
             setState({
                 ...state,
@@ -47,10 +47,7 @@ export const TsiChartComponent: React.FunctionComponent<TsiChartComponentProps> 
     }, [])
 
     return (
-        <div
-            style={props.chartStyle || defaultChartStyle}
-            id={props.divId || 'tsichart'}
-        >
+        <div style={props.chartStyle || defaultChartStyle} id={props.divId}>
             {props.children}
         </div>
     )
