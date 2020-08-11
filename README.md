@@ -126,6 +126,18 @@ return (
 )
 ```
 
+## Styling
+
+`react-amphora` uses [Styled Components](https://github.com/styled-components/styled-components/). It is included as a dependency.
+
+> NOTE: if you have trouble with styled components and react-native, you may need to incude a `.yarnclean` file in the root of your project.
+
+
+[.yarnclean](.yarnclean)
+```
+@types/react-native
+```
+
 ## How it works
 
 ### IdentityContextProvider
