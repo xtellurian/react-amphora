@@ -9,7 +9,7 @@ const SignOutButton: React.FunctionComponent<ButtonProps> = (props) => {
     const signOut = (): void => {
         context.userManager && context.userManager.signoutRedirect()
     }
-    if (context.user) {
+    if (context.user && !context.user.expired) {
         // user is already signed in
         return (
             <StyledButtonDiv

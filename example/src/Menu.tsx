@@ -19,6 +19,7 @@ import { NavLink as RRNavLink } from 'react-router-dom'
 const components = [
     { name: 'Buttons', path: 'buttons' },
     { name: 'Signals', path: 'signals-chart' },
+    { name: 'Files', path: 'files' },
     { name: 'Utilities', path: 'utilities' }
 ]
 

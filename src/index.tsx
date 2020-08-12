@@ -29,7 +29,8 @@ import {
     SignOutButton,
     SignalsChart,
     SignalsChartErrorBoundary,
-    EnsurePurchased
+    EnsurePurchased,
+    FileList
 } from './components'
 
 export {
@@ -57,5 +58,6 @@ export {
     SignOutButton,
     SignalsChart,
     SignalsChartErrorBoundary,
-    EnsurePurchased
+    EnsurePurchased,
+    FileList
 }
