@@ -120,6 +120,8 @@ export const EnsurePurchased: React.FC<EnsurePurchasedProps> = ({
         return <React.Fragment>Sign in with Amphora to view</React.Fragment>
     } else if (state.canReadContents) {
         return <React.Fragment>{children}</React.Fragment>
+    } else if (state.isLoading) {
+        return <React.Fragment>Ensuring Access...</React.Fragment>
     } else {
         return (
             <React.Fragment>
