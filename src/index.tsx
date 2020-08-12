@@ -24,10 +24,12 @@ import * as Actions from './context/actions'
 // Components
 import {
     GeoLookupComponent,
+    PurchaseButton,
     SignInButton,
     SignOutButton,
     SignalsChart,
-    SignalsChartErrorBoundary
+    SignalsChartErrorBoundary,
+    EnsurePurchased
 } from './components'
 
 export {
@@ -50,8 +52,10 @@ export {
     AmphoraTheme as Theme,
     // Components
     GeoLookupComponent,
+    PurchaseButton,
     SignInButton,
     SignOutButton,
     SignalsChart,
-    SignalsChartErrorBoundary
+    SignalsChartErrorBoundary,
+    EnsurePurchased
 }

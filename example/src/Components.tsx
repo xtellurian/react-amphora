@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { Route } from 'react-router-dom'
-import ExampleChart from './components/signals/ChartExample'
-import { ButtonsExample } from './components/buttons/ButtonsExample'
+import ExampleChart from './components/signals/SignalsGallery'
+import { ButtonsGallery } from './components/buttons/ButtonsGallery'
+import { UtilityGallery } from './components/utilities/UtilityGallery'
 export const Components: React.FunctionComponent = () => {
     return (
         <React.Fragment>
@@ -9,7 +10,10 @@ export const Components: React.FunctionComponent = () => {
                 <ExampleChart />
             </Route>
             <Route path='/components/buttons'>
-                <ButtonsExample />
+                <ButtonsGallery />
+            </Route>
+            <Route path='/components/utilities'>
+                <UtilityGallery />
             </Route>
         </React.Fragment>
     )
