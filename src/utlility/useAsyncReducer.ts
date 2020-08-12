@@ -1,6 +1,6 @@
 import * as React from 'react'
 // eslint-disable-next-line no-unused-vars
-import { ApiState } from './apiState'
+import { ApiState } from '../context/apis/apiState'
 
 type asyncReducer<S extends { error?: any }, A> = (
     state: S,
@@ -11,9 +11,9 @@ const useAsyncReducer = <S extends ApiState, A>(
     reducer: asyncReducer<S, A>,
     initialState: S,
     preReducer?: (state: S, Action: A) => S
-): [S, (action: any) => Promise<void>] => {
+): [S, (action: A) => Promise<void>] => {
     const [state, setState] = React.useState(initialState)
-    const dispatch = async (action: any) => {
+    const dispatch = async (action: A) => {
         if (preReducer) {
             setState(preReducer(state, action))
         } else {
