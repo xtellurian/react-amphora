@@ -89,8 +89,8 @@ export const EnsurePurchased: React.FC<EnsurePurchasedProps> = ({
         } else {
             return (
                 state || {
-                    canPurchase: defaultCanPurchase || false,
                     canReadContents: defaultCanReadContents || false,
+                    canPurchase: defaultCanPurchase || true,
                     isAuthenticated: clients.isAuthenticated
                 }
             )
@@ -102,8 +102,8 @@ export const EnsurePurchased: React.FC<EnsurePurchasedProps> = ({
         EnsurePurchasedAction
     >(asyncReducer, {
         isAuthenticated: clients.isAuthenticated,
-        canReadContents: defaultCanReadContents || true,
-        canPurchase: defaultCanPurchase || false
+        canReadContents: defaultCanReadContents || false,
+        canPurchase: defaultCanPurchase || true
     })
 
     React.useEffect(() => {
