@@ -5,7 +5,7 @@ import {
     FetchMyAmphoraDispatch
 } from './myAmphoraModel'
 import { getReducer, isLoadingReducer } from './myAmphoraReducer'
-import useAsyncReducer from '../../../utlility/useAsyncReducer'
+import useAsyncReducer from '../../../utility/useAsyncReducer'
 import { useAmphoraClients } from '../../ApiClientContext'
 
 // eslint-disable-next-line no-unused-vars

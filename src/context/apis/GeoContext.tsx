@@ -3,7 +3,7 @@ import * as React from 'react'
 import { FuzzySearchResponse } from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
 import { ApiState, AuthenticateAction } from './apiState'
-import useAsyncReducer from '../../utlility/useAsyncReducer'
+import useAsyncReducer from '../../utility/useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
 // eslint-disable-next-line no-unused-vars
 import { ContextProps, fromStatus, publish, publishResult } from '../props'

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { SearchState, SearchDispatch } from './searchModel'
 import { getReducer } from './searchReducer'
-import useAsyncReducer from '../../../utlility/useAsyncReducer'
+import useAsyncReducer from '../../../utility/useAsyncReducer'
 import { useAmphoraClients } from '../../ApiClientContext'
 
 // eslint-disable-next-line no-unused-vars
