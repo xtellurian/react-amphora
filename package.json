@@ -13,6 +13,7 @@
   },
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
+    "compile": "tsc --noEmit",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
@@ -62,7 +63,7 @@
     "dist"
   ],
   "dependencies": {
-    "amphoradata": "^0.10.15",
+    "amphoradata": "^0.10.16",
     "oidc-client": "^1.10.1",
     "styled-components": "^5.x",
     "tsiclient": "^1.3.0"
