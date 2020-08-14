@@ -9,11 +9,19 @@ const fileListCode = `<FileList
 />
 
 `
-const fileTextRenderCode = `<FileRenderer
+const textFileRenderCode = `<FileRenderer
     amphoraId='4c036cda-0035-409d-b515-15dbcc8ff364'
     file='CSIRO_Soil_Model_Data_Description.txt'
     mimeType='text/plain'
     />
+
+`
+
+const imageFileRenderCode = `<FileRenderer
+    amphoraId='555c1512-790a-4a25-ae7b-5b8a2f7d6656'
+    file='101.png'
+    mimeType='image/png'
+/>
 
 `
 
@@ -54,8 +62,16 @@ export const FilesGallery: React.FunctionComponent = () => {
             </Row>
             <Row>
                 <Col>
+                    <h4>Text Files</h4>
                     <CodeBlock
-                        text={fileTextRenderCode}
+                        text={textFileRenderCode}
+                        language='jsx'
+                        theme={dracula}
+                        showLineNumbers={false}
+                    />
+                    <h4>Image Files</h4>
+                    <CodeBlock
+                        text={imageFileRenderCode}
                         language='jsx'
                         theme={dracula}
                         showLineNumbers={false}
@@ -69,13 +85,24 @@ export const FilesGallery: React.FunctionComponent = () => {
                             mimeType='text/plain'
                         />
                     </EnsurePurchased>
+                    <p>Supported mime types:</p>
+                    <ul>
+                        <li>text/plain</li>
+                    </ul>
+
                     <hr />
-                    <div>
-                        Supported mime types:
-                        <ul>
-                            <li>text/plain</li>
-                        </ul>
-                    </div>
+                    <EnsurePurchased amphoraId='555c1512-790a-4a25-ae7b-5b8a2f7d6656'>
+                        <FileRenderer
+                            amphoraId='555c1512-790a-4a25-ae7b-5b8a2f7d6656'
+                            file='101.png'
+                            mimeType='image/png'
+                        />
+                    </EnsurePurchased>
+                    <p>Supported mime types:</p>
+                    <ul>
+                        <li>image/jpeg</li>
+                        <li>image/png</li>
+                    </ul>
                 </Col>
             </Row>
         </React.Fragment>
