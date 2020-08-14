@@ -45,7 +45,7 @@ export const ImageFileRenderer: React.FC<ImageFileRendererProps> = (props) => {
                 )
                 .catch((e) => setState({ loading: false, error: e }))
         }
-    }, [clients.isAuthenticated])
+    }, [clients.isAuthenticated, props.file, props.amphoraId])
 
     if (!clients.isAuthenticated) {
         return <React.Fragment>Authentication Required</React.Fragment>

@@ -29,7 +29,7 @@ export const TextFileRenderer: React.FC<TextFileRendererProps> = (props) => {
                 )
                 .catch((e) => setState({ loading: false, error: e }))
         }
-    }, [clients.isAuthenticated])
+    }, [clients.isAuthenticated, props.amphoraId, props.file])
 
     if (!clients.isAuthenticated) {
         return <React.Fragment>Authentication Required</React.Fragment>
