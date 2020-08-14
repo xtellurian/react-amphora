@@ -8,6 +8,10 @@ interface FileListProps {
     take?: number | undefined
     skip?: number | undefined
     render?: (filename?: string[] | undefined) => React.Component
+    onFileClick?: (
+        filename?: string,
+        e?: React.MouseEvent<HTMLLIElement, MouseEvent> | undefined
+    ) => void
 }
 interface FileListState {
     error?: any
@@ -31,6 +35,15 @@ export const FileList: React.FC<FileListProps> = (props) => {
         }
     }, [clients.isAuthenticated])
 
+    const handleClick = (
+        e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+        file: string
+    ) => {
+        if (props.onFileClick) {
+            props.onFileClick(file, e)
+        }
+    }
+
     const render = (filenames?: string[]) => {
         if (filenames && filenames.length > 0) {
             if (props.render) {
@@ -39,7 +52,9 @@ export const FileList: React.FC<FileListProps> = (props) => {
                 return (
                     <ul>
                         {filenames.map((f) => (
-                            <li key={f}>{f}</li>
+                            <li key={f} onClick={(e) => handleClick(e, f)}>
+                                {f}
+                            </li>
                         ))}
                     </ul>
                 )

@@ -3,7 +3,10 @@ import { dracula, CodeBlock } from 'react-code-blocks'
 import { FileList, EnsurePurchased, FileRenderer } from 'react-amphora'
 import { Row, Col } from 'reactstrap'
 
-const fileListCode = `<FileList amphoraId="d225c442-0347-4f90-88d2-ce1459f88086" />
+const fileListCode = `<FileList
+    onFileClick={(n) => alert(n)}
+    amphoraId='d225c442-0347-4f90-88d2-ce1459f88086'
+/>
 
 `
 const fileTextRenderCode = `<FileRenderer
@@ -35,7 +38,10 @@ export const FilesGallery: React.FunctionComponent = () => {
                 </Col>
                 <Col>
                     <EnsurePurchased amphoraId='d225c442-0347-4f90-88d2-ce1459f88086'>
-                        <FileList amphoraId='d225c442-0347-4f90-88d2-ce1459f88086' />
+                        <FileList
+                            onFileClick={(n) => alert(n)}
+                            amphoraId='d225c442-0347-4f90-88d2-ce1459f88086'
+                        />
                     </EnsurePurchased>
                 </Col>
             </Row>
@@ -63,7 +69,7 @@ export const FilesGallery: React.FunctionComponent = () => {
                             mimeType='text/plain'
                         />
                     </EnsurePurchased>
-                    <hr/>
+                    <hr />
                     <div>
                         Supported mime types:
                         <ul>
