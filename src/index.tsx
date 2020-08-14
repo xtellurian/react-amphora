@@ -30,7 +30,8 @@ import {
     SignalsChart,
     SignalsChartErrorBoundary,
     EnsurePurchased,
-    FileList
+    FileList,
+    FileRenderer
 } from './components'
 
 export {
@@ -59,5 +60,6 @@ export {
     SignalsChart,
     SignalsChartErrorBoundary,
     EnsurePurchased,
-    FileList
+    FileList,
+    FileRenderer
 }
