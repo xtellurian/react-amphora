@@ -1,15 +1,24 @@
 // eslint-disable-next-line no-unused-vars
 import { UserManagerSettings, UserManager } from 'oidc-client'
 
-type Scope = 'openid' | 'profile' | 'web_api' | 'amphora.purchase' | 'amphora'
+type Scope =
+    | 'openid'
+    | 'profile'
+    | 'web_api'
+    | 'amphora.purchase'
+    | 'amphora'
+    | 'offline_access'
 
 export interface OAuthConfig {
     authority?: string
     clientId: string
     redirectUri: string
-    scope?: string
     scopes?: Scope[]
     silentRedirectUri?: string
+    automaticSilentRenew?: boolean
+    filterProtocolClaims?: boolean
+    loadUserInfo?: boolean
+    monitorSession?: boolean
 }
 
 function getSettings(config: OAuthConfig): UserManagerSettings {
@@ -18,13 +27,12 @@ function getSettings(config: OAuthConfig): UserManagerSettings {
         client_id: config.clientId,
         redirect_uri: config.redirectUri,
         silent_redirect_uri: config.silentRedirectUri,
-        // construct scopes in order of prefernce
-        scope:
-            config.scope ||
-            (config.scopes ? config.scopes.join(' ') : null) ||
-            'openid profile web_api',
+        scope: config.scopes ? config.scopes.join(' ') : 'openid profile',
         response_type: 'code',
-        automaticSilentRenew: !config.silentRedirectUri
+        automaticSilentRenew: config.automaticSilentRenew,
+        filterProtocolClaims: config.filterProtocolClaims,
+        loadUserInfo: config.loadUserInfo,
+        monitorSession: config.monitorSession
     }
 }
 
