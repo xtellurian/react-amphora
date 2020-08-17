@@ -61,15 +61,23 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
     })
 
     props.userManager.events.addUserLoaded((user) => {
-        console.log('addUserLoaded was triggered.')
+        console.log('userLoaded was triggered.')
         if (state.user !== user) {
+            console.log(
+                'addUserLoaded triggered a authentiction:login dispatch.'
+            )
             dispatch({ type: 'authentication:login', payload: user })
         }
     })
 
-    props.userManager.events.addUserSignedOut(() => {
-        console.log('addUserSignedOut was triggered.')
-        dispatch({ type: 'authentication:logout' })
+    props.userManager.events.addUserUnloaded(() => {
+        console.log('userUnloaded was triggered.')
+        if (state.user && state.user.expired) {
+            console.log(
+                'userUnloaded triggered an authentication:logout dispatch.'
+            )
+            dispatch({ type: 'authentication:logout' })
+        }
     })
 
     useEffect(() => {
