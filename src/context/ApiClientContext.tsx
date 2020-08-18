@@ -7,6 +7,7 @@ type Action = { type: 'set_authenticated' } | { type: 'set_unauthenticated' }
 export interface ApiClientState {
     isAuthenticated: boolean
     axios: axios.AxiosInstance
+    accountApi: amphoradata.AccountApi
     amphoraeApi: amphoradata.AmphoraeApi
     applicationsApi: amphoradata.ApplicationsApi
     activitiesApi: amphoradata.ActivitiesApi
@@ -21,6 +22,7 @@ export interface ApiClientState {
 const ApiClientStateContext = React.createContext<ApiClientState | undefined>({
     isAuthenticated: false,
     axios: axios.default,
+    accountApi: new amphoradata.AccountApi(),
     amphoraeApi: new amphoradata.AmphoraeApi(),
     applicationsApi: new amphoradata.ApplicationsApi(),
     activitiesApi: new amphoradata.ActivitiesApi(),
@@ -39,6 +41,11 @@ const ApiClientProvider: React.FunctionComponent = (props) => {
     const initialState = {
         isAuthenticated: configContext.isAuthenticated,
         axios: configContext.axiosClient,
+        accountApi: new amphoradata.AccountApi(
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
+        ),
         amphoraeApi: new amphoradata.AmphoraeApi(
             configContext.configuration,
             configContext.configuration.basePath,
