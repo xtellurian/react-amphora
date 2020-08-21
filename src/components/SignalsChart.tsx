@@ -1,11 +1,11 @@
 import * as React from 'react'
+// eslint-disable-next-line no-unused-vars
+import { Signal } from 'amphoradata'
 import { useConfigState } from '../context/ConfigurationContext'
 import { useAmphoraClients } from '../context/ApiClientContext'
 import { getData } from './tsi/tsiClient'
 // eslint-disable-next-line no-unused-vars
 import { TsiChartComponent, ChartOptions } from './tsi/TsiChartComponent'
-// eslint-disable-next-line no-unused-vars
-import { Signal } from 'amphoradata'
 
 import 'tsiclient/tsiclient.css'
 // eslint-disable-next-line no-unused-vars
