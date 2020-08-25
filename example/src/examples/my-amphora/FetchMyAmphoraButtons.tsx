@@ -1,9 +1,21 @@
 import * as React from 'react'
 import { MyAmphoraContext } from 'react-amphora'
+import { NumericInput } from '../../utility/NumericInput'
+
+interface MyAmphoraButtonsState {
+    page: number
+}
 
 class MyAmphoraToggle extends React.PureComponent<
-    MyAmphoraContext.FetchMyAmphoraDispatch
+    MyAmphoraContext.FetchMyAmphoraDispatch,
+    MyAmphoraButtonsState
 > {
+    constructor(props: MyAmphoraContext.FetchMyAmphoraDispatch) {
+        super(props)
+        this.state = {
+            page: 0
+        }
+    }
     private doFetch(
         accessType: 'created' | 'purchased',
         scope: 'self' | 'organisation'
@@ -12,7 +24,8 @@ class MyAmphoraToggle extends React.PureComponent<
             type: 'my-amphora:fetch-list',
             payload: {
                 accessType,
-                scope
+                scope,
+                skip: this.state.page * 64
             }
         })
     }
@@ -35,6 +48,10 @@ class MyAmphoraToggle extends React.PureComponent<
                 >
                     Organisation's Purchased Amphora
                 </button>
+                Skip Pages: 
+                <NumericInput
+                    onUpdate={(v) => this.setState({ page: parseInt(v) })}
+                />
             </div>
         )
     }

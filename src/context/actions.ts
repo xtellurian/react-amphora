@@ -49,6 +49,8 @@ export interface FetchMyAmphora extends Action {
     payload: {
         scope?: Scope
         accessType?: AccessType
+        skip?: number | undefined
+        take?: number | undefined
     }
 }
 // terms

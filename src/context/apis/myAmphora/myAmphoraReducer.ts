@@ -84,7 +84,9 @@ export const getReducer = (
             try {
                 const r = await clients.amphoraeApi.amphoraeList(
                     action.payload.scope,
-                    action.payload.accessType
+                    action.payload.accessType,
+                    action.payload.take,
+                    action.payload.skip
                 )
                 const results = Array.isArray(r.data) ? r.data : []
                 publishResult({
