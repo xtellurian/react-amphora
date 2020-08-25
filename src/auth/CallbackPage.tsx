@@ -25,6 +25,12 @@ export const CallbackPage = (props: CallbackPageProps) => {
         if (props.onSignInError) {
             props.onSignInError(error)
         }
+        props.userManager
+            .clearStaleState()
+            .then(() => console.log('User Manager state was cleared'))
+            .catch((e) =>
+                console.log(`Error clearning User Manager state: ${e}`)
+            )
     }
 
     // by default userManager gets params from the current route
