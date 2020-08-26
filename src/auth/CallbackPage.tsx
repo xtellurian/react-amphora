@@ -11,26 +11,26 @@ interface CallbackPageProps {
     signInParams: string
 }
 
-export const CallbackPage = (props: CallbackPageProps) => {
+export const CallbackPage: React.FC<CallbackPageProps> = (props) => {
     const context = useIdentityDispatch()
     const successCallback = (user: User): void => {
+        context({ type: 'authentication:login', payload: user })
         if (props.onSignIn) {
             props.onSignIn(user)
         }
-        context({ type: 'authentication:login', payload: user })
     }
 
     const errorCallback = (error: Error): void => {
         console.log(error)
-        if (props.onSignInError) {
-            props.onSignInError(error)
-        }
         props.userManager
             .clearStaleState()
             .then(() => console.log('User Manager state was cleared'))
             .catch((e) =>
                 console.log(`Error clearning User Manager state: ${e}`)
             )
+        if (props.onSignInError) {
+            props.onSignInError(error)
+        }
     }
 
     // by default userManager gets params from the current route
@@ -47,5 +47,5 @@ export const CallbackPage = (props: CallbackPageProps) => {
             .catch((error) => errorCallback(error))
     })
 
-    return <div>Loading...</div>
+    return <React.Fragment>{props.children || 'Loading...'}</React.Fragment>
 }

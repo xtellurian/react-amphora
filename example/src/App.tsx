@@ -5,10 +5,7 @@ import {
     withRouter,
     RouteComponentProps
 } from 'react-router-dom'
-import {
-    CallbackPage,
-    UserInformationComponent
-} from 'react-amphora'
+import { CallbackPage, UserInformationComponent } from 'react-amphora'
 import { userManager } from './userManager'
 
 import { Menu } from './Menu'
@@ -21,17 +18,17 @@ const App: React.FunctionComponent<RouteComponentProps> = (props) => {
         const rest = props.location.hash.substring(10)
         return (
             <CallbackPage
-                onSignIn={() => props.history.push('/')}
                 {...props}
-                userManager={userManager}
                 signInParams={`${rest}`}
+                userManager={userManager}
+                onSignIn={() => props.history.push('/')}
+                onSignInError={() => props.history.replace('/')}
             />
         )
     }
     return (
         <div>
             <Menu />
-
             <Switch>
                 <Route exact path='/'>
                     <Information />

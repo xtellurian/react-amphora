@@ -46,6 +46,12 @@ const IdentityContextProvider: React.FunctionComponent<IdentityContextProps> = (
                 }
             }
             case 'authentication:logout': {
+                if (state.userManager) {
+                    state.userManager
+                        .removeUser()
+                        .then(() => console.log('User removed'))
+                        .catch((e) => console.log(e))
+                }
                 return {
                     user: undefined,
                     userManager: state.userManager
