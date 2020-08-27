@@ -1,6 +1,6 @@
 {
   "name": "react-amphora",
-  "version": "1.7.1-7",
+  "version": "1.7.1-8",
   "description": "React Components for Amphora Data",
   "author": "xtellurian",
   "license": "MIT",
@@ -14,6 +14,7 @@
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "compile": "tsc --noEmit",
+    "lint": "eslint src/**/*.ts src/**/*.tsx example/src/**/*.ts example/src/**/*.tsx",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
