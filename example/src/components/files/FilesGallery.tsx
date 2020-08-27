@@ -21,6 +21,8 @@ const imageFileRenderCode = `<FileRenderer
     amphoraId='555c1512-790a-4a25-ae7b-5b8a2f7d6656'
     file='101.png'
     mimeType='image/png'
+    // mimeType optional, and can also be read from the ContentType attribute. 
+    // See https://www.amphoradata.com/docs/files/attributes
 />
 
 `
@@ -95,7 +97,6 @@ export const FilesGallery: React.FunctionComponent = () => {
                         <FileRenderer
                             amphoraId='555c1512-790a-4a25-ae7b-5b8a2f7d6656'
                             file='101.png'
-                            mimeType='image/png'
                         />
                     </EnsurePurchased>
                     <p>Supported mime types:</p>
