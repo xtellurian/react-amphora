@@ -1,4 +1,5 @@
 import * as React from 'react'
+// eslint-disable-next-line no-unused-vars
 import { SearchState, SearchDispatch } from './searchModel'
 import { getReducer } from './searchReducer'
 import useAsyncReducer from '../../../utility/useAsyncReducer'
@@ -93,8 +94,6 @@ const withSearch = (Component: any) => {
 
 export {
     SearchApiProvider,
-    SearchState,
-    SearchDispatch,
     useSearchState,
     useSearchDispatch,
     withSearch,

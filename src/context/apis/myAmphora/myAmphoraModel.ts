@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import { DetailedAmphora } from 'amphoradata'
 // eslint-disable-next-line no-unused-vars
-import { ApiState } from '../apiState'
+import { ApiState, AuthenticateAction } from '../apiState'
 // eslint-disable-next-line no-unused-vars
 import { FetchMyAmphora } from '../../actions'
 
@@ -16,7 +16,7 @@ export type AccessType =
     | typeof ACCESS_TYPE_PURCHASED
 
 export type FetchMyAmphoraDispatch = {
-    dispatch: (action: FetchMyAmphora) => void
+    dispatch: (action: FetchMyAmphora | AuthenticateAction) => void
 }
 export const emptyState: MyAmphoraState = {
     isAuthenticated: false,

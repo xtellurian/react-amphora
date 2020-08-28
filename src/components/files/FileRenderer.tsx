@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { TextFileRenderer } from './TextFileRenderer'
 import { ImageFileRenderer } from './ImageFileRenderer'
-import { useAmphoraClients } from '../..'
+import { useAmphoraClients } from '../../context/ApiClientContext'
 
 interface FileRendererProps {
     amphoraId: string

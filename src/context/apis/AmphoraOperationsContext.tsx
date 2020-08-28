@@ -26,8 +26,10 @@ type AllActions =
     | Actions.UpdateAmphora
     | Actions.DeleteAmphora
 
-type AmphoraOperationsDispatch = { dispatch: (action: AllActions) => void }
-interface AmphoraOperationState extends ApiState {
+export type AmphoraOperationsDispatch = {
+    dispatch: (action: AllActions) => void
+}
+export interface AmphoraOperationState extends ApiState {
     current?: DetailedAmphora
     maxPermissionLevel: number
     terms?: TermsOfUse | null | undefined
@@ -298,8 +300,6 @@ const withAmphoraOperations = (Component: any) => {
 
 export {
     AmphoraOperationsProvider,
-    AmphoraOperationState,
-    AmphoraOperationsDispatch,
     useAmphoraOperationsState,
     useAmphoraOperationsDispatch,
     withAmphoraOperations,

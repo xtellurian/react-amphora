@@ -15,10 +15,10 @@ type AllActions =
     | Actions.FetchSingleTerms
     | Actions.CreateTerms
 
-type TermsDispatch = {
+export type TermsDispatch = {
     dispatch: (action: AllActions) => void
 }
-interface TermsState extends ApiState {
+export interface TermsState extends ApiState {
     results: TermsOfUse[]
 }
 const TermsStateContext = React.createContext<TermsState | undefined>({
@@ -209,8 +209,6 @@ const withTerms = (Component: any) => {
 
 export {
     TermsApiProvider,
-    TermsState,
-    TermsDispatch,
     useTermsState,
     useTermsDispatch,
     withTerms,

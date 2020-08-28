@@ -14,10 +14,10 @@ type ClearAction = {
     type: 'geolookup-clear'
 }
 
-type GeoDispatch = {
+export type GeoDispatch = {
     dispatch: (action: GeoLookup | ClearAction) => void
 }
-interface GeoState extends ApiState {
+export interface GeoState extends ApiState {
     fuzzySearchResponse: FuzzySearchResponse
 }
 const GeoContext = React.createContext<GeoState | undefined>({
@@ -148,8 +148,6 @@ const withGeo = (Component: any) => {
 
 export {
     GeoApiProvider,
-    GeoState,
-    GeoDispatch,
     useGeoState,
     useGeoDispatch,
     withGeo,

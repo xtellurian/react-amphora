@@ -1,7 +1,9 @@
 import * as React from 'react'
 import {
     emptyState,
+    // eslint-disable-next-line no-unused-vars
     MyAmphoraState,
+    // eslint-disable-next-line no-unused-vars
     FetchMyAmphoraDispatch
 } from './myAmphoraModel'
 import { getReducer, isLoadingReducer } from './myAmphoraReducer'
@@ -109,8 +111,6 @@ const withMyAmphora = (Component: any) => {
 
 export {
     MyAmphoraApiProvider,
-    MyAmphoraState,
-    FetchMyAmphoraDispatch,
     useMyAmphora,
     useMyAmphoraState,
     useMyAmphoraDispatch,

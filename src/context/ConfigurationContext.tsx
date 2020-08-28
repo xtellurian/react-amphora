@@ -8,13 +8,13 @@ import * as Actions from './actions'
 // eslint-disable-next-line no-unused-vars
 import { publish, ContextProps } from './props'
 
-type ConfigurationState = {
+export type ConfigurationState = {
     isAuthenticated: boolean
     configuration: a10a.Configuration
     axiosClient: AxiosInstance
     token?: string
 }
-interface ConfigurationProviderProps extends ContextProps {
+export interface ConfigurationProviderProps extends ContextProps {
     configuration?: a10a.Configuration
 }
 
@@ -129,10 +129,4 @@ const withConfiguration = (Component: any) => {
     }
 }
 
-export {
-    ConfigurationProviderProps,
-    ConfigurationProvider,
-    useConfigState,
-    withConfiguration,
-    ConfigurationState
-}
+export { ConfigurationProvider, useConfigState, withConfiguration }

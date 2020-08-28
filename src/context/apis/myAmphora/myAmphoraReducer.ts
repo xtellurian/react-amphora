@@ -45,18 +45,21 @@ const getLoadings = (
 
 export const isLoadingReducer = (
     state: MyAmphoraState,
-    action: FetchMyAmphora
+    action: FetchMyAmphora | AuthenticateAction
 ): MyAmphoraState => {
-    const loadings = getLoadings(state, action, true)
-    console.log(loadings)
-    return {
-        ...state,
-        ...loadings,
-        isLoading:
-            loadings.isOrganisationCreatedLoading ||
-            loadings.isOrganisationPurchasedLoading ||
-            loadings.isSelfCreatedLoading ||
-            loadings.isSelfPurchasedLoading // is loading if any are loading
+    if (action.type === 'my-amphora:fetch-list') {
+        const loadings = getLoadings(state, action, true)
+        return {
+            ...state,
+            ...loadings,
+            isLoading:
+                loadings.isOrganisationCreatedLoading ||
+                loadings.isOrganisationPurchasedLoading ||
+                loadings.isSelfCreatedLoading ||
+                loadings.isSelfPurchasedLoading // is loading if any are loading
+        }
+    } else {
+        return state
     }
 }
 

@@ -17,6 +17,7 @@ import {
 } from './context/ConfigurationContext'
 
 // theme
+// eslint-disable-next-line no-unused-vars
 import { AmphoraTheme } from './theme'
 
 // actions
@@ -34,6 +35,7 @@ import {
     FileRenderer
 } from './components'
 
+export type Theme = AmphoraTheme
 export {
     // actions
     Actions,
@@ -50,8 +52,6 @@ export {
     MyAmphoraContext,
     AmphoraOperationsContext,
     TermsOfUseContext,
-    // theme
-    AmphoraTheme as Theme,
     // Components
     GeoLookupComponent,
     PurchaseButton,

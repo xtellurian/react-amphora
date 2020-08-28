@@ -12,7 +12,7 @@ type IdentityContextState = {
     userManager?: UserManager
     user?: User
 }
-interface IdentityContextProps extends ContextProps {
+export interface IdentityContextProps extends ContextProps {
     userManager: UserManager
 }
 
@@ -138,9 +138,4 @@ function useIdentityDispatch(): Dispatch {
     return context
 }
 
-export {
-    IdentityContextProps,
-    IdentityContextProvider,
-    useIdentityState,
-    useIdentityDispatch
-}
+export { IdentityContextProvider, useIdentityState, useIdentityDispatch }
