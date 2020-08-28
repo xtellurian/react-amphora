@@ -1,17 +1,29 @@
 import * as React from 'react'
 import {
-    emptyState,
     // eslint-disable-next-line no-unused-vars
     MyAmphoraState,
     // eslint-disable-next-line no-unused-vars
     FetchMyAmphoraDispatch
-} from './myAmphoraModel'
+} from './index'
 import { getReducer, isLoadingReducer } from './myAmphoraReducer'
 import useAsyncReducer from '../../../utility/useAsyncReducer'
 import { useAmphoraClients } from '../../ApiClientContext'
 
 // eslint-disable-next-line no-unused-vars
 import { ContextProps, publish, publishResult } from '../../props'
+
+const emptyState: MyAmphoraState = {
+    isAuthenticated: false,
+    results: [],
+    selfCreatedResults: [],
+    isSelfCreatedLoading: false,
+    selfPurchasedResults: [],
+    isSelfPurchasedLoading: false,
+    organisationCreatedResults: [],
+    isOrganisationCreatedLoading: false,
+    organisationPurchasedResults: [],
+    isOrganisationPurchasedLoading: false
+}
 
 const MyAmphoraStateContext = React.createContext<MyAmphoraState | undefined>(
     emptyState
@@ -23,6 +35,7 @@ const DispatchContext = React.createContext<FetchMyAmphoraDispatch | undefined>(
 const MyAmphoraApiProvider: React.FunctionComponent<ContextProps> = (props) => {
     const clients = useAmphoraClients()
     const asyncReducer = getReducer(
+        emptyState,
         clients,
         (a) => publish(props, a),
         (ar) => publishResult(props, ar)

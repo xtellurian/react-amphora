@@ -4,6 +4,15 @@ import { DetailedAmphora } from 'amphoradata'
 import { ApiState, AuthenticateAction } from '../apiState'
 // eslint-disable-next-line no-unused-vars
 import { FetchMyAmphora } from '../../actions'
+import {
+    MyAmphoraApiProvider,
+    useMyAmphora,
+    useMyAmphoraState,
+    useMyAmphoraDispatch,
+    withMyAmphora,
+    withMyAmphoraState,
+    withFetchMyAmphoraDispatch
+} from './MyAmphoraContext'
 
 const SELF_SCOPE = 'self'
 const ORG_SCOPE = 'organisation'
@@ -18,18 +27,7 @@ export type AccessType =
 export type FetchMyAmphoraDispatch = {
     dispatch: (action: FetchMyAmphora | AuthenticateAction) => void
 }
-export const emptyState: MyAmphoraState = {
-    isAuthenticated: false,
-    results: [],
-    selfCreatedResults: [],
-    isSelfCreatedLoading: false,
-    selfPurchasedResults: [],
-    isSelfPurchasedLoading: false,
-    organisationCreatedResults: [],
-    isOrganisationCreatedLoading: false,
-    organisationPurchasedResults: [],
-    isOrganisationPurchasedLoading: false
-}
+
 export interface MyAmphoraState extends ApiState {
     scope?: Scope
     accessType?: AccessType
@@ -43,4 +41,13 @@ export interface MyAmphoraState extends ApiState {
     isOrganisationCreatedLoading: boolean
     organisationPurchasedResults: DetailedAmphora[]
     isOrganisationPurchasedLoading: boolean
+}
+export {
+    MyAmphoraApiProvider,
+    useMyAmphora,
+    useMyAmphoraState,
+    useMyAmphoraDispatch,
+    withMyAmphora,
+    withMyAmphoraState,
+    withFetchMyAmphoraDispatch
 }

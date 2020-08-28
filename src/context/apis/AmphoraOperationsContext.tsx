@@ -15,6 +15,7 @@ import {
 import { ApiState, AuthenticateAction } from './apiState'
 import useAsyncReducer from '../../utility/useAsyncReducer'
 import { useAmphoraClients } from '../ApiClientContext'
+import accessLevels from '../../constants/accessLevels'
 // eslint-disable-next-line no-unused-vars
 import * as Actions from '../actions'
 // eslint-disable-next-line no-unused-vars
@@ -56,11 +57,11 @@ async function loadTermsIfExist(
     }
 }
 const getAccessQueries = (amphoraId: string) => [
-    { accessLevel: 24, amphoraId }, // purchase
-    { accessLevel: 32, amphoraId }, // read contents
-    { accessLevel: 64, amphoraId }, // write contents
-    { accessLevel: 128, amphoraId }, // update
-    { accessLevel: 256, amphoraId } // administer
+    { accessLevel: accessLevels.purchase, amphoraId }, // purchase
+    { accessLevel: accessLevels.readContents, amphoraId }, // read contents
+    { accessLevel: accessLevels.writeContents, amphoraId }, // write contents
+    { accessLevel: accessLevels.update, amphoraId }, // update
+    { accessLevel: accessLevels.administer, amphoraId } // administer
 ]
 
 async function loadMaxPermissionLevel(

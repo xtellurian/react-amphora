@@ -7,8 +7,8 @@ import {
 } from './auth'
 import { useAmphoraClients } from './context/ApiClientContext'
 import * as TermsOfUseContext from './context/apis/TermsOfUseContext'
-import * as SearchContext from './context/apis/search/SearchContext'
-import * as MyAmphoraContext from './context/apis/myAmphora/MyAmphoraContext'
+import * as SearchContext from './context/apis/search'
+import * as MyAmphoraContext from './context/apis/myAmphora'
 import * as AmphoraOperationsContext from './context/apis/AmphoraOperationsContext'
 import { AmphoraProvider } from './context/Provider'
 import {

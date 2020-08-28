@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { SearchState, AllSearchActions } from './searchModel'
+import { SearchState, AllSearchActions } from '.'
 // eslint-disable-next-line no-unused-vars
 import { AuthenticateAction } from '../apiState'
 // eslint-disable-next-line no-unused-vars

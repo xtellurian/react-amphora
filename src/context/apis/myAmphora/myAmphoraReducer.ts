@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { MyAmphoraState, emptyState } from './myAmphoraModel'
+import { MyAmphoraState } from './index'
 import {
     // eslint-disable-next-line no-unused-vars
     FetchMyAmphora,
@@ -64,6 +64,7 @@ export const isLoadingReducer = (
 }
 
 export const getReducer = (
+    intialState: MyAmphoraState,
     clients: ApiClientState,
     publish: ActionPublisher,
     publishResult: ActionResultPublisher
@@ -74,7 +75,7 @@ export const getReducer = (
     ): Promise<MyAmphoraState> => {
         if (!state) {
             return {
-                ...emptyState,
+                ...intialState,
                 isAuthenticated: clients.isAuthenticated
             }
         } else if (action.type === 'isAuthenticated') {
