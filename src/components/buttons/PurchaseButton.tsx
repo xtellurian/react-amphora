@@ -28,15 +28,16 @@ interface ActualButtonProps extends PurchaseButtonProps {
 }
 
 const ActualButton: React.FC<ActualButtonProps> = (props) => {
+    const [price, setPrice] = React.useState<number>()
     const clients = useAmphoraClients()
     const purchase = (amphoraId: string) => {
         clients.amphoraeApi
             .purchasesPurchase(amphoraId)
             .then((r) => {
-                console.log(r.data)
                 if (props.onPurchased) {
                     props.onPurchased(amphoraId)
                 }
+                console.log(r.data.message)
             })
             .catch((e) => {
                 if (props.onError) {
@@ -44,11 +45,14 @@ const ActualButton: React.FC<ActualButtonProps> = (props) => {
                 }
             })
     }
+    React.useEffect(() => {
+        if (props.details) {
+            setPrice(props.details.price)
+        }
+    }, [props.details])
 
+    const message = price ? `Get access for $${price}` : ' Get Access'
     if (props.hasPurchaseScope) {
-        const message = props.details
-            ? `Get access for $${props.details.price}`
-            : ' Get Access'
         return (
             <StyledButtonDiv
                 style={props.style}
@@ -65,7 +69,7 @@ const ActualButton: React.FC<ActualButtonProps> = (props) => {
                 href={`https://app.amphoradata.com/amphorae/detail?id=${props.amphoraId}`}
             >
                 <StyledButtonDiv style={props.style}>
-                    {props.children || 'Purchase Amphora'}
+                    {props.children || message}
                 </StyledButtonDiv>
             </a>
         )
@@ -91,7 +95,7 @@ export const PurchaseButton: React.FC<PurchaseButtonProps> = (props) => {
 
     // get amphora details
     React.useEffect(() => {
-        if (clients.isAuthenticated) {
+        if (clients.isAuthenticated && !state.hasAccess) {
             clients.amphoraeApi
                 .amphoraeRead(props.amphoraId)
                 .then((r) => {
@@ -105,7 +109,7 @@ export const PurchaseButton: React.FC<PurchaseButtonProps> = (props) => {
                     console.log(e)
                 })
         }
-    }, [props.amphoraId, clients.isAuthenticated, clients.amphoraeApi])
+    }, [props.amphoraId, clients.isAuthenticated, state.hasAccess])
 
     React.useEffect(() => {
         if (clients.isAuthenticated) {
@@ -124,24 +128,32 @@ export const PurchaseButton: React.FC<PurchaseButtonProps> = (props) => {
                         r.data.accessResponses.length > 0
                     ) {
                         setState({
+                            details: state.details,
                             loading: false,
                             hasAccess:
                                 r.data.accessResponses[0].isAuthorized || false
                         })
                     } else {
-                        setState({ loading: false, hasAccess: false })
+                        setState({
+                            loading: false,
+                            hasAccess: false,
+                            details: state.details
+                        })
                     }
                 })
         }
     }, [props.amphoraId, clients.isAuthenticated, clients.permissionApi])
-
     if (state.loading) {
         return <div>Loading...</div>
     } else if (state.hasAccess) {
         return <div>You have access to this Amphora.</div>
     } else {
         return (
-            <ActualButton {...props} hasPurchaseScope={hasPurchaseScope}>
+            <ActualButton
+                {...props}
+                hasPurchaseScope={hasPurchaseScope}
+                details={state.details}
+            >
                 {props.children}
             </ActualButton>
         )
