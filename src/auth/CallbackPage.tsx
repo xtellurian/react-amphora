@@ -9,9 +9,16 @@ interface CallbackPageProps {
     onSignInError?: (e: Error) => void
     userManager: UserManager
     signInParams: string
+    clearStateOnInitialise?: boolean
 }
 
 export const CallbackPage: React.FC<CallbackPageProps> = (props) => {
+    if (props.clearStateOnInitialise) {
+        props.userManager
+            .clearStaleState()
+            .then(() => console.log('Cleared state state'))
+            .catch((e) => console.log(e))
+    }
     const context = useIdentityDispatch()
     const successCallback = (user: User): void => {
         context({ type: 'authentication:login', payload: user })
