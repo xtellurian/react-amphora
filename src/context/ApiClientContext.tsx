@@ -11,6 +11,7 @@ export interface ApiClientState {
     amphoraeApi: amphoradata.AmphoraeApi
     applicationsApi: amphoradata.ApplicationsApi
     activitiesApi: amphoradata.ActivitiesApi
+    feedsApi: amphoradata.FeedsApi
     geoApi: amphoradata.GeoApi
     invitationsApi: amphoradata.InvitationsApi
     organisationsApi: amphoradata.OrganisationsApi
@@ -27,6 +28,7 @@ const ApiClientStateContext = React.createContext<ApiClientState | undefined>({
     amphoraeApi: new amphoradata.AmphoraeApi(),
     applicationsApi: new amphoradata.ApplicationsApi(),
     activitiesApi: new amphoradata.ActivitiesApi(),
+    feedsApi: new amphoradata.FeedsApi(),
     geoApi: new amphoradata.GeoApi(),
     invitationsApi: new amphoradata.InvitationsApi(),
     organisationsApi: new amphoradata.OrganisationsApi(),
@@ -59,6 +61,11 @@ const ApiClientProvider: React.FunctionComponent = (props) => {
             configContext.axiosClient
         ),
         activitiesApi: new amphoradata.ActivitiesApi(
+            configContext.configuration,
+            configContext.configuration.basePath,
+            configContext.axiosClient
+        ),
+        feedsApi: new amphoradata.FeedsApi(
             configContext.configuration,
             configContext.configuration.basePath,
             configContext.axiosClient

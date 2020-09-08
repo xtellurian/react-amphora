@@ -31,7 +31,7 @@ export const getReducer = (
         } else {
             publish(action)
             try {
-                const r = await clients.searchApi.searchSearchAmphorae(
+                const r = await clients.searchApi.searchSearchAmphora(
                     action.payload.term,
                     action.payload.labels,
                     action.payload.orgId,
@@ -50,7 +50,7 @@ export const getReducer = (
                 })
                 return {
                     isAuthenticated: state.isAuthenticated,
-                    results: r.data,
+                    results: r.data.items || [],
                     isLoading: false
                 }
             } catch (error) {
