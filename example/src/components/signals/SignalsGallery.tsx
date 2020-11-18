@@ -12,6 +12,7 @@ const text = `<Components.SignalsChart
     legend='shown'
     noAnimate={true}
     range={chartRange} // use the date range picker
+    dateLocale="en-AU"
 />`
 interface SelectSignalOption extends OptionTypeBase {
     label: string
