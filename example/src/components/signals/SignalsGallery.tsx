@@ -100,6 +100,7 @@ const MelbourneWeather: React.FunctionComponent = (props) => {
                     legend='shown'
                     noAnimate={true}
                     range={toChartRange(dayRange)}
+                    dateLocale="en-AU"
                 />
             </SignalsChartErrorBoundary>
             {props.children}
